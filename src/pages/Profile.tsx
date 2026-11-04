@@ -43,6 +43,7 @@ export default function Profile() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [language, setLanguage] = useState<'pt' | 'en' | 'es'>('pt');
   const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
     // Check system preference or previous state
@@ -112,7 +113,8 @@ export default function Profile() {
       localStorage.setItem('paymentSettings', JSON.stringify(paymentSettings));
 
       setIsSaving(false);
-      alert('Configurações salvas com sucesso!');
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3500);
     }, 1500);
   };
 
@@ -763,6 +765,11 @@ export default function Profile() {
                 </>
               )}
             </button>
+            {saveSuccess && (
+              <div className="mt-3 p-3 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300 text-sm text-center font-medium animate-fadeIn">
+                Configurações salvas com sucesso!
+              </div>
+            )}
             <p className="text-xs text-center text-stone-400 dark:text-stone-500 mt-3">
               Última sincronização: Hoje às 08:45
             </p>

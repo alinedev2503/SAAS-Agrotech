@@ -49,7 +49,7 @@ export class SupabaseDatabaseAdapter implements IDatabaseService {
     this.checkDb();
     const { data: insertedData, error } = await supabase!
       .from(collectionName)
-      .insert(data)
+      .insert(data as any)
       .select()
       .single();
       
@@ -61,7 +61,7 @@ export class SupabaseDatabaseAdapter implements IDatabaseService {
     this.checkDb();
     const { data: updatedData, error } = await supabase!
       .from(collectionName)
-      .update(data)
+      .update(data as any)
       .eq('id', id)
       .select()
       .single();

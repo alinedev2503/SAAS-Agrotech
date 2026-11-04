@@ -7,18 +7,31 @@ import { Sprout } from 'lucide-react';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { signIn, loading } = useAuth();
   const { config } = useTenant();
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     try {
       await signIn(email, password);
       navigate('/'); // Redireciona para o Dashboard em caso de sucesso
-    } catch (error) {
+    } catch (error: any) {
       console.error("Falha no login", error);
-      alert("Falha no login. Verifique as credenciais e o adaptador BaaS configurado.");
+      setErrorMessage(error?.message || "Falha no login. Verifique as credenciais.");
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setErrorMessage(null);
+    try {
+      await signIn('demo@fazendasantaclara.com.br', 'demo1234');
+      navigate('/');
+    } catch (error: any) {
+      console.error("Falha no login de demonstração", error);
+      setErrorMessage("Erro ao iniciar sessão de demonstração.");
     }
   };
 
@@ -93,13 +106,28 @@ export default function Login() {
               </div>
             </div>
 
-            <div>
+            {errorMessage && (
+              <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-sm text-red-600 dark:text-red-400">
+                {errorMessage}
+              </div>
+            )}
+
+            <div className="space-y-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 transition-colors"
               >
-                {loading ? 'Entrando...' : 'Entrar'}
+                {loading ? 'Entrando...' : 'Entrar com E-mail'}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                disabled={loading}
+                className="w-full flex justify-center py-2.5 px-4 border border-stone-300 dark:border-stone-700 rounded-lg text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 focus:outline-none transition-colors"
+              >
+                Acesso Rápido (Demonstração / Offline)
               </button>
             </div>
           </form>

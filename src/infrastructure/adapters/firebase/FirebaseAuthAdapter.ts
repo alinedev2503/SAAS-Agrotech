@@ -36,35 +36,90 @@ const mapUser = (firebaseUser: FirebaseUser | null): User | null => {
   };
 };
 
+// Mock user store when BaaS credentials are not yet configured
+const MOCK_STORAGE_KEY = 'agrotech_mock_auth_user';
+const mockListeners: Array<(user: User | null) => void> = [];
+
+const notifyMockListeners = (user: User | null) => {
+  mockListeners.forEach(listener => listener(user));
+};
+
 export class FirebaseAuthAdapter implements IAuthService {
   async getCurrentUser(): Promise<User | null> {
-    if (!auth) return null;
-    return mapUser(auth.currentUser);
+    if (auth) {
+      return mapUser(auth.currentUser);
+    }
+    const saved = localStorage.getItem(MOCK_STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return null;
+      }
+    }
+    return null;
   }
 
   async signIn(email: string, password?: string): Promise<User> {
-    if (!auth) throw new Error('Firebase não inicializado');
-    if (!password) throw new Error('Senha obrigatória para Firebase Auth');
+    if (auth) {
+      if (!password) throw new Error('Senha obrigatória para Firebase Auth');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return mapUser(userCredential.user)!;
+    }
     
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return mapUser(userCredential.user)!;
+    // In-memory demo fallback when Firebase is not configured yet
+    const demoUser: User = {
+      id: 'demo-user-1',
+      email: email || 'demo@agrotech.com',
+      name: email ? email.split('@')[0] : 'Produtor AgroTech',
+      avatarUrl: undefined,
+    };
+    localStorage.setItem(MOCK_STORAGE_KEY, JSON.stringify(demoUser));
+    notifyMockListeners(demoUser);
+    return demoUser;
   }
 
   async signOut(): Promise<void> {
-    if (!auth) return;
-    await firebaseSignOut(auth);
+    if (auth) {
+      await firebaseSignOut(auth);
+    }
+    localStorage.removeItem(MOCK_STORAGE_KEY);
+    notifyMockListeners(null);
   }
 
   async resetPassword(email: string): Promise<void> {
-    if (!auth) throw new Error('Firebase não inicializado');
-    await sendPasswordResetEmail(auth, email);
+    if (auth) {
+      await sendPasswordResetEmail(auth, email);
+      return;
+    }
+    console.info(`[Demo Auth] Reset password requested for: ${email}`);
   }
 
   onAuthStateChanged(callback: (user: User | null) => void): () => void {
-    if (!auth) return () => {};
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      callback(mapUser(user));
-    });
-    return unsubscribe;
+    if (auth) {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        callback(mapUser(user));
+      });
+      return unsubscribe;
+    }
+
+    mockListeners.push(callback);
+    // Initial call
+    const saved = localStorage.getItem(MOCK_STORAGE_KEY);
+    if (saved) {
+      try {
+        callback(JSON.parse(saved));
+      } catch {
+        callback(null);
+      }
+    } else {
+      callback(null);
+    }
+
+    return () => {
+      const index = mockListeners.indexOf(callback);
+      if (index !== -1) mockListeners.splice(index, 1);
+    };
   }
 }
+

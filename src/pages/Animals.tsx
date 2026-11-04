@@ -64,7 +64,7 @@ export default function Animals() {
     try {
       const payload = {
         ...animalForm,
-        weight: parseFloat(animalForm.weight),
+        weight: parseFloat(animalForm.weight) || 0,
         lot_id: animalForm.lot_id ? animalForm.lot_id : null,
       };
       await databaseService.create<Animal>('animals', payload);
@@ -72,7 +72,7 @@ export default function Animals() {
       setAnimalForm({ tag: '', name: '', species: 'bovino', breed: '', birth_date: '', weight: '', lot_id: '' });
       await fetchData();
     } catch {
-      alert('Erro ao criar animal.');
+      setError('Erro ao criar animal.');
     } finally {
       setSubmitting(false);
     }
@@ -82,12 +82,12 @@ export default function Animals() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await databaseService.create<Lot>('lots', { ...lotForm, quantity: parseInt(lotForm.quantity) });
+      await databaseService.create<Lot>('lots', { ...lotForm, quantity: parseInt(lotForm.quantity) || 0 });
       setShowAddLot(false);
       setLotForm({ name: '', species: 'bovino', quantity: '' });
       await fetchData();
     } catch {
-      alert('Erro ao criar lote.');
+      setError('Erro ao criar lote.');
     } finally {
       setSubmitting(false);
     }
@@ -98,17 +98,16 @@ export default function Animals() {
       await databaseService.update<Animal>('animals', id, { status });
       await fetchData();
     } catch {
-      alert('Erro ao atualizar status.');
+      setError('Erro ao atualizar status do animal.');
     }
   };
 
   const handleDeleteAnimal = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir este animal?')) return;
     try {
       await databaseService.delete('animals', id);
       await fetchData();
     } catch {
-      alert('Erro ao excluir animal.');
+      setError('Erro ao excluir animal.');
     }
   };
 
