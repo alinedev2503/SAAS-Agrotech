@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Beef, Plus, X, Search, AlertCircle, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { databaseService } from '../infrastructure/config/baas';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Lot {
   id: string;
@@ -23,6 +24,7 @@ interface Animal {
 }
 
 export default function Animals() {
+  const { language, t } = useLanguage();
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [lots, setLots] = useState<Lot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,7 @@ export default function Animals() {
       setAnimals(fetchedAnimals || []);
       setLots(fetchedLots || []);
     } catch {
-      setError('Failed to load livestock database records.');
+      setError(language === 'es' ? 'Error al cargar registros del rodeo.' : language === 'pt' ? 'Erro ao carregar registros do rebanho.' : 'Failed to load livestock database records.');
     } finally {
       setLoading(false);
     }
@@ -114,15 +116,15 @@ export default function Animals() {
   const speciesList = ['cattle', 'swine', 'sheep', 'goats', 'equine'];
   
   const speciesLabels: Record<string, string> = {
-    cattle: 'Cattle',
-    swine: 'Swine',
-    sheep: 'Sheep',
-    goats: 'Goats',
-    equine: 'Equine',
-    bovino: 'Cattle',
-    suíno: 'Swine',
-    ovino: 'Sheep',
-    caprino: 'Goats',
+    cattle: language === 'es' ? 'Bovino' : language === 'pt' ? 'Bovino' : 'Cattle',
+    swine: language === 'es' ? 'Porcino' : language === 'pt' ? 'Suíno' : 'Swine',
+    sheep: language === 'es' ? 'Ovino' : language === 'pt' ? 'Ovino' : 'Sheep',
+    goats: language === 'es' ? 'Caprino' : language === 'pt' ? 'Caprino' : 'Goats',
+    equine: language === 'es' ? 'Equino' : language === 'pt' ? 'Equino' : 'Equine',
+    bovino: language === 'es' ? 'Bovino' : language === 'pt' ? 'Bovino' : 'Cattle',
+    suíno: language === 'es' ? 'Porcino' : language === 'pt' ? 'Suíno' : 'Swine',
+    ovino: language === 'es' ? 'Ovino' : language === 'pt' ? 'Ovino' : 'Sheep',
+    caprino: language === 'es' ? 'Caprino' : language === 'pt' ? 'Caprino' : 'Goats',
   };
 
   const speciesColors: Record<string, string> = {
@@ -142,7 +144,9 @@ export default function Animals() {
     ativo: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
     sold: 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400',
     quarentena: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300',
+    quarantined: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300',
     tratamento: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    treatment: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
     deceased: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
   };
 
@@ -168,23 +172,23 @@ export default function Animals() {
     <div className="space-y-6">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Livestock & Herd Operations</h2>
-          <p className="text-stone-500 dark:text-stone-400">Head counts, pasture lots, health monitoring, and performance tracking.</p>
+          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">{t.anim_title}</h2>
+          <p className="text-stone-500 dark:text-stone-400">{t.anim_subtitle}</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => setShowAddLot(true)}
-            className="bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 px-4 py-2 rounded-xl font-bold border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors flex items-center gap-2"
+            className="bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 px-4 py-2 rounded-xl font-bold border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors flex items-center gap-2 cursor-pointer"
           >
             <Beef size={20} />
-            <span className="hidden sm:inline">New Herd Pen</span>
+            <span className="hidden sm:inline">{t.anim_new_lot}</span>
           </button>
           <button
             onClick={() => setShowAddAnimal(true)}
-            className="bg-stone-900 dark:bg-white text-white dark:text-stone-900 px-4 py-2 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center gap-2"
+            className="bg-stone-900 dark:bg-white text-white dark:text-stone-900 px-4 py-2 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors flex items-center gap-2 cursor-pointer"
           >
             <Plus size={20} />
-            <span className="hidden sm:inline">Register Animal</span>
+            <span className="hidden sm:inline">{t.anim_new_animal}</span>
           </button>
         </div>
       </header>
@@ -193,15 +197,17 @@ export default function Animals() {
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-center gap-3">
           <AlertCircle className="text-red-500 shrink-0" size={20} />
           <p className="text-red-700 dark:text-red-300 text-sm font-medium">{error}</p>
-          <button onClick={fetchData} className="ml-auto text-red-600 dark:text-red-400 font-bold text-sm hover:underline">
-            Try again
+          <button onClick={fetchData} className="ml-auto text-red-600 dark:text-red-400 font-bold text-sm hover:underline cursor-pointer">
+            {language === 'es' ? 'Reintentar' : language === 'pt' ? 'Tentar novamente' : 'Try again'}
           </button>
         </div>
       )}
 
       {/* Herd Summary KPI */}
       <section>
-        <h3 className="font-bold text-xl text-stone-800 dark:text-white mb-4">Herd Census & Breakdown</h3>
+        <h3 className="font-bold text-xl text-stone-800 dark:text-white mb-4">
+          {language === 'es' ? 'Censo y Clasificación del Rodeo' : language === 'pt' ? 'Censo e Distribuição do Rebanho' : 'Herd Census & Breakdown'}
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {speciesList.map(species => {
             const count = getSpeciesCount(species);
@@ -215,7 +221,9 @@ export default function Animals() {
                   </span>
                 </div>
                 <p className="text-3xl font-bold text-stone-900 dark:text-white">{count}</p>
-                <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">{lotCount} pen{lotCount !== 1 ? 's' : ''}</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">
+                  {lotCount} {language === 'es' ? (lotCount === 1 ? 'corral' : 'corrales') : language === 'pt' ? (lotCount === 1 ? 'piquete' : 'piquetes') : (lotCount === 1 ? 'pen' : 'pens')}
+                </p>
               </div>
             );
           })}
@@ -225,7 +233,9 @@ export default function Animals() {
       {/* Active Pasture Lots */}
       {lots.length > 0 && (
         <section>
-          <h3 className="font-bold text-xl text-stone-800 dark:text-white mb-4">Pasture Lots & Pens</h3>
+          <h3 className="font-bold text-xl text-stone-800 dark:text-white mb-4">
+            {language === 'es' ? 'Lotes y Corrales de Pastoreo' : language === 'pt' ? 'Piquetes e Currais de Pasto' : 'Pasture Lots & Pens'}
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {lots.map(lot => {
               const currentOccupants = animals.filter(a => a.lot_id === lot.id).length;
@@ -243,9 +253,11 @@ export default function Animals() {
                     </div>
                   </div>
                   <div className="flex justify-between items-center text-xs mb-1.5">
-                    <span className="text-stone-500 dark:text-stone-400">Capacity & Occupancy</span>
+                    <span className="text-stone-500 dark:text-stone-400">
+                      {language === 'es' ? 'Capacidad y Ocupación' : language === 'pt' ? 'Capacidade & Lotação' : 'Capacity & Occupancy'}
+                    </span>
                     <span className="font-bold text-stone-900 dark:text-white">
-                      {currentOccupants} / {lot.quantity} head
+                      {currentOccupants} / {lot.quantity} {t.dash_head_count}
                     </span>
                   </div>
                   <div className="w-full bg-stone-100 dark:bg-stone-800 rounded-full h-2 overflow-hidden">
@@ -266,13 +278,13 @@ export default function Animals() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <h3 className="font-bold text-xl text-stone-800 dark:text-white flex items-center gap-2">
             <Beef className="text-orange-500" />
-            Registered Livestock ({filteredAnimals.length})
+            {language === 'es' ? `Rodeo Registrado (${filteredAnimals.length})` : language === 'pt' ? `Animais Registrados (${filteredAnimals.length})` : `Registered Livestock (${filteredAnimals.length})`}
           </h3>
-          <div className="relative w-full sm:w-64">
+          <div className="relative w-full sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
             <input
               type="text"
-              placeholder="Search by ear tag, name, or breed..."
+              placeholder={t.anim_search_placeholder}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
@@ -285,7 +297,9 @@ export default function Animals() {
             <div className="p-12 text-center">
               <Beef size={48} className="mx-auto text-stone-300 dark:text-stone-600 mb-3" />
               <p className="text-stone-500 dark:text-stone-400 font-medium">
-                {searchQuery ? 'No matching livestock found.' : 'No livestock registered yet. Click "Register Animal" to start.'}
+                {searchQuery 
+                  ? (language === 'es' ? 'No se encontraron animales con ese criterio.' : language === 'pt' ? 'Nenhum animal encontrado.' : 'No matching livestock found.') 
+                  : (language === 'es' ? 'No hay animales registrados aún. Haga clic en "Registrar Animal".' : language === 'pt' ? 'Nenhum animal cadastrado ainda.' : 'No livestock registered yet. Click "Register Animal" to start.')}
               </p>
             </div>
           ) : (
@@ -293,13 +307,13 @@ export default function Animals() {
               <table className="w-full text-sm text-left">
                 <thead className="text-xs text-stone-500 dark:text-stone-400 uppercase bg-stone-50 dark:bg-stone-800/50">
                   <tr>
-                    <th className="px-4 py-3 rounded-l-lg">Ear Tag</th>
-                    <th className="px-4 py-3">Animal ID / Name</th>
-                    <th className="px-4 py-3">Species</th>
-                    <th className="px-4 py-3">Breed</th>
-                    <th className="px-4 py-3 text-right">Weight (lbs)</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 rounded-r-lg text-right">Actions</th>
+                    <th className="px-4 py-3 rounded-l-lg">{t.anim_th_eartag}</th>
+                    <th className="px-4 py-3">{language === 'es' ? 'ID / Nombre' : language === 'pt' ? 'Nome / Identificação' : 'Animal ID / Name'}</th>
+                    <th className="px-4 py-3">{t.anim_species}</th>
+                    <th className="px-4 py-3">{t.anim_breed}</th>
+                    <th className="px-4 py-3 text-right">{t.anim_th_weight}</th>
+                    <th className="px-4 py-3">{t.anim_th_status}</th>
+                    <th className="px-4 py-3 rounded-r-lg text-right">{t.anim_th_actions}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
@@ -318,7 +332,7 @@ export default function Animals() {
                       </td>
                       <td className="px-4 py-3.5 text-stone-600 dark:text-stone-400">{animal.breed || '—'}</td>
                       <td className="px-4 py-3.5 text-right font-bold text-stone-900 dark:text-white">
-                        {animal.weight ? `${animal.weight.toFixed(1)}` : '—'}
+                        {animal.weight ? `${animal.weight.toFixed(1)} kg` : '—'}
                       </td>
                       <td className="px-4 py-3.5">
                         <select
@@ -326,18 +340,18 @@ export default function Animals() {
                           onChange={e => handleStatusChange(animal.id, e.target.value)}
                           className={`px-2.5 py-1 rounded-lg text-xs font-bold border-0 cursor-pointer outline-none ${statusColors[animal.status] || ''}`}
                         >
-                          <option value="active">Active</option>
-                          <option value="quarantined">Quarantined</option>
-                          <option value="treatment">In Treatment</option>
-                          <option value="sold">Sold</option>
-                          <option value="deceased">Deceased</option>
+                          <option value="active">{language === 'es' ? 'Saludable / Activo' : language === 'pt' ? 'Ativo' : 'Active'}</option>
+                          <option value="quarantined">{language === 'es' ? 'En Cuarentena' : language === 'pt' ? 'Quarentena' : 'Quarantined'}</option>
+                          <option value="treatment">{language === 'es' ? 'En Tratamiento' : language === 'pt' ? 'Em Tratamento' : 'In Treatment'}</option>
+                          <option value="sold">{language === 'es' ? 'Vendido' : language === 'pt' ? 'Vendido' : 'Sold'}</option>
+                          <option value="deceased">{language === 'es' ? 'Baja / Muerto' : language === 'pt' ? 'Baixa' : 'Deceased'}</option>
                         </select>
                       </td>
                       <td className="px-4 py-3.5 text-right">
                         <button
                           onClick={() => handleDeleteAnimal(animal.id)}
-                          className="text-stone-400 hover:text-red-500 transition-colors p-1"
-                          title="Delete Record"
+                          className="text-stone-400 hover:text-red-500 transition-colors p-1 cursor-pointer"
+                          title={language === 'es' ? 'Eliminar Registro' : language === 'pt' ? 'Excluir' : 'Delete Record'}
                         >
                           <Trash2 size={16} />
                         </button>
@@ -373,16 +387,16 @@ export default function Animals() {
                   <div className="bg-orange-100 dark:bg-orange-900/30 p-2.5 rounded-xl text-orange-600 dark:text-orange-400">
                     <Beef size={22} />
                   </div>
-                  <h3 className="font-bold text-lg text-stone-900 dark:text-white">Register Animal</h3>
+                  <h3 className="font-bold text-lg text-stone-900 dark:text-white">{t.anim_register_title}</h3>
                 </div>
-                <button onClick={() => setShowAddAnimal(false)} className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
+                <button onClick={() => setShowAddAnimal(false)} className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 cursor-pointer">
                   <X size={20} />
                 </button>
               </div>
               <form onSubmit={handleCreateAnimal} className="p-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Ear Tag ID *</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_ear_tag} *</label>
                     <input
                       required
                       value={animalForm.tag}
@@ -392,18 +406,20 @@ export default function Animals() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Name / Identifier</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">
+                      {language === 'es' ? 'Nombre / Apodo' : language === 'pt' ? 'Nome / Identificação' : 'Name / Identifier'}
+                    </label>
                     <input
                       value={animalForm.name}
                       onChange={e => setAnimalForm(f => ({ ...f, name: e.target.value }))}
                       className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
-                      placeholder="Star Belle"
+                      placeholder={language === 'es' ? 'Campeona' : 'Star Belle'}
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Species *</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_species} *</label>
                     <select
                       required
                       value={animalForm.species}
@@ -416,29 +432,29 @@ export default function Animals() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Breed</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_breed}</label>
                     <input
                       value={animalForm.breed}
                       onChange={e => setAnimalForm(f => ({ ...f, breed: e.target.value }))}
                       className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
-                      placeholder="Black Angus"
+                      placeholder="Angus / Hereford"
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Weight (lbs)</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_weight}</label>
                     <input
                       type="number"
                       step="0.1"
                       value={animalForm.weight}
                       onChange={e => setAnimalForm(f => ({ ...f, weight: e.target.value }))}
                       className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
-                      placeholder="1150"
+                      placeholder="450"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Birth Date</label>
+                    <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_birth_date}</label>
                     <input
                       type="date"
                       value={animalForm.birth_date}
@@ -448,25 +464,36 @@ export default function Animals() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Assigned Lot / Pen</label>
+                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">
+                    {language === 'es' ? 'Lote / Corral Asignado' : language === 'pt' ? 'Lote / Piquete Atribuído' : 'Assigned Lot / Pen'}
+                  </label>
                   <select
                     value={animalForm.lot_id}
                     onChange={e => setAnimalForm(f => ({ ...f, lot_id: e.target.value }))}
                     className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
                   >
-                    <option value="">No lot assigned</option>
+                    <option value="">{language === 'es' ? 'Sin lote asignado' : language === 'pt' ? 'Sem lote atribuído' : 'No lot assigned'}</option>
                     {lots.map(lot => (
                       <option key={lot.id} value={lot.id}>{lot.name} ({speciesLabels[lot.species] || lot.species})</option>
                     ))}
                   </select>
                 </div>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 py-3 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors disabled:opacity-50 text-sm shadow-md"
-                >
-                  {submitting ? 'Saving Record...' : 'Save Animal Record'}
-                </button>
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddAnimal(false)}
+                    className="w-1/3 py-3 border border-stone-200 dark:border-stone-700 rounded-xl font-bold text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer"
+                  >
+                    {t.anim_cancel}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-2/3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 py-3 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors disabled:opacity-50 text-sm shadow-md cursor-pointer"
+                  >
+                    {submitting ? (language === 'es' ? 'Guardando...' : language === 'pt' ? 'Salvando...' : 'Saving...') : t.anim_save}
+                  </button>
+                </div>
               </form>
             </motion.div>
           </motion.div>
@@ -495,25 +522,29 @@ export default function Animals() {
                   <div className="bg-orange-100 dark:bg-orange-900/30 p-2.5 rounded-xl text-orange-600 dark:text-orange-400">
                     <Beef size={22} />
                   </div>
-                  <h3 className="font-bold text-lg text-stone-900 dark:text-white">Create Herd Pen / Lot</h3>
+                  <h3 className="font-bold text-lg text-stone-900 dark:text-white">
+                    {language === 'es' ? 'Crear Lote o Corral' : language === 'pt' ? 'Criar Piquete / Lote' : 'Create Herd Pen / Lot'}
+                  </h3>
                 </div>
-                <button onClick={() => setShowAddLot(false)} className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300">
+                <button onClick={() => setShowAddLot(false)} className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 cursor-pointer">
                   <X size={20} />
                 </button>
               </div>
               <form onSubmit={handleCreateLot} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Lot / Pen Name *</label>
+                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">
+                    {language === 'es' ? 'Nombre del Lote / Corral *' : language === 'pt' ? 'Nome do Lote / Piquete *' : 'Lot / Pen Name *'}
+                  </label>
                   <input
                     required
                     value={lotForm.name}
                     onChange={e => setLotForm(f => ({ ...f, name: e.target.value }))}
                     className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
-                    placeholder="Feedlot Pen A"
+                    placeholder={language === 'es' ? 'Corral Engorde A' : 'Feedlot Pen A'}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Species *</label>
+                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">{t.anim_species} *</label>
                   <select
                     required
                     value={lotForm.species}
@@ -526,7 +557,9 @@ export default function Animals() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">Head Capacity *</label>
+                  <label className="block text-xs font-bold text-stone-500 dark:text-stone-400 uppercase mb-1">
+                    {language === 'es' ? 'Capacidad de Cabezas *' : language === 'pt' ? 'Capacidade (Cabeças) *' : 'Head Capacity *'}
+                  </label>
                   <input
                     required
                     type="number"
@@ -537,13 +570,22 @@ export default function Animals() {
                     placeholder="60"
                   />
                 </div>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 py-3 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors disabled:opacity-50 text-sm shadow-md"
-                >
-                  {submitting ? 'Creating Lot...' : 'Create Herd Lot'}
-                </button>
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddLot(false)}
+                    className="w-1/3 py-3 border border-stone-200 dark:border-stone-700 rounded-xl font-bold text-sm text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors cursor-pointer"
+                  >
+                    {t.anim_cancel}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-2/3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 py-3 rounded-xl font-bold hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors disabled:opacity-50 text-sm shadow-md cursor-pointer"
+                  >
+                    {submitting ? (language === 'es' ? 'Creando...' : language === 'pt' ? 'Criando...' : 'Creating...') : (language === 'es' ? 'Crear Lote' : language === 'pt' ? 'Criar Lote' : 'Create Herd Lot')}
+                  </button>
+                </div>
               </form>
             </motion.div>
           </motion.div>

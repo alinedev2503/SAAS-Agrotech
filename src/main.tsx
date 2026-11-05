@@ -6,6 +6,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { OfflineProvider } from './contexts/OfflineContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { TenantProvider } from './contexts/TenantContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
@@ -13,11 +14,13 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <TenantProvider>
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <OfflineProvider>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </OfflineProvider>
+          <LanguageProvider>
+            <OfflineProvider>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </OfflineProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </TenantProvider>
     </BrowserRouter>

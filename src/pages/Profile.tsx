@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { User, MapPin, Upload, Palette, Save, Building, Phone, Mail, ShieldCheck, Moon, Sun, Globe, Languages, Server, Link, Type, CheckCircle2, AlertCircle, CreditCard } from 'lucide-react';
+import { useLanguage, Language } from '../contexts/LanguageContext';
 
 export default function Profile() {
+  const { language, setLanguage, t } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: 'John Miller',
     role: 'General Operations Manager',
@@ -41,7 +44,6 @@ export default function Profile() {
   });
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [language, setLanguage] = useState<'en' | 'es' | 'pt'>('en');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -132,8 +134,8 @@ export default function Profile() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <header>
-        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Organization & White-Label Settings</h2>
-        <p className="text-stone-500 dark:text-stone-400">Manage administrator credentials, farm profile, custom branding, and billing gateways.</p>
+        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">{t.prof_title}</h2>
+        <p className="text-stone-500 dark:text-stone-400">{t.prof_subtitle}</p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -146,12 +148,12 @@ export default function Profile() {
               <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <User size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Farm Administrator Details</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.prof_admin_details}</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Full Legal Name</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_fullname}</label>
                 <div className="relative">
                   <User size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -163,7 +165,7 @@ export default function Profile() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Operational Role</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_role}</label>
                 <div className="relative">
                   <ShieldCheck size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -175,7 +177,7 @@ export default function Profile() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Corporate Email Address</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_email}</label>
                 <div className="relative">
                   <Mail size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -187,7 +189,7 @@ export default function Profile() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Phone / Mobile</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_phone}</label>
                 <div className="relative">
                   <Phone size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -207,12 +209,12 @@ export default function Profile() {
               <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <Building size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Ranch & Acreage Overview</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.prof_property_data}</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Farm / Agribusiness Name</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_farm_name}</label>
                 <input 
                   type="text" 
                   value={formData.farmName}
@@ -221,7 +223,7 @@ export default function Profile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Total Acreage</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_total_area}</label>
                 <input 
                   type="text" 
                   value={formData.farmSize}
@@ -230,7 +232,7 @@ export default function Profile() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Headquarters Location</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_location}</label>
                 <div className="relative">
                   <MapPin size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -251,15 +253,15 @@ export default function Profile() {
                 <Server size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl text-stone-800 dark:text-white">White-Label Infrastructure</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">Custom enterprise domain, branding endpoints, and transactional SMTP.</p>
+                <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.prof_white_label}</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">{t.prof_white_label_sub}</p>
               </div>
             </div>
 
             <div className="space-y-6">
               {/* Custom Domain */}
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Custom Domain (CNAME Alias)</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_custom_domain}</label>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     <Link size={18} className="absolute left-3 top-3 text-stone-400" />
@@ -277,19 +279,19 @@ export default function Profile() {
                   }`}>
                     {formData.domainStatus === 'verified' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
                     <span className="text-sm font-bold hidden sm:inline">
-                      {formData.domainStatus === 'verified' ? 'Verified' : 'Pending DNS'}
+                      {formData.domainStatus === 'verified' ? t.prof_domain_verified : t.prof_domain_pending}
                     </span>
                   </div>
                 </div>
                 <p className="text-xs text-stone-500 dark:text-stone-400 mt-2">
-                  Point your DNS CNAME record to <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-stone-700 dark:text-stone-300 font-mono">cname.agrotechcloud.io</code>
+                  {t.prof_domain_dns_hint} <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-stone-700 dark:text-stone-300 font-mono">cname.agrotechcloud.io</code>
                 </p>
               </div>
 
               {/* App Identity */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Application Title</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_app_title}</label>
                   <input 
                     type="text" 
                     value={formData.appTitle}
@@ -298,7 +300,7 @@ export default function Profile() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Support Email Desk</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_support_email}</label>
                   <input 
                     type="email" 
                     value={formData.supportEmail}
@@ -311,7 +313,7 @@ export default function Profile() {
               {/* Legal URLs */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Terms of Service URL</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_terms_url}</label>
                   <input 
                     type="url" 
                     value={formData.termsUrl}
@@ -320,7 +322,7 @@ export default function Profile() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Privacy Policy URL</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_privacy_url}</label>
                   <input 
                     type="url" 
                     value={formData.privacyUrl}
@@ -332,10 +334,10 @@ export default function Profile() {
 
               {/* SMTP Settings */}
               <div className="pt-4 border-t border-stone-100 dark:border-stone-800">
-                <h4 className="font-bold text-stone-800 dark:text-white mb-3">SMTP Dispatch Server</h4>
+                <h4 className="font-bold text-stone-800 dark:text-white mb-3">{t.prof_smtp_config}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                   <div className="md:col-span-8">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Host Server</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_smtp_host}</label>
                     <input 
                       type="text" 
                       value={formData.smtpHost}
@@ -345,7 +347,7 @@ export default function Profile() {
                     />
                   </div>
                   <div className="md:col-span-4">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Port</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_port}</label>
                     <input 
                       type="text" 
                       value={formData.smtpPort}
@@ -355,7 +357,7 @@ export default function Profile() {
                     />
                   </div>
                   <div className="md:col-span-12">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">SMTP Username</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_smtp_user}</label>
                     <input 
                       type="text" 
                       value={formData.smtpUser}
@@ -364,7 +366,7 @@ export default function Profile() {
                     />
                   </div>
                   <div className="md:col-span-6">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Sender Display Name</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_sender_name}</label>
                     <input 
                       type="text" 
                       value={formData.smtpSenderName}
@@ -373,7 +375,7 @@ export default function Profile() {
                     />
                   </div>
                   <div className="md:col-span-6">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Reply-To Address</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_reply_to}</label>
                     <input 
                       type="email" 
                       value={formData.smtpReplyTo}
@@ -385,7 +387,7 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Footer Copyright Notice</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_footer_text}</label>
                 <div className="relative">
                   <Type size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
@@ -406,8 +408,8 @@ export default function Profile() {
                 <CreditCard size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl text-stone-800 dark:text-white">Commercial Payment Gateways</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">Configure subscriber billing, harvest sales, and client invoicing.</p>
+                <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.prof_payment_gateways}</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">{t.prof_payment_sub}</p>
               </div>
             </div>
 
@@ -434,7 +436,7 @@ export default function Profile() {
                 {formData.stripeEnabled && (
                   <div className="space-y-4 animate-in fade-in slide-in-from-top-2 pt-2 border-t border-stone-100 dark:border-stone-800">
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Stripe Publishable Key</label>
+                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_stripe_public}</label>
                       <input 
                         type="text" 
                         value={formData.stripePublicKey}
@@ -444,7 +446,7 @@ export default function Profile() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Stripe Secret Key</label>
+                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">{t.prof_stripe_secret}</label>
                       <input 
                         type="password" 
                         value={formData.stripeSecretKey}
@@ -469,7 +471,7 @@ export default function Profile() {
               <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <Globe size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Display & Theme</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.prof_preferences}</h3>
             </div>
 
             <div className="space-y-6">
@@ -480,8 +482,8 @@ export default function Profile() {
                     {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
                   </div>
                   <div>
-                    <p className="font-bold text-stone-900 dark:text-white">Dark Theme</p>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">{theme === 'dark' ? 'Active' : 'Disabled'}</p>
+                    <p className="font-bold text-stone-900 dark:text-white">{t.prof_dark_mode}</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400">{theme === 'dark' ? t.prof_dark_active : t.prof_dark_disabled}</p>
                   </div>
                 </div>
                 <button 
@@ -495,25 +497,27 @@ export default function Profile() {
               {/* Language Selector */}
               <div>
                 <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 flex items-center gap-2">
-                  <Languages size={16} /> Regional Language
+                  <Languages size={16} /> {t.prof_regional_lang}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { code: 'en', label: 'English', flag: '🇺🇸' },
-                    { code: 'es', label: 'Español', flag: '🇲🇽' },
-                    { code: 'pt', label: 'Português', flag: '🇧🇷' }
+                    { code: 'es' as Language, label: 'Español', flag: '🇪🇸' },
+                    { code: 'en' as Language, label: 'English', flag: '🇺🇸' },
+                    { code: 'pt' as Language, label: 'Português', flag: '🇧🇷' }
                   ].map((lang) => (
                     <button
                       key={lang.code}
-                      onClick={() => setLanguage(lang.code as any)}
-                      className={`p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${
+                      type="button"
+                      onClick={() => setLanguage(lang.code)}
+                      className={`p-2.5 rounded-xl border-2 transition-all flex flex-col items-center gap-1.5 cursor-pointer ${
                         language === lang.code 
-                          ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400' 
-                          : 'border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 text-stone-600 dark:text-stone-400'
+                          ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 font-bold shadow-xs' 
+                          : 'border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800'
                       }`}
                     >
-                      <span className="text-xl">{lang.flag}</span>
-                      <span className="text-xs font-bold">{lang.code.toUpperCase()}</span>
+                      <span className="text-2xl leading-none">{lang.flag}</span>
+                      <span className="text-xs font-bold uppercase">{lang.code}</span>
+                      <span className="text-[11px] opacity-80">{lang.label}</span>
                     </button>
                   ))}
                 </div>
@@ -527,8 +531,8 @@ export default function Profile() {
                 <Palette size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl">Visual Branding</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">White-Label Customization</p>
+                <h3 className="font-bold text-xl">{t.prof_branding}</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">{t.prof_branding_sub}</p>
               </div>
             </div>
 
@@ -536,7 +540,7 @@ export default function Profile() {
               {/* Logo Uploads */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Light Mode)</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{t.prof_logo_light}</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center">
                     <input 
                       type="file" 
@@ -549,13 +553,13 @@ export default function Profile() {
                     ) : (
                       <div className="flex flex-col items-center text-stone-500 dark:text-stone-400 group-hover:text-orange-500 dark:group-hover:text-orange-400">
                         <Upload size={24} className="mb-2" />
-                        <span className="text-xs">Upload Light Logo</span>
+                        <span className="text-xs">{t.prof_logo_light}</span>
                       </div>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Dark Mode)</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{t.prof_logo_dark}</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center bg-stone-900">
                     <input 
                       type="file" 
@@ -568,7 +572,7 @@ export default function Profile() {
                     ) : (
                       <div className="flex flex-col items-center text-stone-500 dark:text-stone-400 group-hover:text-orange-500 dark:group-hover:text-orange-400">
                         <Upload size={24} className="mb-2" />
-                        <span className="text-xs">Upload Dark Logo</span>
+                        <span className="text-xs">{t.prof_logo_dark}</span>
                       </div>
                     )}
                   </div>
@@ -578,7 +582,7 @@ export default function Profile() {
               {/* Favicon & Login Background */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Favicon Icon</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{t.prof_favicon}</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center">
                     <input 
                       type="file" 
@@ -589,12 +593,12 @@ export default function Profile() {
                     {formData.favicon ? (
                       <img src={formData.favicon} alt="Favicon" className="h-8 w-8 object-contain" />
                     ) : (
-                      <span className="text-xs text-stone-500">Upload .ICO or PNG</span>
+                      <span className="text-xs text-stone-500">{t.prof_favicon} (.ico, .png)</span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Login Hero Wall</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{t.prof_login_hero}</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center overflow-hidden">
                     <input 
                       type="file" 
@@ -605,7 +609,7 @@ export default function Profile() {
                     {formData.loginBackground ? (
                       <img src={formData.loginBackground} alt="Login Bg" className="w-full h-full object-cover opacity-50" />
                     ) : (
-                      <span className="text-xs text-stone-500">Upload Image</span>
+                      <span className="text-xs text-stone-500">{t.prof_login_hero}</span>
                     )}
                   </div>
                 </div>
@@ -613,10 +617,10 @@ export default function Profile() {
 
               {/* Color Picker */}
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Theme Palette</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">{t.prof_colors}</label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-stone-500 mb-1">Primary Color</p>
+                    <p className="text-xs text-stone-500 mb-1">{t.prof_primary_color}</p>
                     <div className="flex items-center gap-3">
                       <input 
                         type="color" 
@@ -628,7 +632,7 @@ export default function Profile() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs text-stone-500 mb-1">Secondary Color</p>
+                    <p className="text-xs text-stone-500 mb-1">{t.prof_secondary_color}</p>
                     <div className="flex items-center gap-3">
                       <input 
                         type="color" 
@@ -644,19 +648,19 @@ export default function Profile() {
 
               {/* Preview Button */}
               <div className="pt-4 border-t border-stone-200 dark:border-stone-700">
-                <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">Live UI Preview:</p>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">{t.prof_preview}:</p>
                 <div className="flex gap-2">
                   <button 
                     className="flex-1 py-3 rounded-xl font-bold text-white shadow-lg transition-all"
                     style={{ backgroundColor: formData.primaryColor }}
                   >
-                    Primary CTA
+                    {t.prof_cta_primary}
                   </button>
                   <button 
                     className="flex-1 py-3 rounded-xl font-bold text-white shadow-lg transition-all"
                     style={{ backgroundColor: formData.secondaryColor }}
                   >
-                    Secondary Action
+                    {t.prof_cta_secondary}
                   </button>
                 </div>
               </div>
@@ -671,20 +675,20 @@ export default function Profile() {
               className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-green-900/20 cursor-pointer"
             >
               {isSaving ? (
-                <span className="animate-pulse">Saving Settings...</span>
+                <span className="animate-pulse">{t.prof_saving}</span>
               ) : (
                 <>
-                  <Save size={24} /> Save Changes
+                  <Save size={24} /> {t.prof_save_btn}
                 </>
               )}
             </button>
             {saveSuccess && (
               <div className="mt-3 p-3 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300 text-sm text-center font-medium animate-fadeIn">
-                Configuration successfully saved!
+                {t.prof_save_success}
               </div>
             )}
             <p className="text-xs text-center text-stone-400 dark:text-stone-500 mt-3">
-              Last cloud sync: Today at 08:45 AM
+              {t.prof_last_sync}
             </p>
           </div>
         </div>

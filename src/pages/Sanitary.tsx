@@ -3,8 +3,10 @@ import { Mic, QrCode, Syringe, Calendar, AlertCircle, CheckCircle2, Bell, BellRi
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useVoiceInput } from '../hooks/useVoiceInput';
 import MiniCalendar from '../components/MiniCalendar';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Sanitary() {
+  const { language, t } = useLanguage();
   const { isListening, processing, result: voiceResult, startListening } = useVoiceInput();
   
   // Reminder State
@@ -12,46 +14,46 @@ export default function Sanitary() {
   const [reminders, setReminders] = useState<Record<number, string>>({}); // itemId -> reminder setting
   const [selectedReminderOption, setSelectedReminderOption] = useState<string>('1 day before');
 
-  // Mock Data for Charts
+  // Data for Charts
   const vaccinationData = [
-    { name: 'Vaccinated', value: 850, color: '#22c55e' }, // green-500
-    { name: 'Pending', value: 150, color: '#ef4444' }, // red-500
+    { name: t.san_vaccinated, value: 850, color: '#22c55e' }, // green-500
+    { name: t.san_pending, value: 150, color: '#ef4444' }, // red-500
   ];
 
   const diseaseData = [
-    { name: 'Mastitis', cases: 12 },
-    { name: 'Pneumonia', cases: 8 },
-    { name: 'Foot Rot', cases: 5 },
-    { name: 'Ticks', cases: 25 },
+    { name: language === 'es' ? 'Mastitis' : language === 'pt' ? 'Mastite' : 'Mastitis', cases: 12 },
+    { name: language === 'es' ? 'Neumonía' : language === 'pt' ? 'Pneumonia' : 'Pneumonia', cases: 8 },
+    { name: language === 'es' ? 'Pietín' : language === 'pt' ? 'Pododermatite' : 'Foot Rot', cases: 5 },
+    { name: language === 'es' ? 'Garrapatas' : language === 'pt' ? 'Carrapatos' : 'Ticks', cases: 25 },
   ];
 
-  // Mock Data for Vaccinations (aligned with current date context: March 2026)
+  // Data for Vaccinations
   const today = new Date();
   const currentYear = today.getFullYear();
   
   const upcomingVaccinations = [
     { 
       id: 1, 
-      type: 'Brucellosis (Strain 19)', 
-      target: 'Heifers 3-8 mo', 
-      date: new Date(today), // Today
-      displayDate: 'Today',
+      type: language === 'es' ? 'Brucelosis (Cepa 19)' : language === 'pt' ? 'Brucelose (B19)' : 'Brucellosis (Strain 19)', 
+      target: language === 'es' ? 'Terneras 3-8 meses' : language === 'pt' ? 'Bezerras 3-8 meses' : 'Heifers 3-8 mo', 
+      date: new Date(today),
+      displayDate: language === 'es' ? 'Hoy' : language === 'pt' ? 'Hoje' : 'Today',
       status: 'urgent' as const 
     },
     { 
       id: 2, 
-      type: 'Foot & Mouth (FMD)', 
-      target: 'Entire Herd', 
-      date: new Date(currentYear, 2, 15), // March 15
-      displayDate: 'Mar 15',
+      type: language === 'es' ? 'Fiebre Aftosa' : language === 'pt' ? 'Febre Aftosa' : 'Foot & Mouth (FMD)', 
+      target: language === 'es' ? 'Todo el rodeo' : language === 'pt' ? 'Todo o rebanho' : 'Entire Herd', 
+      date: new Date(currentYear, 2, 15),
+      displayDate: language === 'es' ? '15 Mar' : language === 'pt' ? '15 Mar' : 'Mar 15',
       status: 'pending' as const 
     },
     { 
       id: 3, 
-      type: 'Clostridial 7-Way', 
-      target: 'Calves < 6 mo', 
-      date: new Date(currentYear, 2, 20), // March 20
-      displayDate: 'Mar 20',
+      type: language === 'es' ? 'Clostridiosis 7 Vías' : language === 'pt' ? 'Clostridiose Polivalente' : 'Clostridial 7-Way', 
+      target: language === 'es' ? 'Terneros < 6 meses' : language === 'pt' ? 'Bezerros < 6 meses' : 'Calves < 6 mo', 
+      date: new Date(currentYear, 2, 20),
+      displayDate: language === 'es' ? '20 Mar' : language === 'pt' ? '20 Mar' : 'Mar 20',
       status: 'pending' as const 
     },
   ];
@@ -80,8 +82,8 @@ export default function Sanitary() {
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Health & Sanitary Management</h2>
-          <p className="text-stone-500 dark:text-stone-400">Vaccine tracking, drug withdrawal periods, and veterinary protocols.</p>
+          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">{t.san_title}</h2>
+          <p className="text-stone-500 dark:text-stone-400">{t.san_subtitle}</p>
         </div>
         <button 
           onClick={() => startListening('Health & Sanitary')}
@@ -92,7 +94,7 @@ export default function Sanitary() {
           }`}
         >
           <Mic size={28} />
-          {isListening ? 'Listening...' : 'Voice Command'}
+          {isListening ? (language === 'es' ? 'Escuchando...' : language === 'pt' ? 'Ouvindo...' : 'Listening...') : t.san_voice_btn}
         </button>
       </header>
 
@@ -100,7 +102,9 @@ export default function Sanitary() {
       {processing && (
         <div className="bg-blue-50 dark:bg-blue-950/40 p-4 rounded-xl border border-blue-200 dark:border-blue-800 flex items-center gap-3 animate-pulse">
           <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-blue-800 dark:text-blue-300 font-medium">Processing voice command with AI...</p>
+          <p className="text-blue-800 dark:text-blue-300 font-medium">
+            {language === 'es' ? 'Procesando comando de voz veterinario con IA...' : language === 'pt' ? 'Processando comando sanitário com IA...' : 'Processing voice command with AI...'}
+          </p>
         </div>
       )}
 
@@ -109,7 +113,9 @@ export default function Sanitary() {
         <div className="bg-green-50 dark:bg-green-950/40 p-4 rounded-xl border border-green-200 dark:border-green-800">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle2 className="text-green-600 dark:text-green-400" />
-            <h3 className="font-bold text-green-900 dark:text-green-300">Record Processed Successfully</h3>
+            <h3 className="font-bold text-green-900 dark:text-green-300">
+              {language === 'es' ? 'Registro Sanitario Guardado con Éxito' : language === 'pt' ? 'Registro Sanitário Processado com Sucesso' : 'Record Processed Successfully'}
+            </h3>
           </div>
           <pre className="text-sm text-green-800 dark:text-green-300 overflow-x-auto bg-green-100/50 dark:bg-green-900/30 p-2 rounded">
             {voiceResult}
@@ -121,19 +127,19 @@ export default function Sanitary() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <button className="p-6 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 rounded-2xl flex flex-col items-center gap-3 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 transition-all cursor-pointer">
           <QrCode size={40} className="text-stone-600 dark:text-stone-400" />
-          <span className="font-bold text-stone-700 dark:text-stone-300">Scan Ear Tag</span>
+          <span className="font-bold text-stone-700 dark:text-stone-300">{t.san_scan_eartag}</span>
         </button>
         <button className="p-6 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 rounded-2xl flex flex-col items-center gap-3 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 transition-all cursor-pointer">
           <Syringe size={40} className="text-stone-600 dark:text-stone-400" />
-          <span className="font-bold text-stone-700 dark:text-stone-300">New Vaccine</span>
+          <span className="font-bold text-stone-700 dark:text-stone-300">{t.san_new_vaccine}</span>
         </button>
         <button className="p-6 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 rounded-2xl flex flex-col items-center gap-3 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 transition-all cursor-pointer">
           <Calendar size={40} className="text-stone-600 dark:text-stone-400" />
-          <span className="font-bold text-stone-700 dark:text-stone-300">Schedule</span>
+          <span className="font-bold text-stone-700 dark:text-stone-300">{t.san_schedule}</span>
         </button>
         <button className="p-6 bg-white dark:bg-stone-900 border-2 border-stone-200 dark:border-stone-800 rounded-2xl flex flex-col items-center gap-3 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 transition-all cursor-pointer">
           <AlertCircle size={40} className="text-stone-600 dark:text-stone-400" />
-          <span className="font-bold text-stone-700 dark:text-stone-300">Withholding</span>
+          <span className="font-bold text-stone-700 dark:text-stone-300">{t.san_withholding}</span>
         </button>
       </div>
 
@@ -141,7 +147,7 @@ export default function Sanitary() {
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Vaccination Rate */}
         <div className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800">
-          <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-4">Herd Vaccination Rate</h3>
+          <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-4">{t.san_rate_title}</h3>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -174,7 +180,7 @@ export default function Sanitary() {
 
         {/* Disease Incidence */}
         <div className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800">
-          <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-4">Disease Incidence (This Month)</h3>
+          <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-4">{t.san_disease_title}</h3>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={diseaseData}>
@@ -190,24 +196,28 @@ export default function Sanitary() {
         {/* Mortality Rate */}
         <div className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col justify-between">
           <div>
-            <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-2">Herd Mortality Rate</h3>
-            <p className="text-stone-500 dark:text-stone-400 text-sm">Cumulative year-to-date tracking.</p>
+            <h3 className="font-bold text-lg text-stone-800 dark:text-white mb-2">{t.san_mortality_title}</h3>
+            <p className="text-stone-500 dark:text-stone-400 text-sm">{t.san_mortality_sub}</p>
           </div>
           
           <div className="flex items-end gap-2 my-6">
             <span className="text-5xl font-bold text-stone-900 dark:text-white">1.2%</span>
             <span className="text-green-500 font-bold mb-2 flex items-center text-sm">
-              -0.3% <span className="text-stone-400 font-normal ml-1">vs previous year</span>
+              -0.3% <span className="text-stone-400 font-normal ml-1">{language === 'es' ? 'vs año anterior' : language === 'pt' ? 'vs ano anterior' : 'vs previous year'}</span>
             </span>
           </div>
 
           <div className="space-y-3">
             <div className="bg-stone-50 dark:bg-stone-800/60 p-3 rounded-xl flex justify-between items-center">
-              <span className="text-sm text-stone-600 dark:text-stone-400">Calves</span>
+              <span className="text-sm text-stone-600 dark:text-stone-400">
+                {language === 'es' ? 'Terneros / Cría' : language === 'pt' ? 'Bezerros' : 'Calves'}
+              </span>
               <span className="font-bold text-stone-900 dark:text-white">0.8%</span>
             </div>
             <div className="bg-stone-50 dark:bg-stone-800/60 p-3 rounded-xl flex justify-between items-center">
-              <span className="text-sm text-stone-600 dark:text-stone-400">Adult Cattle</span>
+              <span className="text-sm text-stone-600 dark:text-stone-400">
+                {language === 'es' ? 'Bovinos Adultos' : language === 'pt' ? 'Bovinos Adultos' : 'Adult Cattle'}
+              </span>
               <span className="font-bold text-stone-900 dark:text-white">0.4%</span>
             </div>
           </div>
@@ -219,18 +229,18 @@ export default function Sanitary() {
         <div className="p-6 border-b border-stone-100 dark:border-stone-800 flex justify-between items-center">
           <h3 className="font-bold text-xl text-stone-800 dark:text-white flex items-center gap-2">
             <AlertCircle className="text-orange-500" />
-            Withdrawal Period Tracking (Meat & Milk Withholding)
+            {t.san_withdrawal_title}
           </h3>
           <span className="text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 px-2 py-1 rounded">
-            Updated: Today
+            {t.san_updated_today}
           </span>
         </div>
         <div className="divide-y divide-stone-100 dark:divide-stone-800">
           {[
-            { id: 101, animal: 'Steer #552', medication: 'Ivermectin Pour-On', date: '2026-02-20', withdrawalDays: 28, type: 'Beef' },
-            { id: 102, animal: 'Cow #103', medication: 'Cephapirin (Mastitis)', date: '2026-02-25', withdrawalDays: 4, type: 'Dairy' },
-            { id: 103, animal: 'Calf #88', medication: 'ADE Vitamin Complex', date: '2026-01-10', withdrawalDays: 0, type: 'Beef' },
-            { id: 104, animal: 'Bull #771', medication: 'Permethrin Ectoparasiticide', date: '2026-02-10', withdrawalDays: 14, type: 'Beef' },
+            { id: 101, animal: language === 'es' ? 'Novillo #552' : language === 'pt' ? 'Novilho #552' : 'Steer #552', medication: 'Ivermectin Pour-On', date: '2026-02-20', withdrawalDays: 28, type: language === 'es' ? 'Carne' : language === 'pt' ? 'Corte' : 'Beef' },
+            { id: 102, animal: language === 'es' ? 'Vaca #103' : language === 'pt' ? 'Vaca #103' : 'Cow #103', medication: 'Cephapirin (Mastitis)', date: '2026-02-25', withdrawalDays: 4, type: language === 'es' ? 'Leche' : language === 'pt' ? 'Leite' : 'Dairy' },
+            { id: 103, animal: language === 'es' ? 'Ternero #88' : language === 'pt' ? 'Bezerro #88' : 'Calf #88', medication: 'ADE Vitamin Complex', date: '2026-01-10', withdrawalDays: 0, type: language === 'es' ? 'Carne' : language === 'pt' ? 'Corte' : 'Beef' },
+            { id: 104, animal: language === 'es' ? 'Toro #771' : language === 'pt' ? 'Touro #771' : 'Bull #771', medication: 'Permethrin Ectoparasiticide', date: '2026-02-10', withdrawalDays: 14, type: language === 'es' ? 'Carne' : language === 'pt' ? 'Corte' : 'Beef' },
           ].map((item) => {
             const today = new Date();
             const medDate = new Date(item.date);
@@ -239,6 +249,7 @@ export default function Sanitary() {
             
             const daysLeft = Math.ceil((releaseDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
             const isBlocked = daysLeft > 0;
+            const locale = language === 'es' ? 'es-ES' : language === 'pt' ? 'pt-BR' : 'en-US';
 
             return (
               <div key={item.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between hover:bg-stone-50 dark:hover:bg-stone-800/50 gap-4">
@@ -250,28 +261,32 @@ export default function Sanitary() {
                   </div>
                   <div>
                     <h4 className="font-bold text-stone-900 dark:text-white">{item.animal} <span className="text-xs font-normal text-stone-500 dark:text-stone-400">({item.type})</span></h4>
-                    <p className="text-sm text-stone-500 dark:text-stone-400">{item.medication} on {new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                      {item.medication} • {new Date(item.date).toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
                   </div>
                 </div>
                 
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <p className="text-xs text-stone-400 uppercase font-bold">Status</p>
+                    <p className="text-xs text-stone-400 uppercase font-bold">{language === 'es' ? 'Estado' : language === 'pt' ? 'Status' : 'Status'}</p>
                     {isBlocked ? (
                       <div className="flex items-center gap-1 text-red-600 dark:text-red-400 font-bold">
                         <AlertCircle size={16} />
-                        <span>Withholding Active ({daysLeft} days)</span>
+                        <span>{t.san_status_blocked} ({daysLeft} {language === 'es' ? 'días' : language === 'pt' ? 'dias' : 'days'})</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1 text-green-600 dark:text-green-400 font-bold">
                         <CheckCircle2 size={16} />
-                        <span>Cleared</span>
+                        <span>{t.san_status_cleared}</span>
                       </div>
                     )}
                   </div>
                   <div className="text-right hidden sm:block">
-                     <p className="text-xs text-stone-400 uppercase font-bold">Clearance Date</p>
-                     <p className="font-medium text-stone-700 dark:text-stone-300">{releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                     <p className="text-xs text-stone-400 uppercase font-bold">{t.san_clearance_date}</p>
+                     <p className="font-medium text-stone-700 dark:text-stone-300">
+                       {releaseDate.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}
+                     </p>
                   </div>
                 </div>
               </div>
@@ -287,32 +302,41 @@ export default function Sanitary() {
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-bold text-xl text-stone-900 dark:text-white flex items-center gap-2">
                 <BellRing className="text-orange-600" />
-                Configure Vaccine Alert
+                {language === 'es' ? 'Configurar Alerta de Vacunación' : language === 'pt' ? 'Configurar Alerta de Vacina' : 'Configure Vaccine Alert'}
               </h3>
               <button 
                 onClick={() => setReminderModal({ isOpen: false, itemId: null })}
-                className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200"
+                className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 cursor-pointer"
               >
                 <X size={24} />
               </button>
             </div>
             
             <p className="text-stone-600 dark:text-stone-300 mb-4 text-sm">
-              When would you like to receive notification reminders for this treatment?
+              {language === 'es' 
+                ? '¿Con cuánta anticipación desea recibir las notificaciones para este tratamiento?' 
+                : language === 'pt' 
+                  ? 'Com quanto tempo de antecedência deseja ser lembrado desta vacina?' 
+                  : 'When would you like to receive notification reminders for this treatment?'}
             </p>
 
             <div className="space-y-2 mb-6">
-              {['On the scheduled day', '1 day before', '3 days before', '1 week before'].map((option) => (
+              {[
+                { label: language === 'es' ? 'El mismo día programado' : language === 'pt' ? 'No dia agendado' : 'On the scheduled day', val: 'On the scheduled day' },
+                { label: language === 'es' ? '1 día antes' : language === 'pt' ? '1 dia antes' : '1 day before', val: '1 day before' },
+                { label: language === 'es' ? '3 días antes' : language === 'pt' ? '3 dias antes' : '3 days before', val: '3 days before' },
+                { label: language === 'es' ? '1 semana antes' : language === 'pt' ? '1 semana antes' : '1 week before', val: '1 week before' }
+              ].map((option) => (
                 <button
-                  key={option}
-                  onClick={() => setSelectedReminderOption(option)}
+                  key={option.val}
+                  onClick={() => setSelectedReminderOption(option.val)}
                   className={`w-full p-3 rounded-xl text-left font-medium transition-all cursor-pointer ${
-                    selectedReminderOption === option
+                    selectedReminderOption === option.val
                       ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-2 border-orange-500'
                       : 'bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-2 border-transparent hover:bg-stone-100 dark:hover:bg-stone-700'
                   }`}
                 >
-                  {option}
+                  {option.label}
                 </button>
               ))}
             </div>
@@ -321,7 +345,7 @@ export default function Sanitary() {
               onClick={saveReminder}
               className="w-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 font-bold py-3 rounded-xl hover:bg-stone-800 dark:hover:bg-stone-200 transition-colors cursor-pointer"
             >
-              Save Alert Schedule
+              {language === 'es' ? 'Guardar Programación de Alerta' : language === 'pt' ? 'Salvar Alerta' : 'Save Alert Schedule'}
             </button>
           </div>
         </div>
@@ -330,7 +354,7 @@ export default function Sanitary() {
       {/* Vaccination Status List & Calendar */}
       <section className="bg-white dark:bg-stone-900 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 overflow-hidden">
         <div className="p-6 border-b border-stone-100 dark:border-stone-800">
-          <h3 className="font-bold text-xl text-stone-800 dark:text-white">Upcoming Vaccination Protocol</h3>
+          <h3 className="font-bold text-xl text-stone-800 dark:text-white">{t.san_upcoming_protocol}</h3>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">

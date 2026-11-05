@@ -8,6 +8,7 @@ import { useOffline } from './contexts/OfflineContext';
 import { ThemeToggle } from './components/ThemeToggle';
 import { useAuth } from './contexts/AuthContext';
 import { useTenant } from './contexts/TenantContext';
+import { useLanguage, Language } from './contexts/LanguageContext';
 
 // Pages
 import Dashboard from './pages/Dashboard';
@@ -24,9 +25,10 @@ import Login from './pages/Login';
 // Protected Route Wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center font-medium text-stone-500">Loading AgroTech...</div>;
+    return <div className="min-h-screen flex items-center justify-center font-medium text-stone-500">{t.loading}</div>;
   }
   
   if (!user) {
@@ -42,17 +44,18 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   const { isOnline, syncQueue } = useOffline();
   const { user, signOut } = useAuth();
   const { config } = useTenant();
+  const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
   const allNavItems = [
-    { id: 'dashboard', path: '/', label: 'Overview', icon: LayoutDashboard, enabled: true },
-    { id: 'market', path: '/market', label: 'Market & Weather', icon: LineChart, enabled: config.features.marketIntelligence },
-    { id: 'sanitary', path: '/sanitary', label: 'Health & Sanitary', icon: Syringe, enabled: config.features.sanitary },
-    { id: 'crops', path: '/crops', label: 'Crops & Fields', icon: Sprout, enabled: config.features.crops },
-    { id: 'stock', path: '/stock', label: 'Inventory & Stock', icon: Package, enabled: config.features.stock },
-    { id: 'animals', path: '/animals', label: 'Livestock & Herd', icon: Beef, enabled: config.features.animals },
-    { id: 'team', path: '/team', label: 'Team & Staff', icon: Users, enabled: config.features.team },
+    { id: 'dashboard', path: '/', label: t.nav_overview, icon: LayoutDashboard, enabled: true },
+    { id: 'market', path: '/market', label: t.nav_market, icon: LineChart, enabled: config.features.marketIntelligence },
+    { id: 'sanitary', path: '/sanitary', label: t.nav_sanitary, icon: Syringe, enabled: config.features.sanitary },
+    { id: 'crops', path: '/crops', label: t.nav_crops, icon: Sprout, enabled: config.features.crops },
+    { id: 'stock', path: '/stock', label: t.nav_stock, icon: Package, enabled: config.features.stock },
+    { id: 'animals', path: '/animals', label: t.nav_animals, icon: Beef, enabled: config.features.animals },
+    { id: 'team', path: '/team', label: t.nav_team, icon: Users, enabled: config.features.team },
   ];
 
   const navItems = allNavItems.filter(item => item.enabled);
@@ -61,6 +64,12 @@ function MainLayout({ children }: { children: React.ReactNode }) {
     navigate(path);
     setIsMenuOpen(false);
   };
+
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: 'es', label: 'ES', flag: '🇪🇸' },
+    { code: 'en', label: 'EN', flag: '🇺🇸' },
+    { code: 'pt', label: 'PT', flag: '🇧🇷' }
+  ];
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans transition-colors duration-300">
@@ -79,7 +88,26 @@ function MainLayout({ children }: { children: React.ReactNode }) {
             </h1>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {/* Quick Language Switcher */}
+            <div className="flex items-center bg-stone-100 dark:bg-stone-800 p-1 rounded-xl border border-stone-200 dark:border-stone-700">
+              {languages.map((item) => (
+                <button
+                  key={item.code}
+                  onClick={() => setLanguage(item.code)}
+                  title={item.code.toUpperCase()}
+                  className={`px-2 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                    language === item.code
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{item.flag}</span>
+                  <span className="hidden sm:inline">{item.label}</span>
+                </button>
+              ))}
+            </div>
+
             <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold transition-colors ${
               !isOnline 
                 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
@@ -89,7 +117,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
             }`}>
               {!isOnline ? <WifiOff size={14} /> : syncQueue.length > 0 ? <RefreshCw size={14} className="animate-spin" /> : <Wifi size={14} />}
               <span className="hidden sm:inline">
-                {!isOnline ? 'OFFLINE' : syncQueue.length > 0 ? `SYNC (${syncQueue.length})` : 'ONLINE'}
+                {!isOnline ? t.status_offline : syncQueue.length > 0 ? `${t.status_sync} (${syncQueue.length})` : t.status_online}
               </span>
             </div>
             
@@ -104,7 +132,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                  <span className="font-bold text-sm">{user?.email?.substring(0, 2).toUpperCase() || 'US'}</span>
                </div>
             </div>
-            <button onClick={signOut} className="text-sm font-semibold text-stone-500 hover:text-red-500 transition-colors">Sign Out</button>
+            <button onClick={signOut} className="text-sm font-semibold text-stone-500 hover:text-red-500 transition-colors cursor-pointer">{t.sign_out}</button>
           </div>
         </div>
       </header>

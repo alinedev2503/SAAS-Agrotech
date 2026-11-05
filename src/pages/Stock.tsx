@@ -9,6 +9,7 @@ import { GoogleGenAI } from "@google/genai";
 import { inventoryAlerts } from '../data/inventory';
 import StockQRScannerModal, { InventoryItem, StockMovement } from '../components/StockQRScannerModal';
 import ItemQRCodeModal from '../components/ItemQRCodeModal';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
@@ -16,6 +17,7 @@ const STORAGE_ITEMS_KEY = 'agrotech_inventory_items';
 const STORAGE_MOVEMENTS_KEY = 'agrotech_inventory_movements';
 
 export default function Stock() {
+  const { language, t } = useLanguage();
   const [items, setItems] = useState<InventoryItem[]>(() => {
     const saved = localStorage.getItem(STORAGE_ITEMS_KEY);
     if (saved) {
@@ -132,13 +134,32 @@ export default function Stock() {
   const getStatusLabel = (item: InventoryItem) => {
     switch (item.status) {
       case 'critical_expiration':
-        return <span className="text-red-600 dark:text-red-400 font-bold text-sm flex items-center gap-1"><AlertTriangle size={14} /> Expires in {item.daysToExpire} days</span>;
+        return (
+          <span className="text-red-600 dark:text-red-400 font-bold text-sm flex items-center gap-1">
+            <AlertTriangle size={14} /> 
+            {language === 'es' ? `Vence en ${item.daysToExpire} días` : language === 'pt' ? `Vence em ${item.daysToExpire} dias` : `Expires in ${item.daysToExpire} days`}
+          </span>
+        );
       case 'critical_stock':
-        return <span className="text-orange-600 dark:text-orange-400 font-bold text-sm flex items-center gap-1"><AlertOctagon size={14} /> Low Inventory ({item.quantity} {item.unit})</span>;
+        return (
+          <span className="text-orange-600 dark:text-orange-400 font-bold text-sm flex items-center gap-1">
+            <AlertOctagon size={14} /> 
+            {language === 'es' ? `Stock Crítico (${item.quantity} ${item.unit})` : language === 'pt' ? `Estoque Baixo (${item.quantity} ${item.unit})` : `Low Inventory (${item.quantity} ${item.unit})`}
+          </span>
+        );
       case 'warning_expiration':
-        return <span className="text-yellow-600 dark:text-yellow-400 font-bold text-sm flex items-center gap-1"><ThermometerSun size={14} /> Vigor drops in {item.daysToExpire} days</span>;
+        return (
+          <span className="text-yellow-600 dark:text-yellow-400 font-bold text-sm flex items-center gap-1">
+            <ThermometerSun size={14} /> 
+            {language === 'es' ? `Vigor decrece en ${item.daysToExpire} días` : language === 'pt' ? `Vigor reduz em ${item.daysToExpire} dias` : `Vigor drops in ${item.daysToExpire} days`}
+          </span>
+        );
       default:
-        return <span className="text-stone-500 dark:text-stone-400 text-sm">In Stock: {item.quantity} {item.unit}</span>;
+        return (
+          <span className="text-stone-500 dark:text-stone-400 text-sm">
+            {language === 'es' ? `En Stock: ${item.quantity} ${item.unit}` : language === 'pt' ? `Em Estoque: ${item.quantity} ${item.unit}` : `In Stock: ${item.quantity} ${item.unit}`}
+          </span>
+        );
     }
   };
 
@@ -293,27 +314,29 @@ export default function Stock() {
       {/* Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Inventory & Supplies</h2>
+          <h2 className="text-3xl font-bold text-stone-900 dark:text-white">{t.stock_title}</h2>
           <p className="text-stone-500 dark:text-stone-400">
-            Real-time field check-in/out via QR Code, expiration radar, and AI restocking.
+            {t.stock_subtitle}
           </p>
         </div>
         
         <div className="flex flex-wrap items-center gap-2.5">
           <button 
             onClick={() => setIsQRScannerOpen(true)}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg shadow-orange-900/20 active:scale-95"
+            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg shadow-orange-900/20 active:scale-95 cursor-pointer"
           >
             <Camera size={20} />
-            <span>Scan QR Code</span>
+            <span>{t.stock_scan_qr}</span>
           </button>
 
           <button 
             onClick={handleExportCSV}
-            className="bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 px-4 py-2.5 rounded-xl font-semibold border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors flex items-center gap-2 text-sm"
+            className="bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-200 px-4 py-2.5 rounded-xl font-semibold border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors flex items-center gap-2 text-sm cursor-pointer"
           >
             <Download size={18} />
-            <span className="hidden sm:inline">Export CSV Report</span>
+            <span className="hidden sm:inline">
+              {language === 'es' ? 'Exportar Reporte CSV' : language === 'pt' ? 'Exportar Relatório CSV' : 'Export CSV Report'}
+            </span>
           </button>
         </div>
       </header>
@@ -328,26 +351,32 @@ export default function Stock() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-white mb-4">
               <QrCode size={14} />
-              Device Camera • Real-Time Scanner
+              {language === 'es' ? 'Cámara del Dispositivo • Lector QR en Tiempo Real' : language === 'pt' ? 'Câmera do Aparelho • Leitor QR em Tempo Real' : 'Device Camera • Real-Time Scanner'}
             </div>
 
-            <h3 className="text-2xl font-black mb-2">QR Code Check-in & Check-out</h3>
+            <h3 className="text-2xl font-black mb-2">
+              {language === 'es' ? 'Entradas y Salidas de Stock con QR' : language === 'pt' ? 'Entradas & Baixas de Estoque via QR' : 'QR Code Check-in & Check-out'}
+            </h3>
             <p className="text-orange-50 text-sm leading-relaxed mb-6">
-              Point your camera at the asset QR tag on input containers or seeds to record delivery receipts or issue immediate field withdrawals.
+              {language === 'es' 
+                ? 'Apunte la cámara hacia la etiqueta QR del insumo para registrar recepciones o despachos inmediatos a campo.' 
+                : language === 'pt' 
+                  ? 'Aponte a câmera para o QR Code da embalagem para dar entrada ou registrar retiradas para o campo.'
+                  : 'Point your camera at the asset QR tag on input containers or seeds to record delivery receipts or issue immediate field withdrawals.'}
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button
               onClick={() => setIsQRScannerOpen(true)}
-              className="bg-white text-orange-700 hover:bg-orange-50 font-bold px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2.5 text-sm active:scale-95"
+              className="bg-white text-orange-700 hover:bg-orange-50 font-bold px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center gap-2.5 text-sm active:scale-95 cursor-pointer"
             >
               <Camera size={20} className="text-orange-600" />
-              Launch Camera Scanner
+              {language === 'es' ? 'Abrir Cámara y Escanear' : language === 'pt' ? 'Abrir Câmera e Escanear' : 'Launch Camera Scanner'}
             </button>
 
             <span className="text-xs text-orange-100 flex items-center gap-1">
-              <History size={14} /> {movements.length} logged operations
+              <History size={14} /> {movements.length} {language === 'es' ? 'movimientos registrados' : language === 'pt' ? 'movimentações' : 'logged operations'}
             </span>
           </div>
         </section>
@@ -357,12 +386,18 @@ export default function Stock() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 dark:bg-stone-800 rounded-full text-xs font-bold text-stone-600 dark:text-stone-300 mb-4">
               <ScanLine size={14} className="text-primary" />
-              Automated Document Entry
+              {language === 'es' ? 'Reconocimiento Inteligente de Facturas' : language === 'pt' ? 'Entrada Automatizada de Documentos' : 'Automated Document Entry'}
             </div>
 
-            <h3 className="text-2xl font-bold mb-2">Supplier Invoice OCR</h3>
+            <h3 className="text-2xl font-bold mb-2">
+              {language === 'es' ? 'OCR de Facturas de Proveedores' : language === 'pt' ? 'OCR de Notas Fiscais e Boletos' : 'Supplier Invoice OCR'}
+            </h3>
             <p className="text-stone-500 dark:text-stone-400 text-sm leading-relaxed mb-6">
-              Take a photo of delivery slips or chemical invoices to register batches into stock and update accounting records automatically.
+              {language === 'es' 
+                ? 'Fotografíe facturas o remitos de agroquímicos y semillas para ingresar lotes y actualizar costos contables al instante.' 
+                : language === 'pt' 
+                  ? 'Tire uma foto de notas fiscais para registrar lotes de insumos e atualizar custos automaticamente.'
+                  : 'Take a photo of delivery slips or chemical invoices to register batches into stock and update accounting records automatically.'}
             </p>
           </div>
 
@@ -370,15 +405,17 @@ export default function Stock() {
             <button 
               onClick={handleScanInvoice}
               disabled={isScanningInvoice}
-              className="bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-100 px-6 py-3.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2.5 active:scale-95 disabled:opacity-50"
+              className="bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-100 px-6 py-3.5 rounded-2xl font-bold text-sm transition-all flex items-center gap-2.5 active:scale-95 disabled:opacity-50 cursor-pointer"
             >
               {isScanningInvoice ? (
                 <>
-                  <ScanLine size={18} className="animate-spin text-orange-500" /> Analyzing Invoice OCR...
+                  <ScanLine size={18} className="animate-spin text-orange-500" /> 
+                  {language === 'es' ? 'Analizando Factura con IA...' : language === 'pt' ? 'Processando Nota com IA...' : 'Analyzing Invoice OCR...'}
                 </>
               ) : (
                 <>
-                  <Camera size={18} /> Capture Supplier Invoice
+                  <Camera size={18} /> 
+                  {language === 'es' ? 'Fotografiar Factura Proveedor' : language === 'pt' ? 'Fotografar Nota Fiscal' : 'Capture Supplier Invoice'}
                 </>
               )}
             </button>
@@ -452,38 +489,38 @@ export default function Stock() {
         <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto">
           <button
             onClick={() => setFilterView('alerts')}
-            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 cursor-pointer ${
               filterView === 'alerts'
                 ? 'bg-orange-600 text-white shadow-md shadow-orange-900/20'
                 : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
             }`}
           >
             <AlertTriangle size={16} />
-            Alert Radar ({items.filter(i => i.status !== 'ok').length})
+            {language === 'es' ? 'Radar de Alertas' : language === 'pt' ? 'Radar de Alertas' : 'Alert Radar'} ({items.filter(i => i.status !== 'ok').length})
           </button>
 
           <button
             onClick={() => setFilterView('all')}
-            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 cursor-pointer ${
               filterView === 'all'
                 ? 'bg-orange-600 text-white shadow-md shadow-orange-900/20'
                 : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
             }`}
           >
             <PackageCheck size={16} />
-            All Supplies ({items.length})
+            {language === 'es' ? 'Todos los Insumos' : language === 'pt' ? 'Todos os Insumos' : 'All Supplies'} ({items.length})
           </button>
 
           <button
             onClick={() => setFilterView('movements')}
-            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl font-bold text-sm whitespace-nowrap transition-colors flex items-center gap-2 cursor-pointer ${
               filterView === 'movements'
                 ? 'bg-orange-600 text-white shadow-md shadow-orange-900/20'
                 : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
             }`}
           >
             <History size={16} />
-            QR Movements ({movements.length})
+            {language === 'es' ? 'Movimientos QR' : language === 'pt' ? 'Movimentações QR' : 'QR Movements'} ({movements.length})
           </button>
         </div>
 
@@ -492,7 +529,7 @@ export default function Stock() {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" size={17} />
             <input 
               type="text" 
-              placeholder="Search supplies..." 
+              placeholder={t.stock_search_placeholder} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 rounded-xl text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
