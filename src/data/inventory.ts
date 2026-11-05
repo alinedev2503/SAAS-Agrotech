@@ -3,86 +3,86 @@ import { AlertTriangle, Sprout, AlertOctagon, Droplets, PackageCheck } from 'luc
 export const inventoryAlerts = [
   { 
     id: 1, 
-    name: 'Vacina Aftosa (Lote 882)', 
+    name: 'FMD Vaccine (Batch 882)', 
     type: 'medicine',
     quantity: 40, 
     unit: 'doses',
     daysToExpire: 5, 
     status: 'critical_expiration',
     icon: AlertTriangle,
-    avgConsumption: '120 doses/mês',
-    lastPurchasePrice: 'R$ 4,50'
+    avgConsumption: '120 doses/month',
+    lastPurchasePrice: '$4.50'
   },
   { 
     id: 2, 
-    name: 'Semente Milho Híbrido', 
+    name: 'Hybrid Seed Corn (Trait X)', 
     type: 'seeds',
     quantity: 120, 
-    unit: 'sacos',
+    unit: 'bags',
     daysToExpire: 15, 
     status: 'warning_expiration',
     icon: Sprout,
-    avgConsumption: '50 sacos/safra',
-    lastPurchasePrice: 'R$ 450,00'
+    avgConsumption: '50 bags/season',
+    lastPurchasePrice: '$245.00'
   },
   { 
     id: 3, 
-    name: 'Sal Mineral 80kg', 
+    name: 'Cattle Mineral Supplement 50lb', 
     type: 'supplement',
     quantity: 2, 
-    unit: 'sacos',
+    unit: 'bags',
     daysToExpire: 180, 
     status: 'critical_stock',
     icon: AlertOctagon,
-    avgConsumption: '15 sacos/mês',
-    lastPurchasePrice: 'R$ 85,00'
+    avgConsumption: '15 bags/month',
+    lastPurchasePrice: '$48.00'
   },
   { 
     id: 4, 
-    name: 'Adubo NPK 04-14-08', 
+    name: 'NPK Starter Fertilizer 04-14-08', 
     type: 'fertilizer',
     quantity: 50, 
-    unit: 'ton',
+    unit: 'tons',
     daysToExpire: 365, 
     status: 'ok',
     icon: Droplets,
-    avgConsumption: '20 ton/mês',
-    lastPurchasePrice: 'R$ 2.800,00'
+    avgConsumption: '20 tons/month',
+    lastPurchasePrice: '$780.00'
   },
   { 
     id: 5, 
-    name: 'Herbicida Glifosato', 
+    name: 'Glyphosate Herbicide Concentrate', 
     type: 'chemical',
     quantity: 5, 
-    unit: 'litros',
+    unit: 'gallons',
     daysToExpire: 365, 
     status: 'critical_stock',
     icon: AlertOctagon,
-    avgConsumption: '40 litros/mês',
-    lastPurchasePrice: 'R$ 45,00'
+    avgConsumption: '40 gal/month',
+    lastPurchasePrice: '$38.50'
   },
   { 
     id: 6, 
-    name: 'Vacina Raiva', 
+    name: 'Rabies Livestock Vaccine', 
     type: 'medicine',
     quantity: 50, 
     unit: 'doses',
     daysToExpire: 2, 
     status: 'critical_expiration',
     icon: AlertTriangle,
-    avgConsumption: '80 doses/ano',
-    lastPurchasePrice: 'R$ 3,80'
+    avgConsumption: '80 doses/year',
+    lastPurchasePrice: '$3.80'
   },
   { 
     id: 7, 
-    name: 'Arame Liso', 
+    name: 'High-Tensile Smooth Fence Wire', 
     type: 'material',
     quantity: 10, 
-    unit: 'rolos',
+    unit: 'spools',
     daysToExpire: 999, 
     status: 'ok',
     icon: PackageCheck,
-    avgConsumption: '2 rolos/mês',
-    lastPurchasePrice: 'R$ 650,00'
+    avgConsumption: '2 spools/month',
+    lastPurchasePrice: '$135.00'
   }
 ];

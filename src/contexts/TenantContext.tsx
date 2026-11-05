@@ -23,7 +23,7 @@ export interface TenantConfig {
 const defaultTenant: TenantConfig = {
   appName: "AgroControl",
   appShortName: "AGRO",
-  appTagline: "Acesse sua fazenda digital",
+  appTagline: "Smart Farm Operations & Intelligence",
   logoUrl: "",
   theme: {
     primaryColor: "#16a34a",

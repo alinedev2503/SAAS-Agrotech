@@ -8,7 +8,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 export default function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([
-    { role: 'model', text: 'Olá! Sou seu assistente AgroControl. Posso ajudar com cotações, dúvidas sanitárias ou manejo. O que precisa?' }
+    { role: 'model', text: "Hello! I am your AgroTech Copilot. I can assist with grain futures, livestock health & withdrawal periods, seed rates, or inventory levels. What would you like to check today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -31,19 +31,19 @@ export default function ChatAssistant() {
     setIsLoading(true);
 
     try {
-      const model = "gemini-3.1-pro-preview";
+      const model = "gemini-2.5-flash";
       const response = await ai.models.generateContent({
         model: model,
         contents: [
-          { role: 'user', parts: [{ text: `Você é um assistente especializado em agronegócio para um gestor de fazenda. Responda de forma curta, técnica e direta. Contexto atual: O usuário está no app AgroControl. Pergunta: ${userMsg}` }] }
+          { role: 'user', parts: [{ text: `You are an expert agricultural consultant and farm management assistant for a US farm operator. Provide concise, technical, and actionable advice in US English. Context: AgroTech Farm Management Suite. Question: ${userMsg}` }] }
         ]
       });
 
-      const text = response.text || "Desculpe, não consegui processar sua solicitação no momento.";
+      const text = response.text || "I was unable to complete this query at the moment. Please try again.";
       setMessages(prev => [...prev, { role: 'model', text }]);
     } catch (error) {
       console.error("Chat Error:", error);
-      setMessages(prev => [...prev, { role: 'model', text: "Erro de conexão com a IA. Verifique sua internet." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "Unable to reach the agricultural AI service. Please verify your connection or try again." }]);
     } finally {
       setIsLoading(false);
     }
@@ -53,15 +53,15 @@ export default function ChatAssistant() {
     <>
       {/* FAB */}
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center gap-2 transition-all ${
-          isOpen ? 'scale-0 opacity-0' : 'bg-stone-900 text-white scale-100 opacity-100'
+        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center gap-2 transition-all cursor-pointer ${
+          isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'bg-stone-900 dark:bg-white text-white dark:text-stone-900 scale-100 opacity-100'
         }`}
       >
-        <Sparkles size={24} className="text-orange-500" />
-        <span className="font-bold pr-2">IA Assistente</span>
+        <Sparkles size={22} className="text-orange-500" />
+        <span className="font-bold text-sm pr-1">AI Copilot</span>
       </motion.button>
 
       {/* Chat Window */}
@@ -71,36 +71,36 @@ export default function ChatAssistant() {
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            className="fixed bottom-6 right-6 w-full max-w-sm bg-white rounded-2xl shadow-2xl border border-stone-200 z-50 overflow-hidden flex flex-col h-[500px]"
+            className="fixed bottom-6 right-6 w-full max-w-sm bg-white dark:bg-stone-900 rounded-2xl shadow-2xl border border-stone-200 dark:border-stone-800 z-50 overflow-hidden flex flex-col h-[500px]"
           >
             {/* Header */}
-            <div className="bg-stone-900 p-4 flex justify-between items-center text-white">
-              <div className="flex items-center gap-2">
+            <div className="bg-stone-900 dark:bg-stone-950 p-4 flex justify-between items-center text-white border-b border-stone-800">
+              <div className="flex items-center gap-2.5">
                 <div className="bg-orange-600 p-1.5 rounded-lg">
                   <Bot size={20} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm">AgroControl IA</h3>
-                  <p className="text-xs text-stone-400">Online • Gemini 3.1 Pro</p>
+                  <h3 className="font-bold text-sm">AgroTech Copilot</h3>
+                  <p className="text-[11px] text-stone-400">Online • Agronomy AI Assistant</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-stone-400 hover:text-white">
+              <button onClick={() => setIsOpen(false)} className="text-stone-400 hover:text-white cursor-pointer">
                 <X size={20} />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50 dark:bg-stone-900/50">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-2xl text-sm ${
+                    className={`max-w-[85%] p-3 rounded-2xl text-sm ${
                       msg.role === 'user'
-                        ? 'bg-orange-600 text-white rounded-tr-none'
-                        : 'bg-white text-stone-800 border border-stone-200 rounded-tl-none shadow-sm'
+                        ? 'bg-orange-600 text-white rounded-tr-none shadow-xs'
+                        : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100 border border-stone-200 dark:border-stone-700 rounded-tl-none shadow-xs'
                     }`}
                   >
                     {msg.text}
@@ -109,7 +109,7 @@ export default function ChatAssistant() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white p-3 rounded-2xl rounded-tl-none border border-stone-200 shadow-sm flex gap-1">
+                  <div className="bg-white dark:bg-stone-800 p-3 rounded-2xl rounded-tl-none border border-stone-200 dark:border-stone-700 shadow-xs flex gap-1.5">
                     <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -120,20 +120,20 @@ export default function ChatAssistant() {
             </div>
 
             {/* Input */}
-            <div className="p-3 bg-white border-t border-stone-100">
-              <div className="flex items-center gap-2 bg-stone-100 rounded-xl p-2">
+            <div className="p-3 bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
+              <div className="flex items-center gap-2 bg-stone-100 dark:bg-stone-800 rounded-xl p-2 border border-stone-200 dark:border-stone-700">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Digite sua dúvida..."
-                  className="flex-1 bg-transparent border-none outline-none text-sm text-stone-900 placeholder-stone-500"
+                  placeholder="Ask about crops, herd, or stock..."
+                  className="flex-1 bg-transparent border-none outline-none text-sm text-stone-900 dark:text-white placeholder-stone-500"
                 />
                 <button
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}
-                  className="p-2 bg-stone-900 text-white rounded-lg hover:bg-stone-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 bg-stone-900 dark:bg-white text-white dark:text-stone-900 rounded-lg hover:bg-stone-800 dark:hover:bg-stone-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
                 >
                   <Send size={16} />
                 </button>

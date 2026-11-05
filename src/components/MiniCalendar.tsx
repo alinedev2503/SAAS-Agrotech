@@ -34,8 +34,8 @@ export default function MiniCalendar({ vaccinations, reminders }: MiniCalendarPr
   };
 
   const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
   ];
 
   const renderDays = () => {
@@ -88,7 +88,7 @@ export default function MiniCalendar({ vaccinations, reminders }: MiniCalendarPr
           {dayVaccinations.length > 0 && (
             <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-white dark:bg-stone-800 p-3 rounded-xl shadow-xl border border-stone-200 dark:border-stone-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
               <p className="text-xs font-bold text-stone-500 dark:text-stone-400 mb-1">
-                {date.toLocaleDateString('pt-BR')}
+                {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </p>
               <div className="space-y-2">
                 {dayVaccinations.map(v => (
@@ -100,7 +100,7 @@ export default function MiniCalendar({ vaccinations, reminders }: MiniCalendarPr
                       {reminders[v.id] && (
                         <div className="flex items-center gap-1 mt-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
                           <BellRing size={10} />
-                          <span>Lembrete ativo</span>
+                          <span>Reminder active</span>
                         </div>
                       )}
                     </div>
@@ -123,17 +123,17 @@ export default function MiniCalendar({ vaccinations, reminders }: MiniCalendarPr
           {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h4>
         <div className="flex gap-1">
-          <button onClick={prevMonth} className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">
+          <button onClick={prevMonth} className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors" title="Previous Month">
             <ChevronLeft size={20} className="text-stone-600 dark:text-stone-400" />
           </button>
-          <button onClick={nextMonth} className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors">
+          <button onClick={nextMonth} className="p-1 hover:bg-stone-200 dark:hover:bg-stone-700 rounded-lg transition-colors" title="Next Month">
             <ChevronRight size={20} className="text-stone-600 dark:text-stone-400" />
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((day, i) => (
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
           <div key={i} className="h-8 flex items-center justify-center text-xs font-bold text-stone-400">
             {day}
           </div>
@@ -147,11 +147,11 @@ export default function MiniCalendar({ vaccinations, reminders }: MiniCalendarPr
       <div className="mt-4 flex items-center gap-4 text-xs text-stone-500 dark:text-stone-400 px-2">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-orange-500" />
-          <span>Com Lembrete</span>
+          <span>With Reminder</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 rounded-full bg-stone-400" />
-          <span>Sem Lembrete</span>
+          <span>No Reminder</span>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Sprout,
   ChevronDown,
@@ -25,160 +26,160 @@ import { motion, AnimatePresence } from 'motion/react'
 const benefits = [
   {
     icon: BarChart3,
-    title: 'Painel unificado',
-    description: 'Todas as operações da fazenda em um só lugar. De insumos a vendas, sem planilhas ou sistemas isolados.',
+    title: 'Unified Ag Dashboard',
+    description: 'Every ranch and farm operation in one single command center. From seeds and fertilizer to livestock sales, without messy spreadsheets.',
   },
   {
     icon: CloudSun,
-    title: 'Clima e mercado em tempo real',
-    description: 'Alertas de geada, estresse térmico e cotações da B3 integrados automaticamente ao seu planejamento.',
+    title: 'Real-Time Climate & CME Futures',
+    description: 'Frost alerts, moisture stress metrics, and live Chicago Mercantile Exchange commodity tickers integrated directly into operations.',
   },
   {
     icon: FlaskConical,
-    title: 'Manejo sanitário inteligente',
-    description: 'Calendário de vacinas, histórico do rebanho e alertas preventivos para reduzir perdas.',
+    title: 'Veterinary Health & Withholding',
+    description: 'Automated vaccine protocols, withdrawal period tracking for meat and dairy, and digital ear tag scanning.',
   },
   {
     icon: Tractor,
-    title: 'Agricultura de precisão',
-    description: 'Talhões mapeados, produtividade por gleba e recomendações baseadas em dados reais da sua safra.',
+    title: 'Precision Crop Management',
+    description: 'Field boundary mapping, Growing Degree Day (GDD) calculations, planting density calibrations, and plot yield history.',
   },
   {
     icon: Warehouse,
-    title: 'Estoque enxuto',
-    description: 'Controle de insumos com alerta de vencimento e reposição automática. Nunca mais compre o que já tem.',
+    title: 'QR-Enabled Stock & Inventory',
+    description: 'Scan QR codes directly with device cameras to check in/out inventory items, with low-stock warnings and restock intelligence.',
   },
   {
     icon: Users,
-    title: 'Gestão de equipe no campo',
-    description: 'Escala de funcionários, tarefas por talhão e comunicação direta — mesmo offline.',
+    title: 'Field Crew Work Orders',
+    description: 'Task assignment by field plot, equipment operator dispatch, and real-time operational status — fully functional offline.',
   },
 ]
 
 const steps = [
   {
     number: '01',
-    title: 'Conecte sua fazenda',
-    description: 'Cadastre talhões, rebanho, insumos e equipe em menos de 30 minutos. Importação via planilha ou manual.',
+    title: 'Connect Your Farm',
+    description: 'Register acreage, livestock lots, input inventory, and crew members in under 20 minutes with our quick onboarding wizard.',
   },
   {
     number: '02',
-    title: 'Acompanhe em tempo real',
-    description: 'Painéis automáticos com clima, mercado, estoque e sanidade. Alertas no celular sem precisar ligar nada.',
+    title: 'Monitor Operations Live',
+    description: 'Automated dashboards with live weather radar, futures prices, withdrawal alerts, and QR camera scanning on mobile or tablet.',
   },
   {
     number: '03',
-    title: 'Decida com dados',
-    description: 'Relatórios prontos para financiamento, auditoria e planejamento da próxima safra. Deixe o achismo de lado.',
+    title: 'Decide with Confidence',
+    description: 'Audit-ready reports for agricultural lenders, USDA compliance, crop insurance claims, and next season budgeting.',
   },
 ]
 
 const testimonials = [
   {
-    name: 'Carlos Mendes',
-    farm: 'Fazenda Santa Helena',
-    text: 'Reduzi em 40% as perdas por geada graças aos alertas antecipados. O AgroControl virou meu braço direito no campo.',
+    name: 'Charles Miller',
+    farm: 'Heartland Valley Farms, IA',
+    text: 'We reduced crop frost losses by 40% thanks to proactive temperature alerts. AgroTech has become indispensable for our 3,200 acres.',
     rating: 5,
   },
   {
-    name: 'Ana Oliveira',
-    farm: 'Agropecuária Boi Verde',
-    text: 'Unificamos 4 planilhas diferentes em um só sistema. Economizamos 12 horas por semana só na gestão de estoque.',
+    name: 'Sarah Jenkins',
+    farm: 'Black Angus Cattle Co., NE',
+    text: 'Replacing fragmented spreadsheets with the camera QR scanner saved our ranch hands over 10 hours a week on inventory checkouts.',
     rating: 5,
   },
   {
-    name: 'Roberto Lima',
-    farm: 'Sítio São José',
-    text: 'O manejo sanitário salvou 15 cabeças no último surto. O calendário automático de vacinas evitou o pior.',
+    name: 'Robert Vance',
+    farm: 'Vance Prairie Agronomy, IL',
+    text: 'The veterinary withdrawal countdown ensured 100% compliance during dairy shipments. Never had an antibiotic residue issue since.',
     rating: 5,
   },
   {
-    name: 'Fernanda Costa',
-    farm: 'Fazenda Boa Esperança',
-    text: 'Relatórios prontos para o banco em 2 cliques. Consegui um crédito rural 60% mais rápido que no ano passado.',
+    name: 'Emily Davis',
+    farm: 'Pine Creek Grain & Cattle, KS',
+    text: 'Audit reports were ready for our agricultural bank lender in two clicks. Secured our operating credit line 3 weeks faster than last year.',
     rating: 5,
   },
 ]
 
 const faqs = [
   {
-    q: 'Precisa de internet no campo?',
-    a: 'Não. O AgroControl funciona offline e sincroniza quando houver conexão. Você registra tudo no talhão e os dados sobem automaticamente.',
+    q: 'Does AgroTech require internet connection in the field?',
+    a: 'No. AgroTech is built offline-first. You can record livestock treatments, scan stock QR codes, and log work orders in remote pastures. Everything synchronizes automatically once connection returns.',
   },
   {
-    q: 'Funciona para pequenas propriedades?',
-    a: 'Sim. O plano inicial cobre até 200 hectares e 50 cabeças. Se precisar de mais, os planos crescem com você.',
+    q: 'Is it suitable for family farms and mid-size operations?',
+    a: 'Yes. The Starter plan covers operations up to 500 acres and 150 livestock head. As your acreage expands, your plan scales smoothly with you.',
   },
   {
-    q: 'Posso migrar meus dados de planilhas?',
-    a: 'Sim. Importamos CSV, Excel e até dados de sistemas concorrentes. A equipe de onboarding faz isso por você em até 48h.',
+    q: 'Can I import existing data from Excel or CSV files?',
+    a: 'Yes. You can import cattle tag records, inventory item catalogs, and field coordinates via standard CSV files or use our bulk import assistant.',
   },
   {
-    q: 'Tem aplicativo mobile?',
-    a: 'Sim. Android e iOS com funcionalidade completa offline. O que você registra no campo aparece no painel web na hora.',
+    q: 'Is there a native mobile app or tablet support?',
+    a: 'AgroTech is a responsive Progressive Web App that runs flawlessly on iOS, Android, tablets, and ruggedized field devices with full camera QR scanning capabilities.',
   },
   {
-    q: 'Como funciona o suporte?',
-    a: 'Suporte por WhatsApp com resposta em até 2h em dias úteis. Planos Pro têm canal prioritário e gerente dedicado.',
+    q: 'What payment methods and gateways are supported?',
+    a: 'We support Stripe, major credit cards, ACH bank transfers, and custom enterprise invoicing with flexible monthly or annual billing.',
   },
   {
-    q: 'Posso cancelar quando quiser?',
-    a: 'Sim. Sem fidelidade. Cancele pelo painel a qualquer momento. Se cancelar nos primeiros 14 dias, devolvemos 100%.',
+    q: 'Can I cancel anytime without long-term contracts?',
+    a: 'Yes. All plans are month-to-month with no lock-in. If you cancel within the first 14 days, you receive a full 100% refund.',
   },
 ]
 
 const plans = [
   {
-    name: 'Essencial',
-    price: 'R$ 97',
-    period: '/mês',
-    description: 'Para pequenos produtores começando a digitalizar a gestão.',
+    name: 'Starter Farm',
+    price: '$49',
+    period: '/month',
+    description: 'For family farms beginning to digitize field records and stock.',
     features: [
-      'Até 200 hectares',
-      'Até 50 cabeças',
-      'Painel financeiro básico',
-      'Alertas climáticos',
-      'Cotações B3',
-      'Suporte WhatsApp',
-      '1 usuário',
+      'Up to 500 acres',
+      'Up to 150 livestock head',
+      'Core inventory with QR scanning',
+      'Weather forecasts & CME futures',
+      'Offline-first mobile mode',
+      'Email & community support',
+      '2 user seats',
     ],
-    cta: 'Começar grátis',
+    cta: 'Start 14-Day Free Trial',
     highlighted: false,
   },
   {
-    name: 'Profissional',
-    price: 'R$ 197',
-    period: '/mês',
-    description: 'Para fazendas em crescimento com operação mais complexa.',
+    name: 'Professional Ag',
+    price: '$129',
+    period: '/month',
+    description: 'For commercial farms and ranches requiring full operational automation.',
     features: [
-      'Até 800 hectares',
-      'Até 300 cabeças',
-      'Tudo do Essencial',
-      'Manejo sanitário completo',
-      'Agricultura de precisão',
-      'Relatórios bancários',
-      '3 usuários',
-      'Suporte prioritário',
+      'Up to 2,500 acres',
+      'Up to 1,000 livestock head',
+      'Everything in Starter Farm',
+      'Complete sanitary withdrawal tracking',
+      'Precision GDD & planting density calculators',
+      'Audit-ready lender reports',
+      '5 user seats',
+      'Priority agronomist support',
     ],
-    cta: 'Começar grátis',
+    cta: 'Start 14-Day Free Trial',
     highlighted: true,
   },
   {
-    name: 'Enterprise',
-    price: 'Sob consulta',
+    name: 'Commercial Enterprise',
+    price: 'Custom',
     period: '',
-    description: 'Para grupos e usinas com múltiplas unidades.',
+    description: 'For multi-location agribusinesses, cooperatives, and large estates.',
     features: [
-      'Hectares ilimitados',
-      'Rebanho ilimitado',
-      'Tudo do Profissional',
-      'API para integração',
-      'Gerente de conta dedicado',
-      'Usuários ilimitados',
-      'Onboarding presencial',
-      'SLA 4h',
+      'Unlimited acreage & herd size',
+      'White-label branding & custom domain',
+      'Everything in Professional Ag',
+      'ERP & IoT telemetry API integrations',
+      'Dedicated agricultural account manager',
+      'Unlimited user seats',
+      'On-site crew training',
+      'Custom SLA guarantees',
     ],
-    cta: 'Falar com vendas',
+    cta: 'Contact Sales',
     highlighted: false,
   },
 ]
@@ -186,6 +187,7 @@ const plans = [
 export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const navigate = useNavigate()
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false)
@@ -198,29 +200,32 @@ export default function Landing() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
               <Sprout className="text-primary" size={28} />
               <span className="text-xl font-bold tracking-tight">
-                AGRO<span className="text-stone-900">CONTROL</span>
+                AGRO<span className="text-stone-900">TECH</span>
               </span>
             </div>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-500">
-              <button onClick={() => scrollTo('benefits')} className="hover:text-primary transition-colors">Recursos</button>
-              <button onClick={() => scrollTo('how-it-works')} className="hover:text-primary transition-colors">Como funciona</button>
-              <button onClick={() => scrollTo('pricing')} className="hover:text-primary transition-colors">Preços</button>
-              <button onClick={() => scrollTo('faq')} className="hover:text-primary transition-colors">Dúvidas</button>
+              <button onClick={() => scrollTo('benefits')} className="hover:text-primary transition-colors cursor-pointer">Features</button>
+              <button onClick={() => scrollTo('how-it-works')} className="hover:text-primary transition-colors cursor-pointer">How It Works</button>
+              <button onClick={() => scrollTo('pricing')} className="hover:text-primary transition-colors cursor-pointer">Pricing</button>
+              <button onClick={() => scrollTo('faq')} className="hover:text-primary transition-colors cursor-pointer">FAQ</button>
             </nav>
 
             <div className="hidden md:flex items-center gap-3">
-              <button className="px-5 py-2.5 text-sm font-semibold text-stone-600 hover:text-stone-900 transition-colors">
-                Entrar
+              <button 
+                onClick={() => navigate('/login')}
+                className="px-5 py-2.5 text-sm font-semibold text-stone-600 hover:text-stone-900 transition-colors cursor-pointer"
+              >
+                Sign In
               </button>
               <button
-                onClick={() => scrollTo('hero-cta')}
-                className="px-5 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95"
+                onClick={() => navigate('/login')}
+                className="px-5 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 cursor-pointer"
               >
-                Começar grátis
+                Start Free Trial
               </button>
             </div>
 
@@ -242,17 +247,17 @@ export default function Landing() {
               className="md:hidden border-t border-stone-100 bg-white overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-2">
-                <button onClick={() => scrollTo('benefits')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Recursos</button>
-                <button onClick={() => scrollTo('how-it-works')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Como funciona</button>
-                <button onClick={() => scrollTo('pricing')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Preços</button>
-                <button onClick={() => scrollTo('faq')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Dúvidas</button>
+                <button onClick={() => scrollTo('benefits')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Features</button>
+                <button onClick={() => scrollTo('how-it-works')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">How It Works</button>
+                <button onClick={() => scrollTo('pricing')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Pricing</button>
+                <button onClick={() => scrollTo('faq')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">FAQ</button>
                 <hr className="my-2 border-stone-100" />
-                <button className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Entrar</button>
+                <button onClick={() => navigate('/login')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Sign In</button>
                 <button
-                  onClick={() => scrollTo('hero-cta')}
+                  onClick={() => navigate('/login')}
                   className="p-3 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl text-center mt-2"
                 >
-                  Começar grátis
+                  Start Free Trial
                 </button>
               </div>
             </motion.div>
@@ -266,34 +271,40 @@ export default function Landing() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-light text-primary text-xs font-bold rounded-full mb-6">
               <Smartphone size={14} />
-              Lançamento 2026 — 14 dias grátis
+              Enterprise Edition 2026 — 14-Day Free Access
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-stone-900">
-              Sua fazenda no controle.{' '}
-              <span className="text-primary">Não o contrário.</span>
+              Your farm under total command.{' '}
+              <span className="text-primary">Not guesswork.</span>
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed">
-              Chega de planilhas perdidas, alertas que chegam tarde e decisão no achismo.
-              O AgroControl unifica clima, mercado, sanidade, estoque e equipe em um painel que funciona até offline.
+              Eliminate lost paper logs, delayed weather alerts, and reactive livestock treatments.
+              AgroTech brings CME commodity tickers, veterinary withholding, QR inventory, and field crew tasks into one unified offline-ready hub.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" id="hero-cta">
-              <button className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center">
-                Começar meu teste grátis
+              <button 
+                onClick={() => navigate('/login')}
+                className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
+              >
+                Launch Live App
                 <ArrowRight size={20} />
               </button>
-              <button className="px-8 py-4 text-base font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2">
-                Ver demonstração
+              <button 
+                onClick={() => scrollTo('benefits')}
+                className="px-8 py-4 text-base font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
+              >
+                Explore Modules
                 <ChevronDown size={18} />
               </button>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-stone-400">
-              <span className="flex items-center gap-1.5"><Shield size={14} /> Sem fidelidade</span>
-              <span className="flex items-center gap-1.5"><Wifi size={14} /> Funciona offline</span>
-              <span className="flex items-center gap-1.5"><Clock size={14} /> Setup em 30 min</span>
+              <span className="flex items-center gap-1.5"><Shield size={14} /> No Lock-in Contract</span>
+              <span className="flex items-center gap-1.5"><Wifi size={14} /> 100% Offline Capable</span>
+              <span className="flex items-center gap-1.5"><Clock size={14} /> Ready in 20 Minutes</span>
             </div>
           </div>
 
@@ -305,25 +316,25 @@ export default function Landing() {
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
-                <span className="ml-3 text-xs text-stone-400 font-mono">app.agrocontrol.com.br/dashboard</span>
+                <span className="ml-3 text-xs text-stone-400 font-mono">portal.heartland-ag.com/dashboard</span>
               </div>
               <div className="p-6 sm:p-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><BarChart3 size={14} /> Clima</div>
-                  <div className="text-2xl font-bold text-stone-900">28°C</div>
-                  <div className="text-xs text-stone-400 mt-1">Umidade 62% · Vento 12 km/h</div>
+                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
+                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><BarChart3 size={14} /> Weather Radar</div>
+                  <div className="text-2xl font-bold text-stone-900">78°F</div>
+                  <div className="text-xs text-stone-400 mt-1">Humidity 62% · Wind 8 mph</div>
                   <div className="mt-3 h-2 w-full bg-amber-100 rounded-full"><div className="h-2 w-3/4 bg-amber-500 rounded-full" /></div>
                 </div>
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><TrendingUp size={14} /> Boi Gordo</div>
-                  <div className="text-2xl font-bold text-green-600">R$ 245,50</div>
-                  <div className="text-xs text-green-500 mt-1">▲ 1,2% hoje</div>
+                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
+                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><TrendingUp size={14} /> CME Live Cattle</div>
+                  <div className="text-2xl font-bold text-green-600">$188.40/cwt</div>
+                  <div className="text-xs text-green-500 mt-1">▲ +1.2% today</div>
                   <div className="mt-3 h-2 w-full bg-green-100 rounded-full"><div className="h-2 w-4/5 bg-green-500 rounded-full" /></div>
                 </div>
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-sm">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><FlaskConical size={14} /> Sanidade</div>
-                  <div className="text-2xl font-bold text-stone-900">3 alertas</div>
-                  <div className="text-xs text-amber-500 mt-1">2 vacinas vencendo esta semana</div>
+                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
+                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><FlaskConical size={14} /> Veterinary Protocols</div>
+                  <div className="text-2xl font-bold text-stone-900">3 Active Alerts</div>
+                  <div className="text-xs text-amber-500 mt-1">2 withdrawal periods active</div>
                   <div className="mt-3 h-2 w-full bg-amber-100 rounded-full"><div className="h-2 w-1/4 bg-red-500 rounded-full" /></div>
                 </div>
               </div>
@@ -338,19 +349,19 @@ export default function Landing() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl sm:text-4xl font-extrabold text-primary">850+</div>
-              <div className="text-sm text-stone-500 mt-1">fazendas cadastradas</div>
+              <div className="text-sm text-stone-500 mt-1">Commercial Farms Enrolled</div>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">42 mil</div>
-              <div className="text-sm text-stone-500 mt-1">cabeças monitoradas</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-primary">42,000+</div>
+              <div className="text-sm text-stone-500 mt-1">Livestock Head Monitored</div>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">180 mil</div>
-              <div className="text-sm text-stone-500 mt-1">hectares geridos</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-primary">180,000+</div>
+              <div className="text-sm text-stone-500 mt-1">Acres Actively Managed</div>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">98%</div>
-              <div className="text-sm text-stone-500 mt-1">retenção de clientes</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-primary">98.4%</div>
+              <div className="text-sm text-stone-500 mt-1">Client Retention Rate</div>
             </div>
           </div>
         </div>
@@ -361,10 +372,10 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Tudo que sua fazenda precisa em um só lugar
+              Everything Your Agricultural Enterprise Requires
             </h2>
             <p className="mt-4 text-lg text-stone-500">
-              Seis módulos integrados que trabalham juntos para você tomar decisões mais rápidas e certeiras.
+              Six synchronized modules designed specifically for real-world farming and ranching operations.
             </p>
           </div>
 
@@ -394,10 +405,10 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Começar leva menos de 30 minutos
+              Up and Running in Under 20 Minutes
             </h2>
             <p className="mt-4 text-lg text-stone-500">
-              Sem implementação complexa. Sem consultoria cara. Sem desculpas.
+              No protracted software implementation. No complex IT consulting. Built for direct field deployment.
             </p>
           </div>
 
@@ -421,8 +432,11 @@ export default function Landing() {
           </div>
 
           <div className="mt-12 text-center">
-            <button className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95">
-              Quero começar agora
+            <button 
+              onClick={() => navigate('/login')}
+              className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 cursor-pointer"
+            >
+              Get Started Now
             </button>
           </div>
         </div>
@@ -433,10 +447,10 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Quem usa, aprova
+              Trusted by Leading Growers & Ranchers
             </h2>
             <p className="mt-4 text-lg text-stone-500">
-              Produtores reais, resultados reais. Veja o que estão dizendo.
+              Real farm operators across the Heartland share their experience.
             </p>
           </div>
 
@@ -448,7 +462,7 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
                 viewport={{ once: true }}
-                className="bg-white border border-stone-100 rounded-2xl p-6 shadow-sm"
+                className="bg-white border border-stone-100 rounded-2xl p-6 shadow-xs"
               >
                 <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: t.rating }).map((_, j) => (
@@ -471,10 +485,10 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Planos que crescem com você
+              Transparent Plans That Grow with Your Operation
             </h2>
             <p className="mt-4 text-lg text-stone-500">
-              Do pequeno produtor ao grande grupo. Sem surpresas no fim do mês.
+              Predictable pricing from single family parcels to multi-state cattle operations.
             </p>
           </div>
 
@@ -489,12 +503,12 @@ export default function Landing() {
                 className={`rounded-2xl border-2 p-8 flex flex-col ${
                   plan.highlighted
                     ? 'border-primary bg-white shadow-xl shadow-primary/10 scale-105'
-                    : 'border-stone-100 bg-white shadow-sm'
+                    : 'border-stone-100 bg-white shadow-xs'
                 }`}
               >
                 {plan.highlighted && (
                   <div className="text-xs font-bold text-primary bg-primary-light px-3 py-1 rounded-full inline-block w-fit mb-4">
-                    MAIS POPULAR
+                    MOST POPULAR
                   </div>
                 )}
                 <h3 className="text-xl font-bold text-stone-900">{plan.name}</h3>
@@ -515,7 +529,8 @@ export default function Landing() {
                 </ul>
 
                 <button
-                  className={`mt-8 w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 ${
+                  onClick={() => navigate('/login')}
+                  className={`mt-8 w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 cursor-pointer ${
                     plan.highlighted
                       ? 'bg-primary text-white shadow-lg shadow-primary/25 hover:bg-primary-hover'
                       : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
@@ -529,7 +544,7 @@ export default function Landing() {
 
           <div className="mt-10 text-center">
             <p className="text-sm text-stone-400 flex items-center justify-center gap-2">
-              <Shield size={14} /> Teste grátis por 14 dias. Sem cartão de crédito. Cancele quando quiser.
+              <Shield size={14} /> Full 14-day free access. No credit card required upfront. Cancel anytime.
             </p>
           </div>
         </div>
@@ -540,10 +555,10 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Dúvidas frequentes
+              Frequently Asked Questions
             </h2>
             <p className="mt-4 text-lg text-stone-500">
-              Tudo que você precisa saber antes de começar.
+              Clear answers to technical, operational, and commercial questions.
             </p>
           </div>
 
@@ -552,7 +567,7 @@ export default function Landing() {
               <div key={i} className="border border-stone-100 rounded-2xl overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-stone-900 hover:bg-stone-50 transition-colors"
+                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-stone-900 hover:bg-stone-50 transition-colors cursor-pointer"
                 >
                   {faq.q}
                   <ChevronDown
@@ -585,27 +600,33 @@ export default function Landing() {
       <section className="py-20 sm:py-28 px-4 bg-stone-900 text-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Sua fazenda merece uma gestão à altura dela
+            Your Farm Deserves Management Built for Modern Agriculture
           </h2>
           <p className="mt-4 text-lg text-stone-400">
-            Junte-se a 850+ produtores que já trocaram o achismo por dados.
-            Teste grátis por 14 dias, sem compromisso.
+            Join 850+ forward-thinking producers who traded paper notebooks for data-driven precision.
+            Test the system free for 14 days.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-4 text-base font-bold text-stone-900 bg-white hover:bg-stone-100 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center">
-              Começar meu teste grátis
+            <button 
+              onClick={() => navigate('/login')}
+              className="px-8 py-4 text-base font-bold text-stone-900 bg-white hover:bg-stone-100 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
+            >
+              Start Your Free Trial
               <ArrowRight size={20} />
             </button>
-            <button className="px-8 py-4 text-base font-semibold text-white border-2 border-stone-600 hover:border-stone-400 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2">
-              Falar com consultor
+            <button 
+              onClick={() => navigate('/login')}
+              className="px-8 py-4 text-base font-semibold text-white border-2 border-stone-600 hover:border-stone-400 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
+            >
+              Access Demo Workspace
             </button>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-stone-500">
-            <span className="flex items-center gap-1.5"><Shield size={14} /> Sem fidelidade</span>
-            <span className="flex items-center gap-1.5"><ScrollText size={14} /> Sem cartão de crédito</span>
-            <span className="flex items-center gap-1.5"><Clock size={14} /> Cancele quando quiser</span>
+            <span className="flex items-center gap-1.5"><Shield size={14} /> No Long-Term Commitment</span>
+            <span className="flex items-center gap-1.5"><ScrollText size={14} /> Instant Access</span>
+            <span className="flex items-center gap-1.5"><Clock size={14} /> Cancel Anytime in App</span>
           </div>
         </div>
       </section>
@@ -618,40 +639,40 @@ export default function Landing() {
               <div className="flex items-center gap-2 text-white mb-4">
                 <Sprout size={22} />
                 <span className="text-lg font-bold tracking-tight">
-                  AGRO<span className="text-stone-300">CONTROL</span>
+                  AGRO<span className="text-stone-300">TECH</span>
                 </span>
               </div>
               <p className="text-sm text-stone-500 leading-relaxed">
-                Gestão agropecuária inteligente para produtores que não querem perder tempo com planilha.
+                Precision farm management, sanitary monitoring, and inventory tracking for commercial agricultural operators.
               </p>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Produto</h4>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Platform</h4>
               <ul className="space-y-2 text-sm">
-                <li><button onClick={() => scrollTo('benefits')} className="hover:text-white transition-colors">Recursos</button></li>
-                <li><button onClick={() => scrollTo('pricing')} className="hover:text-white transition-colors">Preços</button></li>
-                <li><button onClick={() => scrollTo('how-it-works')} className="hover:text-white transition-colors">Como funciona</button></li>
+                <li><button onClick={() => scrollTo('benefits')} className="hover:text-white transition-colors cursor-pointer">Features</button></li>
+                <li><button onClick={() => scrollTo('pricing')} className="hover:text-white transition-colors cursor-pointer">Pricing</button></li>
+                <li><button onClick={() => scrollTo('how-it-works')} className="hover:text-white transition-colors cursor-pointer">How It Works</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Empresa</h4>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><span className="hover:text-white transition-colors cursor-pointer">Sobre</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Blog</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Contato</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">About Us</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Agronomy Blog</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Contact & Support</span></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Legal</h4>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Legal & Privacy</h4>
               <ul className="space-y-2 text-sm">
-                <li><span className="hover:text-white transition-colors cursor-pointer">Privacidade</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Termos</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">LGPD</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span></li>
+                <li><span className="hover:text-white transition-colors cursor-pointer">Data Security</span></li>
               </ul>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-stone-800 text-xs text-stone-600 text-center">
-            &copy; {new Date().getFullYear()} AgroControl. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} AgroTech Management Systems. All rights reserved.
           </div>
         </div>
       </footer>

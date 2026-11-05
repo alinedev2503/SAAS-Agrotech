@@ -18,24 +18,24 @@ export function useVoiceInput() {
       setIsListening(false);
       setProcessing(true);
 
-      // Mock transcription
+      // Mock transcription in US English
       const mockTranscriptions = [
-        "Registrar vacina de aftosa em 20 bezerros hoje",
-        "Aplicar adubo no talhão 4 amanhã",
-        "Vaca 103 com mastite, iniciar tratamento",
-        "Plantio de soja finalizado no setor norte"
+        "Log 20 doses of Foot & Mouth vaccine for Pen 4 calves today",
+        "Apply 10-34-0 starter fertilizer to Field 04 tomorrow",
+        "Heifer #103 diagnosed with mastitis, initiate Cephapirin withholding protocol",
+        "Finished planting Pioneer 1197AM corn in North 80-acre plot"
       ];
       const randomTranscription = mockTranscriptions[Math.floor(Math.random() * mockTranscriptions.length)];
       
       if (isOnline) {
         try {
           // Process with Gemini immediately if online
-          const model = "gemini-3-flash-preview";
+          const model = "gemini-2.5-flash";
           const prompt = `
-            Contexto: ${context}
-            Comando: "${randomTranscription}"
+            Context: ${context}
+            Voice Command: "${randomTranscription}"
             
-            Extraia dados estruturados em JSON.
+            Extract structured agricultural event data into JSON with keys (action, target, quantity, date, notes).
           `;
 
           const response = await ai.models.generateContent({
@@ -48,17 +48,17 @@ export function useVoiceInput() {
           setResult(JSON.stringify(parsed, null, 2));
         } catch (e) {
           console.error("Gemini Error:", e);
-          setResult("Erro ao processar online. Salvo para depois.");
+          setResult("Cloud parsing error. Cached locally for subsequent sync.");
           addToSyncQueue({ type: 'voice_command', content: randomTranscription, context });
         }
       } else {
         // Offline mode: Save raw audio/text to queue
-        setResult("Sem internet. Comando salvo para processamento na sede.");
+        setResult("Offline mode active: Audio command securely cached and queued for headquarters sync.");
         addToSyncQueue({ type: 'voice_command', content: randomTranscription, context });
       }
       
       setProcessing(false);
-    }, 2000);
+    }, 1500);
   }, [isOnline, addToSyncQueue]);
 
   return { isListening, processing, result, startListening };

@@ -36,15 +36,15 @@ const mockSubscriptions: Map<string, Array<(data: any[]) => void>> = new Map();
 
 const initialDemoData: Record<string, any[]> = {
   lots: [
-    { id: 'lot-1', name: 'Lote Confinamento A', species: 'bovino', quantity: 45 },
-    { id: 'lot-2', name: 'Lote Piquete Leiteiro', species: 'bovino', quantity: 28 },
-    { id: 'lot-3', name: 'Lote Recria Nelore', species: 'bovino', quantity: 60 }
+    { id: 'lot-1', name: 'Feedlot Pen A', species: 'cattle', quantity: 45 },
+    { id: 'lot-2', name: 'Dairy Paddock 01', species: 'cattle', quantity: 28 },
+    { id: 'lot-3', name: 'North Pasture Herd', species: 'cattle', quantity: 60 }
   ],
   animals: [
-    { id: 'anim-1', tag: 'BR-1001', name: 'Estrela', species: 'bovino', breed: 'Nelore', birth_date: '2023-04-12', weight: 485, status: 'ativo', lot_id: 'lot-1' },
-    { id: 'anim-2', tag: 'BR-1002', name: 'Barão', species: 'bovino', breed: 'Angus', birth_date: '2023-06-20', weight: 510, status: 'ativo', lot_id: 'lot-1' },
-    { id: 'anim-3', tag: 'BR-1003', name: 'Mimosa', species: 'bovino', breed: 'Girolando', birth_date: '2022-11-05', weight: 460, status: 'quarentena', lot_id: 'lot-2' },
-    { id: 'anim-4', tag: 'BR-1004', name: 'Soberano', species: 'bovino', breed: 'Brahman', birth_date: '2023-01-15', weight: 540, status: 'tratamento', lot_id: 'lot-3' }
+    { id: 'anim-1', tag: 'US-1001', name: 'Star Belle', species: 'cattle', breed: 'Black Angus', birth_date: '2023-04-12', weight: 1180, status: 'active', lot_id: 'lot-1' },
+    { id: 'anim-2', tag: 'US-1002', name: 'Baron Prime', species: 'cattle', breed: 'Red Angus', birth_date: '2023-06-20', weight: 1220, status: 'active', lot_id: 'lot-1' },
+    { id: 'anim-3', tag: 'US-1003', name: 'Daisy Meadow', species: 'cattle', breed: 'Holstein', birth_date: '2022-11-05', weight: 1040, status: 'quarantined', lot_id: 'lot-2' },
+    { id: 'anim-4', tag: 'US-1004', name: 'Sovereign', species: 'cattle', breed: 'Hereford', birth_date: '2023-01-15', weight: 1310, status: 'active', lot_id: 'lot-3' }
   ]
 };
 

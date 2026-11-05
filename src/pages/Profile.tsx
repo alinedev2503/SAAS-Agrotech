@@ -3,35 +3,35 @@ import { User, MapPin, Upload, Palette, Save, Building, Phone, Mail, ShieldCheck
 
 export default function Profile() {
   const [formData, setFormData] = useState({
-    name: 'João Medeiros',
-    role: 'Gestor Geral',
-    email: 'joao.medeiros@agrocontrol.com',
-    phone: '(67) 99988-7766',
-    farmName: 'Fazenda Santa Helena',
-    farmSize: '1.250 ha',
-    location: 'Dourados, MS',
+    name: 'John Miller',
+    role: 'General Operations Manager',
+    email: 'john.miller@heartland-ag.com',
+    phone: '(515) 555-0198',
+    farmName: 'Heartland Agricultural Operations',
+    farmSize: '3,200 acres',
+    location: 'Ames, Story County, Iowa',
     primaryColor: '#ea580c', // orange-600
     secondaryColor: '#4f46e5', // indigo-600
     logo: null as string | null,
     favicon: null as string | null,
     loginBackground: null as string | null,
-    customDomain: 'app.fazendasantahelena.com.br',
-    appTitle: 'AgroControl Santa Helena',
-    supportEmail: 'suporte@fazendasantahelena.com.br',
-    termsUrl: 'https://fazendasantahelena.com.br/termos',
-    privacyUrl: 'https://fazendasantahelena.com.br/privacidade',
+    customDomain: 'portal.heartland-ag.com',
+    appTitle: 'Heartland AgroTech Management',
+    supportEmail: 'support@heartland-ag.com',
+    termsUrl: 'https://heartland-ag.com/terms',
+    privacyUrl: 'https://heartland-ag.com/privacy',
     smtpHost: 'smtp.office365.com',
     smtpPort: '587',
-    smtpUser: 'notificacoes@fazendasantahelena.com.br',
-    smtpSenderName: 'AgroControl Notificações',
-    smtpReplyTo: 'no-reply@fazendasantahelena.com.br',
+    smtpUser: 'notifications@heartland-ag.com',
+    smtpSenderName: 'Heartland AgroTech Notifications',
+    smtpReplyTo: 'no-reply@heartland-ag.com',
     logoDark: null as string | null,
-    footerText: '© 2026 Fazenda Santa Helena. Tecnologia AgroControl.',
+    footerText: '© 2026 Heartland Agricultural Operations. Powered by AgroTech Cloud.',
     domainStatus: 'verified' as 'verified' | 'pending' | 'error',
     // Payment Gateways
-    stripeEnabled: false,
-    stripePublicKey: '',
-    stripeSecretKey: '',
+    stripeEnabled: true,
+    stripePublicKey: 'pk_live_51M0demo...',
+    stripeSecretKey: '••••••••••••••••••••••••',
     mercadoPagoEnabled: false,
     mercadoPagoPublicKey: '',
     mercadoPagoAccessToken: '',
@@ -41,7 +41,7 @@ export default function Profile() {
   });
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [language, setLanguage] = useState<'pt' | 'en' | 'es'>('pt');
+  const [language, setLanguage] = useState<'en' | 'es' | 'pt'>('en');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -115,7 +115,7 @@ export default function Profile() {
       setIsSaving(false);
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3500);
-    }, 1500);
+    }, 1000);
   };
 
   const handleFileUpload = (field: keyof typeof formData) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,10 +130,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className="space-y-6 max-w-5xl mx-auto">
       <header>
-        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Perfil & Configurações</h2>
-        <p className="text-stone-500 dark:text-stone-400">Gerencie seus dados e a identidade visual da sua organização.</p>
+        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Organization & White-Label Settings</h2>
+        <p className="text-stone-500 dark:text-stone-400">Manage administrator credentials, farm profile, custom branding, and billing gateways.</p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -141,60 +141,60 @@ export default function Profile() {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Personal Info Card */}
-          <section className="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-            <div className="flex items-center gap-3 mb-6 border-b border-stone-100 pb-4">
-              <div className="bg-stone-100 p-2 rounded-lg text-stone-600">
+          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800 transition-colors">
+            <div className="flex items-center gap-3 mb-6 border-b border-stone-100 dark:border-stone-800 pb-4">
+              <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <User size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800">Dados do Gestor</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Farm Administrator Details</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Nome Completo</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Full Legal Name</label>
                 <div className="relative">
                   <User size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="text" 
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Cargo / Função</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Operational Role</label>
                 <div className="relative">
                   <ShieldCheck size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="text" 
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Email Corporativo</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Corporate Email Address</label>
                 <div className="relative">
                   <Mail size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="email" 
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-1">Telefone / WhatsApp</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Phone / Mobile</label>
                 <div className="relative">
                   <Phone size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="tel" 
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -202,42 +202,42 @@ export default function Profile() {
           </section>
 
           {/* Farm Info Card */}
-          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800">
             <div className="flex items-center gap-3 mb-6 border-b border-stone-100 dark:border-stone-800 pb-4">
               <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <Building size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Dados da Propriedade</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Ranch & Acreage Overview</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Nome da Fazenda / Organização</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Farm / Agribusiness Name</label>
                 <input 
                   type="text" 
                   value={formData.farmName}
                   onChange={(e) => setFormData({...formData, farmName: e.target.value})}
-                  className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                  className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Área Total</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Total Acreage</label>
                 <input 
                   type="text" 
                   value={formData.farmSize}
                   onChange={(e) => setFormData({...formData, farmSize: e.target.value})}
-                  className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                  className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Localização (Sede)</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Headquarters Location</label>
                 <div className="relative">
                   <MapPin size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="text" 
                     value={formData.location}
                     onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-orange-500 outline-none"
                   />
                 </div>
               </div>
@@ -245,21 +245,21 @@ export default function Profile() {
           </section>
 
           {/* White-Label Advanced Settings */}
-          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800">
             <div className="flex items-center gap-3 mb-6 border-b border-stone-100 dark:border-stone-800 pb-4">
               <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600 dark:text-indigo-400">
                 <Server size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl text-stone-800 dark:text-white">Infraestrutura White-Label</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">Domínio personalizado e servidor de email.</p>
+                <h3 className="font-bold text-xl text-stone-800 dark:text-white">White-Label Infrastructure</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">Custom enterprise domain, branding endpoints, and transactional SMTP.</p>
               </div>
             </div>
 
             <div className="space-y-6">
               {/* Custom Domain */}
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Domínio Personalizado (CNAME)</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Custom Domain (CNAME Alias)</label>
                 <div className="flex gap-2">
                   <div className="relative flex-1">
                     <Link size={18} className="absolute left-3 top-3 text-stone-400" />
@@ -267,7 +267,7 @@ export default function Profile() {
                       type="text" 
                       value={formData.customDomain}
                       onChange={(e) => setFormData({...formData, customDomain: e.target.value})}
-                      className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-sm"
                     />
                   </div>
                   <div className={`flex items-center gap-2 px-4 rounded-xl border ${
@@ -277,33 +277,33 @@ export default function Profile() {
                   }`}>
                     {formData.domainStatus === 'verified' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
                     <span className="text-sm font-bold hidden sm:inline">
-                      {formData.domainStatus === 'verified' ? 'Verificado' : 'Pendente'}
+                      {formData.domainStatus === 'verified' ? 'Verified' : 'Pending DNS'}
                     </span>
                   </div>
                 </div>
-                <p className="text-xs text-stone-500 mt-2">
-                  Aponte o CNAME do seu domínio para <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-stone-700 dark:text-stone-300">cname.agrocontrol.com</code>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-2">
+                  Point your DNS CNAME record to <code className="bg-stone-100 dark:bg-stone-800 px-1 py-0.5 rounded text-stone-700 dark:text-stone-300 font-mono">cname.agrotechcloud.io</code>
                 </p>
               </div>
 
               {/* App Identity */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Título da Aplicação</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Application Title</label>
                   <input 
                     type="text" 
                     value={formData.appTitle}
                     onChange={(e) => setFormData({...formData, appTitle: e.target.value})}
-                    className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Email de Suporte</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Support Email Desk</label>
                   <input 
                     type="email" 
                     value={formData.supportEmail}
                     onChange={(e) => setFormData({...formData, supportEmail: e.target.value})}
-                    className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   />
                 </div>
               </div>
@@ -311,88 +311,88 @@ export default function Profile() {
               {/* Legal URLs */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">URL Termos de Uso</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Terms of Service URL</label>
                   <input 
                     type="url" 
                     value={formData.termsUrl}
                     onChange={(e) => setFormData({...formData, termsUrl: e.target.value})}
-                    className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">URL Política de Privacidade</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Privacy Policy URL</label>
                   <input 
                     type="url" 
                     value={formData.privacyUrl}
                     onChange={(e) => setFormData({...formData, privacyUrl: e.target.value})}
-                    className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-xs"
                   />
                 </div>
               </div>
 
               {/* SMTP Settings */}
               <div className="pt-4 border-t border-stone-100 dark:border-stone-800">
-                <h4 className="font-bold text-stone-800 dark:text-white mb-3">Configuração SMTP (Email)</h4>
+                <h4 className="font-bold text-stone-800 dark:text-white mb-3">SMTP Dispatch Server</h4>
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                   <div className="md:col-span-8">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Host SMTP</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Host Server</label>
                     <input 
                       type="text" 
                       value={formData.smtpHost}
                       onChange={(e) => setFormData({...formData, smtpHost: e.target.value})}
-                      placeholder="smtp.exemplo.com"
-                      className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      placeholder="smtp.example.com"
+                      className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-sm"
                     />
                   </div>
                   <div className="md:col-span-4">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Porta</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Port</label>
                     <input 
                       type="text" 
                       value={formData.smtpPort}
                       onChange={(e) => setFormData({...formData, smtpPort: e.target.value})}
                       placeholder="587"
-                      className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-sm"
                     />
                   </div>
                   <div className="md:col-span-12">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Usuário SMTP</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">SMTP Username</label>
                     <input 
                       type="text" 
                       value={formData.smtpUser}
                       onChange={(e) => setFormData({...formData, smtpUser: e.target.value})}
-                      className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-sm"
                     />
                   </div>
                   <div className="md:col-span-6">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Nome do Remetente</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Sender Display Name</label>
                     <input 
                       type="text" 
                       value={formData.smtpSenderName}
                       onChange={(e) => setFormData({...formData, smtpSenderName: e.target.value})}
-                      className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
                   </div>
                   <div className="md:col-span-6">
-                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Email de Resposta (Reply-To)</label>
+                    <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Reply-To Address</label>
                     <input 
                       type="email" 
                       value={formData.smtpReplyTo}
                       onChange={(e) => setFormData({...formData, smtpReplyTo: e.target.value})}
-                      className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                      className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Texto do Rodapé (Copyright)</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Footer Copyright Notice</label>
                 <div className="relative">
                   <Type size={18} className="absolute left-3 top-3 text-stone-400" />
                   <input 
                     type="text" 
                     value={formData.footerText}
                     onChange={(e) => setFormData({...formData, footerText: e.target.value})}
-                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full pl-10 p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   />
                 </div>
               </div>
@@ -400,24 +400,25 @@ export default function Profile() {
           </section>
 
           {/* Payment Settings */}
-          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800">
             <div className="flex items-center gap-3 mb-6 border-b border-stone-100 dark:border-stone-800 pb-4">
               <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg text-green-600 dark:text-green-400">
                 <CreditCard size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl text-stone-800 dark:text-white">Gateways de Pagamento</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">Configure as formas de recebimento.</p>
+                <h3 className="font-bold text-xl text-stone-800 dark:text-white">Commercial Payment Gateways</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">Configure subscriber billing, harvest sales, and client invoicing.</p>
               </div>
             </div>
 
             <div className="space-y-6">
               {/* Stripe */}
-              <div className="border border-stone-200 dark:border-stone-700 rounded-xl p-4 transition-all hover:border-green-200 dark:hover:border-green-900">
+              <div className="border border-stone-200 dark:border-stone-800 rounded-xl p-4 transition-all hover:border-green-300 dark:hover:border-green-800">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="font-bold text-lg text-stone-800 dark:text-white flex items-center gap-2">
-                      <span className="text-[#635BFF] font-extrabold">stripe</span>
+                      <span className="text-[#635BFF] font-extrabold tracking-wide">stripe</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 font-mono">Credit Card / ACH Wire</span>
                     </div>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -433,111 +434,23 @@ export default function Profile() {
                 {formData.stripeEnabled && (
                   <div className="space-y-4 animate-in fade-in slide-in-from-top-2 pt-2 border-t border-stone-100 dark:border-stone-800">
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Chave Pública (Public Key)</label>
+                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Stripe Publishable Key</label>
                       <input 
                         type="text" 
                         value={formData.stripePublicKey}
                         onChange={(e) => setFormData({...formData, stripePublicKey: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
-                        placeholder="pk_test_..."
+                        className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
+                        placeholder="pk_live_..."
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Chave Secreta (Secret Key)</label>
+                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Stripe Secret Key</label>
                       <input 
                         type="password" 
                         value={formData.stripeSecretKey}
                         onChange={(e) => setFormData({...formData, stripeSecretKey: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
-                        placeholder="sk_test_..."
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Mercado Pago */}
-              <div className="border border-stone-200 dark:border-stone-700 rounded-xl p-4 transition-all hover:border-blue-200 dark:hover:border-blue-900">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="font-bold text-lg text-stone-800 dark:text-white flex items-center gap-2">
-                      <span className="text-[#009EE3] font-extrabold">mercado pago</span>
-                    </div>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.mercadoPagoEnabled} 
-                      onChange={(e) => setFormData({...formData, mercadoPagoEnabled: e.target.checked})} 
-                      className="sr-only peer" 
-                    />
-                    <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-stone-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-stone-600 peer-checked:bg-blue-500"></div>
-                  </label>
-                </div>
-                {formData.mercadoPagoEnabled && (
-                  <div className="space-y-4 animate-in fade-in slide-in-from-top-2 pt-2 border-t border-stone-100 dark:border-stone-800">
-                    <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Chave Pública (Public Key)</label>
-                      <input 
-                        type="text" 
-                        value={formData.mercadoPagoPublicKey}
-                        onChange={(e) => setFormData({...formData, mercadoPagoPublicKey: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
-                        placeholder="TEST-..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Access Token</label>
-                      <input 
-                        type="password" 
-                        value={formData.mercadoPagoAccessToken}
-                        onChange={(e) => setFormData({...formData, mercadoPagoAccessToken: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
-                        placeholder="TEST-..."
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Asaas */}
-              <div className="border border-stone-200 dark:border-stone-700 rounded-xl p-4 transition-all hover:border-blue-200 dark:hover:border-blue-900">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="font-bold text-lg text-stone-800 dark:text-white flex items-center gap-2">
-                      <span className="text-[#0030b9] dark:text-[#4d8eff] font-extrabold">asaas</span>
-                    </div>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.asaasEnabled} 
-                      onChange={(e) => setFormData({...formData, asaasEnabled: e.target.checked})} 
-                      className="sr-only peer" 
-                    />
-                    <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-stone-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-stone-600 peer-checked:bg-[#0030b9]"></div>
-                  </label>
-                </div>
-                {formData.asaasEnabled && (
-                  <div className="space-y-4 animate-in fade-in slide-in-from-top-2 pt-2 border-t border-stone-100 dark:border-stone-800">
-                    <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">Chave de API (API Key)</label>
-                      <input 
-                        type="password" 
-                        value={formData.asaasApiKey}
-                        onChange={(e) => setFormData({...formData, asaasApiKey: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
-                        placeholder="$aact_..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">ID da Carteira (Wallet ID)</label>
-                      <input 
-                        type="text" 
-                        value={formData.asaasWalletId}
-                        onChange={(e) => setFormData({...formData, asaasWalletId: e.target.value})}
-                        className="w-full p-2.5 border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
-                        placeholder="Ex: 123456"
+                        className="w-full p-2.5 border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-stone-900 dark:text-white rounded-xl focus:ring-2 focus:ring-green-500 outline-none font-mono text-sm"
+                        placeholder="sk_live_..."
                       />
                     </div>
                   </div>
@@ -551,49 +464,49 @@ export default function Profile() {
         <div className="lg:col-span-1 space-y-6">
           
           {/* System Preferences */}
-          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+          <section className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800">
             <div className="flex items-center gap-3 mb-6 border-b border-stone-100 dark:border-stone-800 pb-4">
               <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-stone-600 dark:text-stone-300">
                 <Globe size={24} />
               </div>
-              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Preferências</h3>
+              <h3 className="font-bold text-xl text-stone-800 dark:text-white">Display & Theme</h3>
             </div>
 
             <div className="space-y-6">
               {/* Theme Toggle */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-indigo-100 text-indigo-600' : 'bg-orange-100 text-orange-600'}`}>
+                  <div className={`p-2 rounded-lg ${theme === 'dark' ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400' : 'bg-orange-100 text-orange-600'}`}>
                     {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
                   </div>
                   <div>
-                    <p className="font-bold text-stone-900 dark:text-white">Modo Escuro</p>
-                    <p className="text-xs text-stone-500 dark:text-stone-400">{theme === 'dark' ? 'Ativado' : 'Desativado'}</p>
+                    <p className="font-bold text-stone-900 dark:text-white">Dark Theme</p>
+                    <p className="text-xs text-stone-500 dark:text-stone-400">{theme === 'dark' ? 'Active' : 'Disabled'}</p>
                   </div>
                 </div>
                 <button 
                   onClick={toggleTheme}
-                  className={`w-12 h-6 rounded-full p-1 transition-colors ${theme === 'dark' ? 'bg-indigo-600' : 'bg-stone-300'}`}
+                  className={`w-12 h-6 rounded-full p-1 transition-colors cursor-pointer ${theme === 'dark' ? 'bg-indigo-600' : 'bg-stone-300'}`}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
+                  <div className={`w-4 h-4 rounded-full bg-white shadow-xs transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
                 </button>
               </div>
 
               {/* Language Selector */}
               <div>
                 <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 flex items-center gap-2">
-                  <Languages size={16} /> Idioma do Sistema
+                  <Languages size={16} /> Regional Language
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { code: 'pt', label: 'Português', flag: '🇧🇷' },
                     { code: 'en', label: 'English', flag: '🇺🇸' },
-                    { code: 'es', label: 'Español', flag: '🇪🇸' }
+                    { code: 'es', label: 'Español', flag: '🇲🇽' },
+                    { code: 'pt', label: 'Português', flag: '🇧🇷' }
                   ].map((lang) => (
                     <button
                       key={lang.code}
                       onClick={() => setLanguage(lang.code as any)}
-                      className={`p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1 ${
+                      className={`p-2 rounded-xl border-2 transition-all flex flex-col items-center gap-1 cursor-pointer ${
                         language === lang.code 
                           ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400' 
                           : 'border-stone-200 dark:border-stone-700 hover:border-stone-300 dark:hover:border-stone-600 text-stone-600 dark:text-stone-400'
@@ -608,14 +521,14 @@ export default function Profile() {
             </div>
           </section>
 
-          <section className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 transition-colors duration-300">
+          <section className="bg-white dark:bg-stone-900 text-stone-900 dark:text-white p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800 transition-colors duration-300">
             <div className="flex items-center gap-3 mb-6 border-b border-stone-200 dark:border-stone-700 pb-4">
-              <div className="bg-stone-100 dark:bg-stone-700 p-2 rounded-lg text-orange-600 dark:text-orange-500">
+              <div className="bg-stone-100 dark:bg-stone-800 p-2 rounded-lg text-orange-600 dark:text-orange-500">
                 <Palette size={24} />
               </div>
               <div>
-                <h3 className="font-bold text-xl">Identidade Visual</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">White-Label Config</p>
+                <h3 className="font-bold text-xl">Visual Branding</h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400">White-Label Customization</p>
               </div>
             </div>
 
@@ -623,7 +536,7 @@ export default function Profile() {
               {/* Logo Uploads */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Modo Claro)</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Light Mode)</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center">
                     <input 
                       type="file" 
@@ -636,13 +549,13 @@ export default function Profile() {
                     ) : (
                       <div className="flex flex-col items-center text-stone-500 dark:text-stone-400 group-hover:text-orange-500 dark:group-hover:text-orange-400">
                         <Upload size={24} className="mb-2" />
-                        <span className="text-xs">Upload Light</span>
+                        <span className="text-xs">Upload Light Logo</span>
                       </div>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Modo Escuro)</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Logo (Dark Mode)</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center bg-stone-900">
                     <input 
                       type="file" 
@@ -655,7 +568,7 @@ export default function Profile() {
                     ) : (
                       <div className="flex flex-col items-center text-stone-500 dark:text-stone-400 group-hover:text-orange-500 dark:group-hover:text-orange-400">
                         <Upload size={24} className="mb-2" />
-                        <span className="text-xs">Upload Dark</span>
+                        <span className="text-xs">Upload Dark Logo</span>
                       </div>
                     )}
                   </div>
@@ -665,7 +578,7 @@ export default function Profile() {
               {/* Favicon & Login Background */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Favicon (Ícone)</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Favicon Icon</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center">
                     <input 
                       type="file" 
@@ -676,12 +589,12 @@ export default function Profile() {
                     {formData.favicon ? (
                       <img src={formData.favicon} alt="Favicon" className="h-8 w-8 object-contain" />
                     ) : (
-                      <span className="text-xs text-stone-500">Upload .ICO/PNG</span>
+                      <span className="text-xs text-stone-500">Upload .ICO or PNG</span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Fundo do Login</label>
+                  <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Login Hero Wall</label>
                   <div className="border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-xl p-4 text-center hover:border-orange-500 transition-colors cursor-pointer relative group h-32 flex items-center justify-center overflow-hidden">
                     <input 
                       type="file" 
@@ -692,7 +605,7 @@ export default function Profile() {
                     {formData.loginBackground ? (
                       <img src={formData.loginBackground} alt="Login Bg" className="w-full h-full object-cover opacity-50" />
                     ) : (
-                      <span className="text-xs text-stone-500">Upload Imagem</span>
+                      <span className="text-xs text-stone-500">Upload Image</span>
                     )}
                   </div>
                 </div>
@@ -700,10 +613,10 @@ export default function Profile() {
 
               {/* Color Picker */}
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Cores do Sistema</label>
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Theme Palette</label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-stone-500 mb-1">Cor Primária</p>
+                    <p className="text-xs text-stone-500 mb-1">Primary Color</p>
                     <div className="flex items-center gap-3">
                       <input 
                         type="color" 
@@ -715,7 +628,7 @@ export default function Profile() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs text-stone-500 mb-1">Cor Secundária</p>
+                    <p className="text-xs text-stone-500 mb-1">Secondary Color</p>
                     <div className="flex items-center gap-3">
                       <input 
                         type="color" 
@@ -731,19 +644,19 @@ export default function Profile() {
 
               {/* Preview Button */}
               <div className="pt-4 border-t border-stone-200 dark:border-stone-700">
-                <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">Pré-visualização:</p>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-2">Live UI Preview:</p>
                 <div className="flex gap-2">
                   <button 
                     className="flex-1 py-3 rounded-xl font-bold text-white shadow-lg transition-all"
                     style={{ backgroundColor: formData.primaryColor }}
                   >
-                    Primário
+                    Primary CTA
                   </button>
                   <button 
                     className="flex-1 py-3 rounded-xl font-bold text-white shadow-lg transition-all"
                     style={{ backgroundColor: formData.secondaryColor }}
                   >
-                    Secundário
+                    Secondary Action
                   </button>
                 </div>
               </div>
@@ -751,27 +664,27 @@ export default function Profile() {
           </section>
 
           {/* Save Actions */}
-          <div className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 sticky top-24 transition-colors duration-300">
+          <div className="bg-white dark:bg-stone-900 p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-stone-800 sticky top-24 transition-colors duration-300">
             <button 
               onClick={handleSave}
               disabled={isSaving}
-              className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-green-900/20"
+              className="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-green-900/20 cursor-pointer"
             >
               {isSaving ? (
-                <span className="animate-pulse">Salvando...</span>
+                <span className="animate-pulse">Saving Settings...</span>
               ) : (
                 <>
-                  <Save size={24} /> Salvar Alterações
+                  <Save size={24} /> Save Changes
                 </>
               )}
             </button>
             {saveSuccess && (
               <div className="mt-3 p-3 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300 text-sm text-center font-medium animate-fadeIn">
-                Configurações salvas com sucesso!
+                Configuration successfully saved!
               </div>
             )}
             <p className="text-xs text-center text-stone-400 dark:text-stone-500 mt-3">
-              Última sincronização: Hoje às 08:45
+              Last cloud sync: Today at 08:45 AM
             </p>
           </div>
         </div>

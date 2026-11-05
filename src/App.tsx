@@ -26,7 +26,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+    return <div className="min-h-screen flex items-center justify-center font-medium text-stone-500">Loading AgroTech...</div>;
   }
   
   if (!user) {
@@ -46,13 +46,13 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   const allNavItems = [
-    { id: 'dashboard', path: '/', label: 'Visão Geral', icon: LayoutDashboard, enabled: true },
-    { id: 'market', path: '/market', label: 'Mercado & Clima', icon: LineChart, enabled: config.features.marketIntelligence },
-    { id: 'sanitary', path: '/sanitary', label: 'Manejo Sanitário', icon: Syringe, enabled: config.features.sanitary },
-    { id: 'crops', path: '/crops', label: 'Agricultura', icon: Sprout, enabled: config.features.crops },
-    { id: 'stock', path: '/stock', label: 'Estoque', icon: Package, enabled: config.features.stock },
-    { id: 'animals', path: '/animals', label: 'Pecuária', icon: Beef, enabled: config.features.animals },
-    { id: 'team', path: '/team', label: 'Equipe', icon: Users, enabled: config.features.team },
+    { id: 'dashboard', path: '/', label: 'Overview', icon: LayoutDashboard, enabled: true },
+    { id: 'market', path: '/market', label: 'Market & Weather', icon: LineChart, enabled: config.features.marketIntelligence },
+    { id: 'sanitary', path: '/sanitary', label: 'Health & Sanitary', icon: Syringe, enabled: config.features.sanitary },
+    { id: 'crops', path: '/crops', label: 'Crops & Fields', icon: Sprout, enabled: config.features.crops },
+    { id: 'stock', path: '/stock', label: 'Inventory & Stock', icon: Package, enabled: config.features.stock },
+    { id: 'animals', path: '/animals', label: 'Livestock & Herd', icon: Beef, enabled: config.features.animals },
+    { id: 'team', path: '/team', label: 'Team & Staff', icon: Users, enabled: config.features.team },
   ];
 
   const navItems = allNavItems.filter(item => item.enabled);
@@ -104,7 +104,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
                  <span className="font-bold text-sm">{user?.email?.substring(0, 2).toUpperCase() || 'US'}</span>
                </div>
             </div>
-            <button onClick={signOut} className="text-sm text-stone-500 hover:text-red-500">Sair</button>
+            <button onClick={signOut} className="text-sm font-semibold text-stone-500 hover:text-red-500 transition-colors">Sign Out</button>
           </div>
         </div>
       </header>

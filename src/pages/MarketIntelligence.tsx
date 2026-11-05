@@ -6,60 +6,60 @@ export default function MarketIntelligence() {
 
   useEffect(() => {
     // Simulate API fetch delay
-    const timer = setTimeout(() => setLoading(false), 1500);
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
   const commodities = [
-    { name: 'Boi Gordo', price: 'R$ 235,50', unit: '@', variation: '+1.2%', trend: 'up' },
-    { name: 'Soja', price: 'R$ 128,00', unit: 'sc 60kg', variation: '-0.5%', trend: 'down' },
-    { name: 'Milho', price: 'R$ 58,90', unit: 'sc 60kg', variation: '+0.1%', trend: 'up' },
-    { name: 'Café Arábica', price: 'R$ 1.150,00', unit: 'sc 60kg', variation: '+2.5%', trend: 'up' },
+    { name: 'Live Cattle (CME)', price: '$188.40', unit: 'cwt', variation: '+1.2%', trend: 'up' },
+    { name: 'Soybeans (CBOT)', price: '$11.65', unit: 'bu', variation: '-0.5%', trend: 'down' },
+    { name: 'Corn (CBOT)', price: '$4.42', unit: 'bu', variation: '+0.4%', trend: 'up' },
+    { name: 'Wheat (CBOT)', price: '$5.78', unit: 'bu', variation: '+1.8%', trend: 'up' },
   ];
 
   const news = [
     { 
       id: 1, 
-      source: 'Canal Rural', 
-      title: 'Acordo Mercosul-UE avança: o que muda para o agro brasileiro?', 
-      tag: 'Geopolítica',
-      time: '2h atrás'
+      source: 'USDA FAS', 
+      title: 'US Beef Export Demand Surges Across Asian Markets; Spot Prices Rally', 
+      tag: 'Trade',
+      time: '2h ago'
     },
     { 
       id: 2, 
-      source: 'Notícias Agrícolas', 
-      title: 'China retoma compras de carne bovina; mercado reage.', 
-      tag: 'Mercado',
-      time: '4h atrás'
+      source: 'Farm Futures', 
+      title: 'Midwest Rail Corridor Maintenance Scheduled; Grain Elevators Advised to Adjust Logistics', 
+      tag: 'Logistics',
+      alert: true,
+      time: '35m ago'
     },
     { 
       id: 3, 
-      source: 'Logística Hoje', 
-      title: 'Fila de caminhões em Miritituba chega a 10km; evite a rota.', 
-      tag: 'Logística',
-      alert: true,
-      time: '30min atrás'
+      source: 'AgWeb Markets', 
+      title: 'Fertilizer Input Pricing Normalizes for Spring Planting Across Central Plains', 
+      tag: 'Inputs',
+      time: '4h ago'
     },
   ];
 
   const weatherAlerts = [
     {
       id: 1,
-      type: 'Geada',
-      risk: 'Alto',
-      message: 'Risco de geada na madrugada de terça-feira. Prepare irrigação.',
-      icon: CloudRain, // Using CloudRain as generic weather, ideally Snowflake if available
-      color: 'text-blue-500',
-      bg: 'bg-blue-50'
+      type: 'Frost Risk Alert',
+      risk: 'High',
+      message: 'Sub-freezing ground temperatures forecast Tuesday dawn (30°F / -1°C). Check frost-sensitive crops and calibrate irrigation.',
+      icon: CloudRain,
+      color: 'text-blue-500 dark:text-blue-400',
+      bg: 'bg-blue-50 dark:bg-blue-950/30'
     },
     {
       id: 2,
-      type: 'Estresse Hídrico',
-      risk: 'Médio',
-      message: 'Déficit hídrico acumulado de 15mm. Considere irrigação suplementar.',
+      type: 'Soil Moisture Deficit',
+      risk: 'Moderate',
+      message: 'Cumulative moisture deficit of 0.6 in detected in topsoil layer. Supplemental center-pivot irrigation recommended.',
       icon: Sun,
-      color: 'text-orange-500',
-      bg: 'bg-orange-50'
+      color: 'text-orange-500 dark:text-orange-400',
+      bg: 'bg-orange-50 dark:bg-orange-950/30'
     }
   ];
 
@@ -74,8 +74,8 @@ export default function MarketIntelligence() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <header>
-        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Inteligência de Mercado</h2>
-        <p className="text-stone-500 dark:text-stone-400">Cotações, notícias e clima para decisões estratégicas.</p>
+        <h2 className="text-3xl font-bold text-stone-900 dark:text-white">Market & Weather Intelligence</h2>
+        <p className="text-stone-500 dark:text-stone-400">Commodity futures, agricultural trade news, and predictive weather for strategic decisions.</p>
       </header>
 
       {/* Commodities Ticker */}
@@ -107,9 +107,9 @@ export default function MarketIntelligence() {
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-xl text-stone-800 dark:text-white flex items-center gap-2">
               <Globe className="text-primary" size={20} />
-              Radar Geopolítico & Logístico
+              Geopolitical & Logistics Radar
             </h3>
-            <span className="text-xs font-bold text-stone-400 uppercase">Fonte: Canal Rural / Notícias Agrícolas</span>
+            <span className="text-xs font-bold text-stone-400 uppercase">Sources: USDA / CME / Farm Progress</span>
           </div>
           
           <div className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-800 divide-y divide-stone-100 dark:divide-stone-800">
@@ -129,7 +129,7 @@ export default function MarketIntelligence() {
                   {item.alert && <AlertTriangle className="inline mr-2 text-red-500" size={18} />}
                   {item.title}
                 </h4>
-                <p className="text-sm text-stone-500 dark:text-stone-400">Fonte: {item.source}</p>
+                <p className="text-sm text-stone-500 dark:text-stone-400">Source: {item.source}</p>
               </div>
             ))}
           </div>
@@ -139,15 +139,15 @@ export default function MarketIntelligence() {
         <section className="space-y-4">
           <h3 className="font-bold text-xl text-stone-800 dark:text-white flex items-center gap-2">
             <CloudRain className="text-blue-500" size={20} />
-            Clima Preditivo (IA)
+            Predictive Weather (AI)
           </h3>
 
-          <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 text-white shadow-lg">
+          <div className="bg-gradient-to-br from-blue-600 to-cyan-700 rounded-2xl p-6 text-white shadow-lg">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <p className="text-blue-100 text-sm font-medium">Fazenda Santa Fé</p>
-                <h4 className="text-3xl font-bold">28°C</h4>
-                <p className="text-blue-100">Parcialmente Nublado</p>
+                <p className="text-blue-100 text-sm font-medium">Heartland Field Station #04</p>
+                <h4 className="text-3xl font-bold">78°F <span className="text-lg font-normal text-blue-200">(25.5°C)</span></h4>
+                <p className="text-blue-100">Partly Cloudy</p>
               </div>
               <Sun size={48} className="text-yellow-300 animate-pulse" />
             </div>
@@ -155,25 +155,25 @@ export default function MarketIntelligence() {
             <div className="grid grid-cols-3 gap-2 text-center">
               <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
                 <Wind size={16} className="mx-auto mb-1" />
-                <span className="text-xs font-bold">12km/h</span>
+                <span className="text-xs font-bold">8 mph</span>
               </div>
               <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
                 <Droplets size={16} className="mx-auto mb-1" />
-                <span className="text-xs font-bold">65%</span>
+                <span className="text-xs font-bold">62%</span>
               </div>
               <div className="bg-white/20 rounded-lg p-2 backdrop-blur-sm">
                 <CloudRain size={16} className="mx-auto mb-1" />
-                <span className="text-xs font-bold">0mm</span>
+                <span className="text-xs font-bold">0.0 in</span>
               </div>
             </div>
           </div>
 
           <div className="space-y-3">
             {weatherAlerts.map((alert) => (
-              <div key={alert.id} className={`${alert.bg} dark:bg-stone-800 border border-stone-200 dark:border-stone-700 p-4 rounded-xl`}>
+              <div key={alert.id} className={`${alert.bg} border border-stone-200 dark:border-stone-800 p-4 rounded-xl`}>
                 <div className="flex items-center gap-2 mb-2">
                   <alert.icon size={18} className={alert.color} />
-                  <span className={`font-bold text-sm ${alert.color}`}>{alert.type} • Risco {alert.risk}</span>
+                  <span className={`font-bold text-sm ${alert.color}`}>{alert.type} • Risk {alert.risk}</span>
                 </div>
                 <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
                   {alert.message}
