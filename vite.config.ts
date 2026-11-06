@@ -31,6 +31,13 @@ export default defineConfig(({mode}) => {
     },
     build: {
       target: 'esnext',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom', 'lucide-react', 'motion', 'recharts'],
+          },
+        },
+      },
     },
   };
 });
