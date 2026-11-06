@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { CloudRain, TrendingUp, AlertTriangle, Droplets, Thermometer, AlertOctagon, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { inventoryAlerts } from '../data/inventory';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -85,6 +86,44 @@ export default function Dashboard({ onNavigate }: { onNavigate?: (page: string) 
                 {language === 'es' ? 'Acción: Aumentar caudal en bebederos y verificar sombra en corrales de engorde.' : language === 'pt' ? 'Ação: Aumentar vazão de bebedouros e verificar sombreamento nos piquetes.' : 'Action: Increase water trough throughput and verify corral shading for feedlot cattle.'}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Visualizations */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl shadow-sm border border-stone-200 dark:border-stone-800 transition-colors">
+          <h3 className="font-bold text-lg mb-6">{language === 'es' ? 'Niveles de Stock (Últimos 7 días)' : language === 'pt' ? 'Níveis de Estoque (Últimos 7 dias)' : 'Stock Levels (Last 7 Days)'}</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={[
+                { name: 'Lun', stock: 4000 }, { name: 'Mar', stock: 3000 }, { name: 'Mié', stock: 5000 },
+                { name: 'Jue', stock: 2780 }, { name: 'Vie', stock: 1890 }, { name: 'Sáb', stock: 2390 }, { name: 'Dom', stock: 3490 }
+              ]}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
+                <YAxis stroke="#9ca3af" fontSize={12} />
+                <Tooltip />
+                <Line type="monotone" dataKey="stock" stroke="#f97316" strokeWidth={3} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl shadow-sm border border-stone-200 dark:border-stone-800 transition-colors">
+          <h3 className="font-bold text-lg mb-6">{language === 'es' ? 'Frecuencia de Actividad Sanitaria' : language === 'pt' ? 'Frequência de Atividade Sanitária' : 'Sanitary Activity Frequency'}</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={[
+                { name: 'Vacunación', count: 40 }, { name: 'Parasitos', count: 25 }, { name: 'Revisión', count: 35 }
+              ]}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
+                <YAxis stroke="#9ca3af" fontSize={12} />
+                <Tooltip />
+                <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </section>

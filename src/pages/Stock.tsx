@@ -10,6 +10,7 @@ import { inventoryAlerts } from '../data/inventory';
 import StockQRScannerModal, { InventoryItem, StockMovement } from '../components/StockQRScannerModal';
 import ItemQRCodeModal from '../components/ItemQRCodeModal';
 import { useLanguage } from '../contexts/LanguageContext';
+import { SuccessToast } from '../components/SuccessToast';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
@@ -304,12 +305,7 @@ export default function Stock() {
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-20 right-4 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 border border-stone-700 animate-in slide-in-from-top-2">
-          <CheckCircle2 size={18} className="text-emerald-400" />
-          <span className="text-sm font-medium">{toastMessage}</span>
-        </div>
-      )}
+      <SuccessToast message={toastMessage} onClose={() => setToastMessage(null)} />
 
       {/* Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">

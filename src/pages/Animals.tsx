@@ -3,6 +3,7 @@ import { Beef, Plus, X, Search, AlertCircle, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { databaseService } from '../infrastructure/config/baas';
 import { useLanguage } from '../contexts/LanguageContext';
+import { SuccessToast } from '../components/SuccessToast';
 
 interface Lot {
   id: string;
@@ -33,6 +34,12 @@ export default function Animals() {
   const [showAddAnimal, setShowAddAnimal] = useState(false);
   const [showAddLot, setShowAddLot] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   const [animalForm, setAnimalForm] = useState({
     tag: '', name: '', species: 'cattle', breed: '', birth_date: '', weight: '', lot_id: ''
@@ -72,6 +79,7 @@ export default function Animals() {
       await databaseService.create<Animal>('animals', payload);
       setShowAddAnimal(false);
       setAnimalForm({ tag: '', name: '', species: 'cattle', breed: '', birth_date: '', weight: '', lot_id: '' });
+      showToast(language === 'es' ? 'Animal registrado exitosamente.' : language === 'pt' ? 'Animal registrado com sucesso.' : 'Animal registered successfully.');
       await fetchData();
     } catch {
       setError('Error creating animal record.');
@@ -87,6 +95,7 @@ export default function Animals() {
       await databaseService.create<Lot>('lots', { ...lotForm, quantity: parseInt(lotForm.quantity) || 0 });
       setShowAddLot(false);
       setLotForm({ name: '', species: 'cattle', quantity: '' });
+      showToast(language === 'es' ? 'Lote creado exitosamente.' : language === 'pt' ? 'Lote criado com sucesso.' : 'Lot created successfully.');
       await fetchData();
     } catch {
       setError('Error creating lot record.');
@@ -170,6 +179,7 @@ export default function Animals() {
 
   return (
     <div className="space-y-6">
+      <SuccessToast message={toastMessage} onClose={() => setToastMessage(null)} />
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h2 className="text-3xl font-bold text-stone-900 dark:text-white">{t.anim_title}</h2>
