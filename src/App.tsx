@@ -21,6 +21,8 @@ import Profile from './pages/Profile';
 import MarketIntelligence from './pages/MarketIntelligence';
 import ChatAssistant from './components/ChatAssistant';
 import Login from './pages/Login';
+import Landing from './pages/Landing';
+import { PWAInstallButton } from './components/PWAInstallButton';
 
 // Protected Route Wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -49,7 +51,7 @@ function MainLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   const allNavItems = [
-    { id: 'dashboard', path: '/', label: t.nav_overview, icon: LayoutDashboard, enabled: true },
+    { id: 'dashboard', path: '/dashboard', label: t.nav_overview, icon: LayoutDashboard, enabled: true },
     { id: 'market', path: '/market', label: t.nav_market, icon: LineChart, enabled: config.features.marketIntelligence },
     { id: 'sanitary', path: '/sanitary', label: t.nav_sanitary, icon: Syringe, enabled: config.features.sanitary },
     { id: 'crops', path: '/crops', label: t.nav_crops, icon: Sprout, enabled: config.features.crops },
@@ -82,13 +84,15 @@ function MainLayout({ children }: { children: React.ReactNode }) {
             >
               {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
-            <h1 className="text-xl font-bold tracking-tight text-primary flex items-center gap-1 cursor-pointer" onClick={() => navigate('/')}>
+            <h1 className="text-xl font-bold tracking-tight text-primary flex items-center gap-1 cursor-pointer" onClick={() => navigate('/dashboard')}>
               <Sprout className="text-primary" size={24} />
               {config.appShortName}<span className="text-stone-900 dark:text-white">{config.appName.replace(config.appShortName, '').trim()}</span>
             </h1>
           </div>
           
           <div className="flex items-center gap-3">
+            <PWAInstallButton variant="compact" />
+
             {/* Quick Language Switcher */}
             <div className="flex items-center bg-stone-100 dark:bg-stone-800 p-1 rounded-xl border border-stone-200 dark:border-stone-700">
               {languages.map((item) => (
@@ -208,8 +212,9 @@ function MainLayout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<ProtectedRoute><MainLayout><Dashboard onNavigate={() => {}} /></MainLayout></ProtectedRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><MainLayout><Dashboard onNavigate={() => {}} /></MainLayout></ProtectedRoute>} />
       <Route path="/market" element={<ProtectedRoute><MainLayout><MarketIntelligence /></MainLayout></ProtectedRoute>} />
       <Route path="/sanitary" element={<ProtectedRoute><MainLayout><Sanitary /></MainLayout></ProtectedRoute>} />
       <Route path="/crops" element={<ProtectedRoute><MainLayout><Crops /></MainLayout></ProtectedRoute>} />

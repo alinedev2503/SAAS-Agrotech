@@ -20,7 +20,7 @@ export default function Login() {
     setErrorMessage(null);
     try {
       await signIn(email, password);
-      navigate('/');
+      navigate('/dashboard');
     } catch (error: any) {
       console.error("Login failure", error);
       setErrorMessage(
@@ -37,7 +37,7 @@ export default function Login() {
     setErrorMessage(null);
     try {
       await signIn('manager@agrotech-farm.com', 'demo1234');
-      navigate('/');
+      navigate('/dashboard');
     } catch (error: any) {
       console.error("Demo login failure", error);
       setErrorMessage(
@@ -179,9 +179,18 @@ export default function Login() {
             </div>
           </form>
           
-          <div className="mt-6 pt-5 border-t border-stone-100 dark:border-stone-800 flex items-center justify-center gap-2 text-xs text-stone-400 text-center">
-             <ShieldCheck size={14} className="text-emerald-500" />
-             <span>{t.login_offline_notice}</span>
+          <div className="mt-6 pt-5 border-t border-stone-100 dark:border-stone-800 flex flex-col items-center gap-3 text-xs text-stone-400 text-center">
+            <div className="flex items-center justify-center gap-2">
+              <ShieldCheck size={14} className="text-emerald-500" />
+              <span>{t.login_offline_notice}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              className="text-primary hover:underline font-semibold cursor-pointer"
+            >
+              {language === 'es' ? '← Volver a la página principal' : language === 'pt' ? '← Voltar à página inicial' : '← Back to Home'}
+            </button>
           </div>
         </div>
       </div>

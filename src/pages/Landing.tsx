@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Sprout,
   ChevronDown,
@@ -20,244 +20,480 @@ import {
   TrendingUp,
   FlaskConical,
   ScrollText,
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
-
-const benefits = [
-  {
-    icon: BarChart3,
-    title: 'Unified Ag Dashboard',
-    description: 'Every ranch and farm operation in one single command center. From seeds and fertilizer to livestock sales, without messy spreadsheets.',
-  },
-  {
-    icon: CloudSun,
-    title: 'Real-Time Climate & CME Futures',
-    description: 'Frost alerts, moisture stress metrics, and live Chicago Mercantile Exchange commodity tickers integrated directly into operations.',
-  },
-  {
-    icon: FlaskConical,
-    title: 'Veterinary Health & Withholding',
-    description: 'Automated vaccine protocols, withdrawal period tracking for meat and dairy, and digital ear tag scanning.',
-  },
-  {
-    icon: Tractor,
-    title: 'Precision Crop Management',
-    description: 'Field boundary mapping, Growing Degree Day (GDD) calculations, planting density calibrations, and plot yield history.',
-  },
-  {
-    icon: Warehouse,
-    title: 'QR-Enabled Stock & Inventory',
-    description: 'Scan QR codes directly with device cameras to check in/out inventory items, with low-stock warnings and restock intelligence.',
-  },
-  {
-    icon: Users,
-    title: 'Field Crew Work Orders',
-    description: 'Task assignment by field plot, equipment operator dispatch, and real-time operational status — fully functional offline.',
-  },
-]
-
-const steps = [
-  {
-    number: '01',
-    title: 'Connect Your Farm',
-    description: 'Register acreage, livestock lots, input inventory, and crew members in under 20 minutes with our quick onboarding wizard.',
-  },
-  {
-    number: '02',
-    title: 'Monitor Operations Live',
-    description: 'Automated dashboards with live weather radar, futures prices, withdrawal alerts, and QR camera scanning on mobile or tablet.',
-  },
-  {
-    number: '03',
-    title: 'Decide with Confidence',
-    description: 'Audit-ready reports for agricultural lenders, USDA compliance, crop insurance claims, and next season budgeting.',
-  },
-]
-
-const testimonials = [
-  {
-    name: 'Charles Miller',
-    farm: 'Heartland Valley Farms, IA',
-    text: 'We reduced crop frost losses by 40% thanks to proactive temperature alerts. AgroTech has become indispensable for our 3,200 acres.',
-    rating: 5,
-  },
-  {
-    name: 'Sarah Jenkins',
-    farm: 'Black Angus Cattle Co., NE',
-    text: 'Replacing fragmented spreadsheets with the camera QR scanner saved our ranch hands over 10 hours a week on inventory checkouts.',
-    rating: 5,
-  },
-  {
-    name: 'Robert Vance',
-    farm: 'Vance Prairie Agronomy, IL',
-    text: 'The veterinary withdrawal countdown ensured 100% compliance during dairy shipments. Never had an antibiotic residue issue since.',
-    rating: 5,
-  },
-  {
-    name: 'Emily Davis',
-    farm: 'Pine Creek Grain & Cattle, KS',
-    text: 'Audit reports were ready for our agricultural bank lender in two clicks. Secured our operating credit line 3 weeks faster than last year.',
-    rating: 5,
-  },
-]
-
-const faqs = [
-  {
-    q: 'Does AgroTech require internet connection in the field?',
-    a: 'No. AgroTech is built offline-first. You can record livestock treatments, scan stock QR codes, and log work orders in remote pastures. Everything synchronizes automatically once connection returns.',
-  },
-  {
-    q: 'Is it suitable for family farms and mid-size operations?',
-    a: 'Yes. The Starter plan covers operations up to 500 acres and 150 livestock head. As your acreage expands, your plan scales smoothly with you.',
-  },
-  {
-    q: 'Can I import existing data from Excel or CSV files?',
-    a: 'Yes. You can import cattle tag records, inventory item catalogs, and field coordinates via standard CSV files or use our bulk import assistant.',
-  },
-  {
-    q: 'Is there a native mobile app or tablet support?',
-    a: 'AgroTech is a responsive Progressive Web App that runs flawlessly on iOS, Android, tablets, and ruggedized field devices with full camera QR scanning capabilities.',
-  },
-  {
-    q: 'What payment methods and gateways are supported?',
-    a: 'We support Stripe, major credit cards, ACH bank transfers, and custom enterprise invoicing with flexible monthly or annual billing.',
-  },
-  {
-    q: 'Can I cancel anytime without long-term contracts?',
-    a: 'Yes. All plans are month-to-month with no lock-in. If you cancel within the first 14 days, you receive a full 100% refund.',
-  },
-]
-
-const plans = [
-  {
-    name: 'Starter Farm',
-    price: '$49',
-    period: '/month',
-    description: 'For family farms beginning to digitize field records and stock.',
-    features: [
-      'Up to 500 acres',
-      'Up to 150 livestock head',
-      'Core inventory with QR scanning',
-      'Weather forecasts & CME futures',
-      'Offline-first mobile mode',
-      'Email & community support',
-      '2 user seats',
-    ],
-    cta: 'Start 14-Day Free Trial',
-    highlighted: false,
-  },
-  {
-    name: 'Professional Ag',
-    price: '$129',
-    period: '/month',
-    description: 'For commercial farms and ranches requiring full operational automation.',
-    features: [
-      'Up to 2,500 acres',
-      'Up to 1,000 livestock head',
-      'Everything in Starter Farm',
-      'Complete sanitary withdrawal tracking',
-      'Precision GDD & planting density calculators',
-      'Audit-ready lender reports',
-      '5 user seats',
-      'Priority agronomist support',
-    ],
-    cta: 'Start 14-Day Free Trial',
-    highlighted: true,
-  },
-  {
-    name: 'Commercial Enterprise',
-    price: 'Custom',
-    period: '',
-    description: 'For multi-location agribusinesses, cooperatives, and large estates.',
-    features: [
-      'Unlimited acreage & herd size',
-      'White-label branding & custom domain',
-      'Everything in Professional Ag',
-      'ERP & IoT telemetry API integrations',
-      'Dedicated agricultural account manager',
-      'Unlimited user seats',
-      'On-site crew training',
-      'Custom SLA guarantees',
-    ],
-    cta: 'Contact Sales',
-    highlighted: false,
-  },
-]
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage, Language } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { PWAInstallButton } from '../components/PWAInstallButton';
 
 export default function Landing() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const navigate = useNavigate()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const { language, setLanguage } = useLanguage();
+  const { user } = useAuth();
 
   const scrollTo = (id: string) => {
-    setMobileMenuOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+    setMobileMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: 'pt', label: 'PT', flag: '🇧🇷' },
+    { code: 'es', label: 'ES', flag: '🇪🇸' },
+    { code: 'en', label: 'EN', flag: '🇺🇸' },
+  ];
+
+  const content = {
+    pt: {
+      badge: 'Solução Agropecuária 2026 • 100% Offline-First',
+      heroTitlePrefix: 'Sua fazenda sob controle total. ',
+      heroTitleHighlight: 'Sem achismos.',
+      heroDesc:
+        'Elimine planilhas manuais, anotações perdidas e perdas no campo. O AgroTech unifica cotações da CME e B3, controle sanitário de carência, gestão de estoque com leitor QR e tarefas da equipe em um hub robusto.',
+      btnLaunch: 'Acessar Plataforma',
+      btnStart: 'Iniciar Demonstração',
+      btnSignIn: 'Entrar',
+      btnModules: 'Conhecer Recursos',
+      proofNoContract: 'Sem fidelidade',
+      proofOffline: '100% Funcional Offline',
+      proofSetup: 'Configuração em 20 min',
+      statsFarms: 'Propriedades Ativas',
+      statsAnimals: 'Animais Monitorados',
+      statsAcres: 'Hectares Mapeados',
+      statsRetention: 'Satisfação dos Clientes',
+      modulesTitle: 'Tudo o que sua Operação Agropecuária Precisa',
+      modulesSubtitle: 'Seis módulos integrados e sincronizados para o dia a dia da lavoura e da pecuária.',
+      howTitle: 'Pronto para Uso em Menos de 20 Minutos',
+      howSubtitle: 'Sem implementação demorada ou consultoria complexa. Desenvolvido para o campo.',
+      testimonialsTitle: 'Confiado por Produtores e Veterinários',
+      testimonialsSubtitle: 'Veja como o AgroTech transforma a gestão rural de fazendas de todos os portes.',
+      pricingTitle: 'Planos Transparentes para Cada Etapa do seu Agronegócio',
+      pricingSubtitle: 'Previsibilidade de custos, desde pequenas propriedades familiares a grandes agropecuárias.',
+      faqTitle: 'Perguntas Frequentes',
+      faqSubtitle: 'Respostas diretas sobre tecnologia, funcionamento offline e contratação.',
+      finalTitle: 'Sua Fazenda Merece uma Gestão Profissional e Precisa',
+      finalDesc: 'Junte-se a mais de 850 produtores que aposentaram o caderno de campo e agora gerenciam com dados em tempo real.',
+      finalBtnPrimary: 'Começar Agora Mesmo',
+      finalBtnDemo: 'Acessar Ambiente de Testes',
+      navFeatures: 'Recursos',
+      navHow: 'Como Funciona',
+      navPricing: 'Planos',
+      navFaq: 'Dúvidas',
+    },
+    es: {
+      badge: 'Solución Agropecuaria 2026 • 100% Offline-First',
+      heroTitlePrefix: 'Su campo bajo control total. ',
+      heroTitleHighlight: 'Sin conjeturas.',
+      heroDesc:
+        'Elimine cuadernos de papel, retrasos climáticos y registros perdidos. AgroTech unifica cotizaciones de futuros (CME/CBOT), períodos de carencia veterinaria, inventario con código QR y tareas del personal en un hub integral.',
+      btnLaunch: 'Abrir Plataforma',
+      btnStart: 'Iniciar Prueba Gratuita',
+      btnSignIn: 'Iniciar Sesión',
+      btnModules: 'Ver Módulos',
+      proofNoContract: 'Sin contrato de permanencia',
+      proofOffline: '100% Capaz Fuera de Línea',
+      proofSetup: 'Listo en 20 Minutos',
+      statsFarms: 'Campos y Estancias',
+      statsAnimals: 'Cabezas de Ganado',
+      statsAcres: 'Hectáreas Monitoreadas',
+      statsRetention: 'Tasa de Retención',
+      modulesTitle: 'Todo lo que su Empresa Agropecuaria Requiere',
+      modulesSubtitle: 'Seis módulos integrados y sincronizados para la administración rural moderna.',
+      howTitle: 'En Marcha en Menos de 20 Minutos',
+      howSubtitle: 'Sin consultorías complejas ni retrasos técnicos. Diseñado para trabajar en el lote.',
+      testimonialsTitle: 'Aprobado por Productores Líderes',
+      testimonialsSubtitle: 'Experiencias reales de ganaderos y agricultores en la gestión diaria.',
+      pricingTitle: 'Planes Claros que Crecen con su Establecimiento',
+      pricingSubtitle: 'Costos previsibles desde explotaciones familiares hasta grandes grupos agrícolas.',
+      faqTitle: 'Preguntas Frecuentes',
+      faqSubtitle: 'Respuestas sobre funcionamiento offline, seguridad y soporte agronómico.',
+      finalTitle: 'Su Explotación Merece una Gestión Precisa y Eficiente',
+      finalDesc: 'Únase a cientos de establecimientos agropecuarios que optimizaron sus costos y tiempos operativos con AgroTech.',
+      finalBtnPrimary: 'Comenzar Prueba Gratuita',
+      finalBtnDemo: 'Explorar Modo Demostración',
+      navFeatures: 'Módulos',
+      navHow: 'Cómo Funciona',
+      navPricing: 'Precios',
+      navFaq: 'Preguntas',
+    },
+    en: {
+      badge: 'Enterprise Ag Edition 2026 • 100% Offline-First',
+      heroTitlePrefix: 'Your farm under total command. ',
+      heroTitleHighlight: 'Not guesswork.',
+      heroDesc:
+        'Eliminate lost paper logs, delayed weather alerts, and reactive livestock treatments. AgroTech brings CME commodity tickers, veterinary withholding, QR inventory, and field crew tasks into one unified offline-ready hub.',
+      btnLaunch: 'Launch Live App',
+      btnStart: 'Start Free Trial',
+      btnSignIn: 'Sign In',
+      btnModules: 'Explore Modules',
+      proofNoContract: 'No Lock-in Contract',
+      proofOffline: '100% Offline Capable',
+      proofSetup: 'Ready in 20 Minutes',
+      statsFarms: 'Commercial Farms Enrolled',
+      statsAnimals: 'Livestock Head Monitored',
+      statsAcres: 'Acres Actively Managed',
+      statsRetention: 'Client Retention Rate',
+      modulesTitle: 'Everything Your Agricultural Enterprise Requires',
+      modulesSubtitle: 'Six synchronized modules designed specifically for real-world farming and ranching operations.',
+      howTitle: 'Up and Running in Under 20 Minutes',
+      howSubtitle: 'No protracted software implementation. No complex IT consulting. Built for direct field deployment.',
+      testimonialsTitle: 'Trusted by Leading Growers & Ranchers',
+      testimonialsSubtitle: 'Real farm operators across the Heartland share their operational experience.',
+      pricingTitle: 'Transparent Plans That Grow with Your Operation',
+      pricingSubtitle: 'Predictable pricing from single family parcels to multi-state cattle operations.',
+      faqTitle: 'Frequently Asked Questions',
+      faqSubtitle: 'Clear answers to technical, operational, and commercial questions.',
+      finalTitle: 'Your Farm Deserves Management Built for Modern Agriculture',
+      finalDesc: 'Join 850+ forward-thinking producers who traded paper notebooks for data-driven precision. Test the system free for 14 days.',
+      finalBtnPrimary: 'Start Your Free Trial',
+      finalBtnDemo: 'Access Demo Workspace',
+      navFeatures: 'Features',
+      navHow: 'How It Works',
+      navPricing: 'Pricing',
+      navFaq: 'FAQ',
+    },
+  }[language];
+
+  const benefits = [
+    {
+      icon: BarChart3,
+      title: language === 'pt' ? 'Painel Integrado da Fazenda' : language === 'es' ? 'Panel Agropecuario Unificado' : 'Unified Ag Dashboard',
+      description:
+        language === 'pt'
+          ? 'Visão consolidada de animais, lavouras, clima e cotações sem planilhas confusas.'
+          : language === 'es'
+          ? 'Visión consolidada del rodeo, lotes, clima y cotizaciones sin planillas confusas.'
+          : 'Every ranch and farm operation in one single command center without messy spreadsheets.',
+    },
+    {
+      icon: CloudSun,
+      title: language === 'pt' ? 'Clima & Cotações Futuras' : language === 'es' ? 'Clima y Cotizaciones Futuras' : 'Real-Time Climate & CME Futures',
+      description:
+        language === 'pt'
+          ? 'Alertas de geada, estresse hídrico e índices de commodities agrícolas em tempo real.'
+          : language === 'es'
+          ? 'Alertas de heladas, estrés hídrico y cotizaciones de futuros integradas a la operativa.'
+          : 'Frost alerts, moisture stress metrics, and live commodity tickers integrated into operations.',
+    },
+    {
+      icon: FlaskConical,
+      title: language === 'pt' ? 'Manejo Sanitário & Carência' : language === 'es' ? 'Sanidad y Períodos de Carencia' : 'Veterinary Health & Withholding',
+      description:
+        language === 'pt'
+          ? 'Controle de vacinas, cálculo de tempo de carência para abate/leite e leitura de brinco.'
+          : language === 'es'
+          ? 'Control de vacunas, cálculo de retiro para faena/ordeñe y trazabilidad por caravana.'
+          : 'Automated vaccine protocols, withdrawal period tracking for meat and dairy, and digital ear tags.',
+    },
+    {
+      icon: Tractor,
+      title: language === 'pt' ? 'Agricultura de Precisão' : language === 'es' ? 'Agricultura y Lotes de Siembra' : 'Precision Crop Management',
+      description:
+        language === 'pt'
+          ? 'Cálculo de Graus-Dia (GDD), densidade de semeadura e histórico de colheita dos talhões.'
+          : language === 'es'
+          ? 'Cálculo de Grados Día (GDD), densidad de siembra y estadios fenológicos por lote.'
+          : 'Field mapping, Growing Degree Day (GDD) calculations, planting density, and plot yield history.',
+    },
+    {
+      icon: Warehouse,
+      title: language === 'pt' ? 'Estoque com Câmera QR' : language === 'es' ? 'Inventario con Lector QR' : 'QR-Enabled Stock & Inventory',
+      description:
+        language === 'pt'
+          ? 'Aponte a câmera para registrar entradas e saídas de defensivos e sementes em segundos.'
+          : language === 'es'
+          ? 'Escanee códigos QR con la cámara del dispositivo para ingresos y egresos inmediatos.'
+          : 'Scan QR codes directly with device cameras to check in/out inventory items with low-stock warnings.',
+    },
+    {
+      icon: Users,
+      title: language === 'pt' ? 'Ordens de Serviço no Campo' : language === 'es' ? 'Órdenes de Trabajo de Cuadrilla' : 'Field Crew Work Orders',
+      description:
+        language === 'pt'
+          ? 'Distribua tarefas por talhão e acompanhe o maquinário, operando 100% sem sinal de internet.'
+          : language === 'es'
+          ? 'Asignación de tareas por lote para personal de campo, con funcionamiento 100% offline.'
+          : 'Task assignment by field plot, equipment operator dispatch, and real-time status — fully offline.',
+    },
+  ];
+
+  const steps = [
+    {
+      number: '01',
+      title: language === 'pt' ? 'Cadastre sua Propriedade' : language === 'es' ? 'Conecte su Establecimiento' : 'Connect Your Farm',
+      description:
+        language === 'pt'
+          ? 'Insira piquetes, rebanho, estoque inicial e colaboradores em menos de 20 minutos.'
+          : language === 'es'
+          ? 'Registre lotes, rodeo, insumos iniciales y personal en menos de 20 minutos.'
+          : 'Register acreage, livestock lots, input inventory, and crew members in under 20 minutes.',
+    },
+    {
+      number: '02',
+      title: language === 'pt' ? 'Monitore no Campo Offline' : language === 'es' ? 'Opere en el Lote Sin Conexión' : 'Monitor Operations Live',
+      description:
+        language === 'pt'
+          ? 'Use o celular para escanear QR codes, registrar pesagens e vacinas mesmo sem sinal.'
+          : language === 'es'
+          ? 'Use el teléfono o tableta para escanear QR, pesar animales y aplicar tratamientos sin cobertura.'
+          : 'Automated dashboards with live weather radar, futures prices, withdrawal alerts, and camera QR scanning.',
+    },
+    {
+      number: '03',
+      title: language === 'pt' ? 'Decida com Dados Precisos' : language === 'es' ? 'Decida con Certeza Financiera' : 'Decide with Confidence',
+      description:
+        language === 'pt'
+          ? 'Relatórios para crédito rural, seguro agrícola e auditorias sanitárias em poucos cliques.'
+          : language === 'es'
+          ? 'Informes para entidades bancarias, seguros agrícolas y auditorías veterinarias en un clic.'
+          : 'Audit-ready reports for agricultural lenders, USDA compliance, crop insurance, and budgeting.',
+    },
+  ];
+
+  const plans = [
+    {
+      name: language === 'pt' ? 'Fazenda Starter' : language === 'es' ? 'Starter Campo' : 'Starter Farm',
+      price: '$49',
+      period: language === 'pt' ? '/mês' : language === 'es' ? '/mes' : '/month',
+      description:
+        language === 'pt'
+          ? 'Ideal para produtores familiares que desejam digitalizar o rebanho e estoque.'
+          : language === 'es'
+          ? 'Para establecimientos familiares que inician la digitalización rural.'
+          : 'For family farms beginning to digitize field records and stock.',
+      features: [
+        language === 'pt' ? 'Até 200 hectares' : language === 'es' ? 'Hasta 200 hectáreas' : 'Up to 500 acres',
+        language === 'pt' ? 'Até 150 cabeças de gado' : language === 'es' ? 'Hasta 150 cabezas' : 'Up to 150 livestock head',
+        language === 'pt' ? 'Estoque completo com leitor QR' : language === 'es' ? 'Inventario con lector QR' : 'Core inventory with QR scanning',
+        language === 'pt' ? 'Previsão do tempo e cotações' : language === 'es' ? 'Clima y cotizaciones de futuros' : 'Weather forecasts & CME futures',
+        language === 'pt' ? 'Modo 100% offline no celular' : language === 'es' ? 'Modo offline en móvil' : 'Offline-first mobile mode',
+        language === 'pt' ? '2 usuários inclusos' : language === 'es' ? '2 usuarios incluidos' : '2 user seats',
+      ],
+      cta: language === 'pt' ? 'Iniciar Teste de 14 Dias' : language === 'es' ? 'Iniciar Prueba Gratuita' : 'Start 14-Day Free Trial',
+      highlighted: false,
+    },
+    {
+      name: language === 'pt' ? 'Profissional Agro' : language === 'es' ? 'Profesional Agro' : 'Professional Ag',
+      price: '$129',
+      period: language === 'pt' ? '/mês' : language === 'es' ? '/mes' : '/month',
+      description:
+        language === 'pt'
+          ? 'Para fazendas comerciais e confinamentos que buscam automação completa.'
+          : language === 'es'
+          ? 'Para empresas agropecuarias con necesidad de trazabilidad integral.'
+          : 'For commercial farms and ranches requiring full operational automation.',
+      features: [
+        language === 'pt' ? 'Até 1.000 hectares' : language === 'es' ? 'Hasta 1.000 hectáreas' : 'Up to 2,500 acres',
+        language === 'pt' ? 'Até 1.000 cabeças de gado' : language === 'es' ? 'Hasta 1.000 cabezas' : 'Up to 1,000 livestock head',
+        language === 'pt' ? 'Tudo do plano Starter' : language === 'es' ? 'Todo lo del plan Starter' : 'Everything in Starter Farm',
+        language === 'pt' ? 'Controle sanitário de carência' : language === 'es' ? 'Control de períodos de carencia' : 'Complete sanitary withdrawal tracking',
+        language === 'pt' ? 'Calculadoras de colheita GDD' : language === 'es' ? 'Calculadora GDD y densidad' : 'Precision GDD & planting density calculators',
+        language === 'pt' ? 'Relatórios para crédito rural' : language === 'es' ? 'Reportes bancarios y seguros' : 'Audit-ready lender reports',
+        language === 'pt' ? '5 usuários inclusos' : language === 'es' ? '5 usuarios incluidos' : '5 user seats',
+      ],
+      cta: language === 'pt' ? 'Iniciar Teste de 14 Dias' : language === 'es' ? 'Iniciar Prueba Gratuita' : 'Start 14-Day Free Trial',
+      highlighted: true,
+    },
+    {
+      name: language === 'pt' ? 'Corporativo Enterprise' : language === 'es' ? 'Empresarial Custom' : 'Commercial Enterprise',
+      price: language === 'pt' ? 'Sob Medida' : language === 'es' ? 'A Medida' : 'Custom',
+      period: '',
+      description:
+        language === 'pt'
+          ? 'Para cooperativas, propriedades múltiplas e grandes grupos do agronegócio.'
+          : language === 'es'
+          ? 'Para cooperativas y grandes grupos agroindustriales.'
+          : 'For multi-location agribusinesses, cooperatives, and large estates.',
+      features: [
+        language === 'pt' ? 'Área e rebanho ilimitados' : language === 'es' ? 'Superficie y rodeo ilimitados' : 'Unlimited acreage & herd size',
+        language === 'pt' ? 'Marca própria (White-Label)' : language === 'es' ? 'Marca blanca y dominio propio' : 'White-label branding & custom domain',
+        language === 'pt' ? 'Tudo do plano Profissional' : language === 'es' ? 'Todo lo del plan Profesional' : 'Everything in Professional Ag',
+        language === 'pt' ? 'Integração ERP e IoT rural' : language === 'es' ? 'Integración API y telemetría' : 'ERP & IoT telemetry API integrations',
+        language === 'pt' ? 'Gerente agronômico dedicado' : language === 'es' ? 'Gestor agronómico dedicado' : 'Dedicated agricultural account manager',
+        language === 'pt' ? 'Usuários ilimitados' : language === 'es' ? 'Usuarios ilimitados' : 'Unlimited user seats',
+      ],
+      cta: language === 'pt' ? 'Falar com Consultor' : language === 'es' ? 'Contactar Asesor' : 'Contact Sales',
+      highlighted: false,
+    },
+  ];
+
+  const faqs = [
+    {
+      q: language === 'pt' ? 'O aplicativo funciona sem sinal de internet na fazenda?' : language === 'es' ? '¿El sistema funciona sin señal de internet en el campo?' : 'Does AgroTech require internet connection in the field?',
+      a: language === 'pt'
+        ? 'Sim! O AgroTech é 100% offline-first. Você pode registrar pesagens, vacinas e movimentações com a câmera QR no pasto. Os dados ficam salvos no aparelho e sincronizam automaticamente ao reconectar.'
+        : language === 'es'
+        ? '¡Sí! AgroTech fue concebido como offline-first. Puede registrar pesadas, tratamientos veterinarios y movimientos QR en lotes remotos. Todo se sincroniza en cuanto recupera señal.'
+        : 'No. AgroTech is built offline-first. You can record livestock treatments, scan stock QR codes, and log work orders in remote pastures. Everything synchronizes automatically once connection returns.',
+    },
+    {
+      q: language === 'pt' ? 'Posso instalar no meu celular como um aplicativo?' : language === 'es' ? '¿Se puede instalar en el móvil como una app nativa?' : 'Can I install it on my phone like a native mobile app?',
+      a: language === 'pt'
+        ? 'Sim. Como Progressive Web App (PWA), você pode clicar em "Instalar App" no topo da página ou adicionar à tela inicial no iPhone/Android, obtendo acesso direto na tela do seu aparelho.'
+        : language === 'es'
+        ? 'Sí. Al ser una PWA oficial, puede pulsar "Instalar App" o añadirla a la pantalla de inicio en Android o iOS, accediendo con un toque desde su teléfono.'
+        : 'Yes. As a Progressive Web App, you can click "Install App" or add it to your home screen on iOS and Android with full camera QR scanning capabilities.',
+    },
+    {
+      q: language === 'pt' ? 'Posso importar meus dados atuais do Excel ou planilhas?' : language === 'es' ? '¿Puedo importar mis datos desde planillas Excel o CSV?' : 'Can I import existing data from Excel or CSV files?',
+      a: language === 'pt'
+        ? 'Sim. Oferecemos suporte para importação em massa de cadastro de brincos, insumos e lotes agrícolas através de arquivos CSV padrão.'
+        : language === 'es'
+        ? 'Sí. Es posible importar registros de caravanas, catálogo de agroquímicos y coordenadas de lotes mediante planillas estándar CSV.'
+        : 'Yes. You can import cattle tag records, inventory item catalogs, and field coordinates via standard CSV files.',
+    },
+    {
+      q: language === 'pt' ? 'Existe período de teste gratuito?' : language === 'es' ? '¿Hay período de prueba sin compromiso?' : 'Is there a free trial period?',
+      a: language === 'pt'
+        ? 'Sim. Você conta com 14 dias de teste completo sem necessidade de cartão de crédito. É possível testar todas as funcionalidades na prática.'
+        : language === 'es'
+        ? 'Sí. Cuenta con 14 días de acceso completo sin requerir tarjeta de crédito. Puede probar todos los módulos con sus datos.'
+        : 'Yes. All plans include 14 days of full access without upfront credit card requirements. Test every module in real conditions.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-white text-stone-900 font-sans">
-      {/* NAV */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100 font-sans transition-colors duration-300">
+      {/* NAVIGATION BAR */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-              <Sprout className="text-primary" size={28} />
-              <span className="text-xl font-bold tracking-tight">
-                AGRO<span className="text-stone-900">TECH</span>
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
+            <div
+              className="flex items-center gap-2 cursor-pointer shrink-0"
+              onClick={() => (user ? navigate('/dashboard') : scrollTo('hero'))}
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                <Sprout size={24} />
+              </div>
+              <span className="text-xl font-bold tracking-tight text-primary">
+                AGRO<span className="text-stone-900 dark:text-white">TECH</span>
               </span>
             </div>
 
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-stone-500">
-              <button onClick={() => scrollTo('benefits')} className="hover:text-primary transition-colors cursor-pointer">Features</button>
-              <button onClick={() => scrollTo('how-it-works')} className="hover:text-primary transition-colors cursor-pointer">How It Works</button>
-              <button onClick={() => scrollTo('pricing')} className="hover:text-primary transition-colors cursor-pointer">Pricing</button>
-              <button onClick={() => scrollTo('faq')} className="hover:text-primary transition-colors cursor-pointer">FAQ</button>
+            <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-stone-600 dark:text-stone-300">
+              <button onClick={() => scrollTo('benefits')} className="hover:text-primary transition-colors cursor-pointer">
+                {content.navFeatures}
+              </button>
+              <button onClick={() => scrollTo('how-it-works')} className="hover:text-primary transition-colors cursor-pointer">
+                {content.navHow}
+              </button>
+              <button onClick={() => scrollTo('pricing')} className="hover:text-primary transition-colors cursor-pointer">
+                {content.navPricing}
+              </button>
+              <button onClick={() => scrollTo('faq')} className="hover:text-primary transition-colors cursor-pointer">
+                {content.navFaq}
+              </button>
             </nav>
 
-            <div className="hidden md:flex items-center gap-3">
-              <button 
-                onClick={() => navigate('/login')}
-                className="px-5 py-2.5 text-sm font-semibold text-stone-600 hover:text-stone-900 transition-colors cursor-pointer"
-              >
-                Sign In
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="px-5 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 cursor-pointer"
-              >
-                Start Free Trial
-              </button>
+            <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+              {/* Language Switcher */}
+              <div className="flex items-center bg-stone-100 dark:bg-stone-800 p-0.5 rounded-xl border border-stone-200 dark:border-stone-700">
+                {languages.map((item) => (
+                  <button
+                    key={item.code}
+                    onClick={() => setLanguage(item.code)}
+                    className={`px-2 py-1 text-xs font-bold rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                      language === item.code
+                        ? 'bg-primary text-white shadow-xs'
+                        : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <span>{item.flag}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <ThemeToggle />
+
+              <PWAInstallButton variant="outline" />
+
+              {user ? (
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 text-xs font-bold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-md shadow-primary/20 transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>{content.btnLaunch}</span>
+                  <ArrowRight size={14} />
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="px-3.5 py-2 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    {content.btnSignIn}
+                  </button>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="px-4 py-2 text-xs font-bold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-md shadow-primary/20 transition-all active:scale-95 cursor-pointer"
+                  >
+                    {content.btnStart}
+                  </button>
+                </>
+              )}
             </div>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-stone-600 hover:text-stone-900"
+              className="lg:hidden p-2 text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
+        {/* Mobile Dropdown */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-stone-100 bg-white overflow-hidden"
+              className="lg:hidden border-t border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 overflow-hidden"
             >
               <div className="px-4 py-4 flex flex-col gap-2">
-                <button onClick={() => scrollTo('benefits')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Features</button>
-                <button onClick={() => scrollTo('how-it-works')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">How It Works</button>
-                <button onClick={() => scrollTo('pricing')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Pricing</button>
-                <button onClick={() => scrollTo('faq')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">FAQ</button>
-                <hr className="my-2 border-stone-100" />
-                <button onClick={() => navigate('/login')} className="p-3 text-sm font-medium text-stone-600 hover:bg-stone-50 rounded-xl text-left">Sign In</button>
+                <button onClick={() => scrollTo('benefits')} className="p-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl text-left">
+                  {content.navFeatures}
+                </button>
+                <button onClick={() => scrollTo('how-it-works')} className="p-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl text-left">
+                  {content.navHow}
+                </button>
+                <button onClick={() => scrollTo('pricing')} className="p-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl text-left">
+                  {content.navPricing}
+                </button>
+                <button onClick={() => scrollTo('faq')} className="p-2.5 text-sm font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-xl text-left">
+                  {content.navFaq}
+                </button>
+
+                <div className="flex items-center justify-between pt-2 border-t border-stone-100 dark:border-stone-800">
+                  <div className="flex items-center gap-1">
+                    {languages.map((item) => (
+                      <button
+                        key={item.code}
+                        onClick={() => setLanguage(item.code)}
+                        className={`px-2 py-1 text-xs font-bold rounded-lg ${
+                          language === item.code ? 'bg-primary text-white' : 'text-stone-500'
+                        }`}
+                      >
+                        {item.flag} {item.label}
+                      </button>
+                    ))}
+                  </div>
+                  <ThemeToggle />
+                </div>
+
+                <div className="pt-2">
+                  <PWAInstallButton className="w-full justify-center" />
+                </div>
+
                 <button
-                  onClick={() => navigate('/login')}
-                  className="p-3 text-sm font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl text-center mt-2"
+                  onClick={() => navigate(user ? '/dashboard' : '/login')}
+                  className="p-3 text-sm font-bold text-white bg-primary hover:bg-primary-hover rounded-xl text-center mt-2 cursor-pointer shadow-md"
                 >
-                  Start Free Trial
+                  {user ? content.btnLaunch : content.btnStart}
                 </button>
               </div>
             </motion.div>
@@ -265,77 +501,87 @@ export default function Landing() {
         </AnimatePresence>
       </header>
 
-      {/* HERO */}
-      <section className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-4">
+      {/* HERO SECTION */}
+      <section id="hero" className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-light text-primary text-xs font-bold rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 dark:bg-primary/20 text-primary text-xs font-bold rounded-full mb-6 border border-primary/20">
               <Smartphone size={14} />
-              Enterprise Edition 2026 — 14-Day Free Access
+              {content.badge}
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-stone-900">
-              Your farm under total command.{' '}
-              <span className="text-primary">Not guesswork.</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-stone-900 dark:text-white">
+              {content.heroTitlePrefix}
+              <span className="text-primary">{content.heroTitleHighlight}</span>
             </h1>
 
-            <p className="mt-6 text-lg sm:text-xl text-stone-500 max-w-2xl mx-auto leading-relaxed">
-              Eliminate lost paper logs, delayed weather alerts, and reactive livestock treatments.
-              AgroTech brings CME commodity tickers, veterinary withholding, QR inventory, and field crew tasks into one unified offline-ready hub.
+            <p className="mt-6 text-base sm:text-lg text-stone-600 dark:text-stone-300 max-w-2xl mx-auto leading-relaxed">
+              {content.heroDesc}
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" id="hero-cta">
-              <button 
-                onClick={() => navigate('/login')}
-                className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => navigate(user ? '/dashboard' : '/login')}
+                className="px-8 py-4 text-sm sm:text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
               >
-                Launch Live App
-                <ArrowRight size={20} />
+                <span>{user ? content.btnLaunch : content.btnStart}</span>
+                <ArrowRight size={18} />
               </button>
-              <button 
+              <button
                 onClick={() => scrollTo('benefits')}
-                className="px-8 py-4 text-base font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
+                className="px-8 py-4 text-sm sm:text-base font-semibold text-stone-700 dark:text-stone-300 bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
               >
-                Explore Modules
-                <ChevronDown size={18} />
+                <span>{content.btnModules}</span>
+                <ChevronDown size={16} />
               </button>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-stone-400">
-              <span className="flex items-center gap-1.5"><Shield size={14} /> No Lock-in Contract</span>
-              <span className="flex items-center gap-1.5"><Wifi size={14} /> 100% Offline Capable</span>
-              <span className="flex items-center gap-1.5"><Clock size={14} /> Ready in 20 Minutes</span>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-stone-500 dark:text-stone-400">
+              <span className="flex items-center gap-1.5"><Shield size={14} className="text-primary" /> {content.proofNoContract}</span>
+              <span className="flex items-center gap-1.5"><Wifi size={14} className="text-primary" /> {content.proofOffline}</span>
+              <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary" /> {content.proofSetup}</span>
             </div>
           </div>
 
-          {/* Dashboard Preview Mockup */}
-          <div className="mt-16 relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="bg-stone-50 border border-stone-200 rounded-3xl shadow-2xl overflow-hidden">
-              <div className="flex items-center gap-2 px-6 py-4 bg-stone-100 border-b border-stone-200">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-                <span className="ml-3 text-xs text-stone-400 font-mono">portal.heartland-ag.com/dashboard</span>
+          {/* Operational Preview Banner */}
+          <div className="mt-14 relative max-w-5xl mx-auto">
+            <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl shadow-2xl overflow-hidden transition-colors">
+              <div className="flex items-center justify-between px-6 py-4 bg-stone-100 dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                  <div className="w-3 h-3 rounded-full bg-green-400" />
+                  <span className="ml-3 text-xs text-stone-500 dark:text-stone-400 font-mono">agrotech.app/dashboard</span>
+                </div>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Offline-Ready Sync
+                </span>
               </div>
-              <div className="p-6 sm:p-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><BarChart3 size={14} /> Weather Radar</div>
-                  <div className="text-2xl font-bold text-stone-900">78°F</div>
-                  <div className="text-xs text-stone-400 mt-1">Humidity 62% · Wind 8 mph</div>
-                  <div className="mt-3 h-2 w-full bg-amber-100 rounded-full"><div className="h-2 w-3/4 bg-amber-500 rounded-full" /></div>
+              <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-stone-50 dark:bg-stone-800/60 rounded-2xl p-5 border border-stone-200/60 dark:border-stone-700/60">
+                  <div className="flex items-center gap-2 text-xs font-bold text-stone-500 dark:text-stone-400 mb-2">
+                    <CloudSun size={16} className="text-blue-500" />
+                    Radar & Alertas
+                  </div>
+                  <div className="text-2xl font-bold text-stone-900 dark:text-white">26°C · 64%</div>
+                  <div className="text-xs text-stone-500 mt-1">Previsão sem geada nas próximas 48h</div>
                 </div>
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><TrendingUp size={14} /> CME Live Cattle</div>
-                  <div className="text-2xl font-bold text-green-600">$188.40/cwt</div>
-                  <div className="text-xs text-green-500 mt-1">▲ +1.2% today</div>
-                  <div className="mt-3 h-2 w-full bg-green-100 rounded-full"><div className="h-2 w-4/5 bg-green-500 rounded-full" /></div>
+                <div className="bg-stone-50 dark:bg-stone-800/60 rounded-2xl p-5 border border-stone-200/60 dark:border-stone-700/60">
+                  <div className="flex items-center gap-2 text-xs font-bold text-stone-500 dark:text-stone-400 mb-2">
+                    <TrendingUp size={16} className="text-emerald-500" />
+                    Boi Gordo & Grãos
+                  </div>
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">$188.50 /cwt</div>
+                  <div className="text-xs text-emerald-600 mt-1">▲ +1.2% cotações em tempo real</div>
                 </div>
-                <div className="bg-white rounded-xl p-5 border border-stone-100 shadow-xs">
-                  <div className="flex items-center gap-2 text-xs text-stone-400 mb-3"><FlaskConical size={14} /> Veterinary Protocols</div>
-                  <div className="text-2xl font-bold text-stone-900">3 Active Alerts</div>
-                  <div className="text-xs text-amber-500 mt-1">2 withdrawal periods active</div>
-                  <div className="mt-3 h-2 w-full bg-amber-100 rounded-full"><div className="h-2 w-1/4 bg-red-500 rounded-full" /></div>
+                <div className="bg-stone-50 dark:bg-stone-800/60 rounded-2xl p-5 border border-stone-200/60 dark:border-stone-700/60">
+                  <div className="flex items-center gap-2 text-xs font-bold text-stone-500 dark:text-stone-400 mb-2">
+                    <FlaskConical size={16} className="text-orange-500" />
+                    Manejo Sanitário
+                  </div>
+                  <div className="text-2xl font-bold text-stone-900 dark:text-white">100% Regular</div>
+                  <div className="text-xs text-stone-500 mt-1">Nenhum lote com carência vencida</div>
                 </div>
               </div>
             </div>
@@ -343,39 +589,39 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* SOCIAL PROOF / STATS */}
-      <section className="py-12 border-y border-stone-100 bg-stone-50/50">
+      {/* STATS STRIP */}
+      <section className="py-12 border-y border-stone-200 dark:border-stone-800 bg-stone-100/60 dark:bg-stone-900/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl sm:text-4xl font-extrabold text-primary">850+</div>
-              <div className="text-sm text-stone-500 mt-1">Commercial Farms Enrolled</div>
+              <div className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1">{content.statsFarms}</div>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-extrabold text-primary">42,000+</div>
-              <div className="text-sm text-stone-500 mt-1">Livestock Head Monitored</div>
+              <div className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1">{content.statsAnimals}</div>
             </div>
             <div>
               <div className="text-3xl sm:text-4xl font-extrabold text-primary">180,000+</div>
-              <div className="text-sm text-stone-500 mt-1">Acres Actively Managed</div>
+              <div className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1">{content.statsAcres}</div>
             </div>
             <div>
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">98.4%</div>
-              <div className="text-sm text-stone-500 mt-1">Client Retention Rate</div>
+              <div className="text-3xl sm:text-4xl font-extrabold text-primary">99.2%</div>
+              <div className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mt-1">{content.statsRetention}</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* BENEFITS */}
+      {/* MODULES / BENEFITS */}
       <section id="benefits" className="py-20 sm:py-28 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Everything Your Agricultural Enterprise Requires
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+              {content.modulesTitle}
             </h2>
-            <p className="mt-4 text-lg text-stone-500">
-              Six synchronized modules designed specifically for real-world farming and ranching operations.
+            <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-400">
+              {content.modulesSubtitle}
             </p>
           </div>
 
@@ -387,13 +633,13 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
                 viewport={{ once: true }}
-                className="bg-white border border-stone-100 rounded-2xl p-6 hover:shadow-lg hover:border-stone-200 transition-all"
+                className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-3xl p-6 hover:shadow-lg transition-all"
               >
-                <div className="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center text-primary mb-4">
+                <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-4">
                   <benefit.icon size={24} />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900 mb-2">{benefit.title}</h3>
-                <p className="text-stone-500 text-sm leading-relaxed">{benefit.description}</p>
+                <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">{benefit.title}</h3>
+                <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -401,14 +647,14 @@ export default function Landing() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-20 sm:py-28 px-4 bg-stone-50/50">
+      <section id="how-it-works" className="py-20 sm:py-28 px-4 bg-stone-100/50 dark:bg-stone-900/30 border-y border-stone-200 dark:border-stone-800">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Up and Running in Under 20 Minutes
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+              {content.howTitle}
             </h2>
-            <p className="mt-4 text-lg text-stone-500">
-              No protracted software implementation. No complex IT consulting. Built for direct field deployment.
+            <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-400">
+              {content.howSubtitle}
             </p>
           </div>
 
@@ -420,75 +666,37 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15, duration: 0.4 }}
                 viewport={{ once: true }}
-                className="text-center"
+                className="text-center bg-white dark:bg-stone-900 p-8 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-xs"
               >
                 <div className="w-14 h-14 bg-primary text-white rounded-2xl flex items-center justify-center text-xl font-extrabold mx-auto shadow-lg shadow-primary/20">
                   {step.number}
                 </div>
-                <h3 className="text-xl font-bold text-stone-900 mt-6 mb-3">{step.title}</h3>
-                <p className="text-stone-500 leading-relaxed">{step.description}</p>
+                <h3 className="text-xl font-bold text-stone-900 dark:text-white mt-6 mb-3">{step.title}</h3>
+                <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">{step.description}</p>
               </motion.div>
             ))}
           </div>
 
           <div className="mt-12 text-center">
-            <button 
-              onClick={() => navigate('/login')}
-              className="px-8 py-4 text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 cursor-pointer"
+            <button
+              onClick={() => navigate(user ? '/dashboard' : '/login')}
+              className="px-8 py-4 text-sm sm:text-base font-bold text-white bg-primary hover:bg-primary-hover rounded-2xl shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 active:scale-95 cursor-pointer"
             >
-              Get Started Now
+              {user ? content.btnLaunch : content.btnStart}
             </button>
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="py-20 sm:py-28 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Trusted by Leading Growers & Ranchers
-            </h2>
-            <p className="mt-4 text-lg text-stone-500">
-              Real farm operators across the Heartland share their experience.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-                viewport={{ once: true }}
-                className="bg-white border border-stone-100 rounded-2xl p-6 shadow-xs"
-              >
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} size={16} className="fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-stone-600 text-sm leading-relaxed mb-4">&ldquo;{t.text}&rdquo;</p>
-                <div>
-                  <div className="font-bold text-sm text-stone-900">{t.name}</div>
-                  <div className="text-xs text-stone-400">{t.farm}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* PRICING */}
-      <section id="pricing" className="py-20 sm:py-28 px-4 bg-stone-50/50">
+      <section id="pricing" className="py-20 sm:py-28 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Transparent Plans That Grow with Your Operation
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+              {content.pricingTitle}
             </h2>
-            <p className="mt-4 text-lg text-stone-500">
-              Predictable pricing from single family parcels to multi-state cattle operations.
+            <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-400">
+              {content.pricingSubtitle}
             </p>
           </div>
 
@@ -500,40 +708,42 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
                 viewport={{ once: true }}
-                className={`rounded-2xl border-2 p-8 flex flex-col ${
+                className={`rounded-3xl border-2 p-8 flex flex-col justify-between ${
                   plan.highlighted
-                    ? 'border-primary bg-white shadow-xl shadow-primary/10 scale-105'
-                    : 'border-stone-100 bg-white shadow-xs'
+                    ? 'border-primary bg-white dark:bg-stone-900 shadow-xl shadow-primary/10 scale-105'
+                    : 'border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900 shadow-xs'
                 }`}
               >
-                {plan.highlighted && (
-                  <div className="text-xs font-bold text-primary bg-primary-light px-3 py-1 rounded-full inline-block w-fit mb-4">
-                    MOST POPULAR
+                <div>
+                  {plan.highlighted && (
+                    <div className="text-[11px] font-bold text-primary bg-primary/10 px-3 py-1 rounded-full inline-block w-fit mb-4">
+                      {language === 'pt' ? 'MAIS ESCOLHIDO' : language === 'es' ? 'MÁS POPULAR' : 'MOST POPULAR'}
+                    </div>
+                  )}
+                  <h3 className="text-xl font-bold text-stone-900 dark:text-white">{plan.name}</h3>
+                  <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1">{plan.description}</p>
+
+                  <div className="mt-6 mb-6">
+                    <span className="text-4xl font-extrabold text-stone-900 dark:text-white">{plan.price}</span>
+                    {plan.period && <span className="text-stone-400 text-sm ml-1">{plan.period}</span>}
                   </div>
-                )}
-                <h3 className="text-xl font-bold text-stone-900">{plan.name}</h3>
-                <p className="text-sm text-stone-500 mt-1">{plan.description}</p>
 
-                <div className="mt-6 mb-8">
-                  <span className="text-4xl font-extrabold text-stone-900">{plan.price}</span>
-                  {plan.period && <span className="text-stone-400 text-sm ml-1">{plan.period}</span>}
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+                        <Check size={16} className="text-primary shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-
-                <ul className="space-y-3 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm text-stone-600">
-                      <Check size={18} className="text-primary shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
 
                 <button
                   onClick={() => navigate('/login')}
-                  className={`mt-8 w-full py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 cursor-pointer ${
+                  className={`w-full py-3.5 rounded-2xl font-bold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer ${
                     plan.highlighted
                       ? 'bg-primary text-white shadow-lg shadow-primary/25 hover:bg-primary-hover'
-                      : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700'
                   }`}
                 >
                   {plan.cta}
@@ -543,33 +753,38 @@ export default function Landing() {
           </div>
 
           <div className="mt-10 text-center">
-            <p className="text-sm text-stone-400 flex items-center justify-center gap-2">
-              <Shield size={14} /> Full 14-day free access. No credit card required upfront. Cancel anytime.
+            <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 flex items-center justify-center gap-2">
+              <Shield size={14} className="text-primary" />
+              {language === 'pt'
+                ? 'Garantia total de 14 dias sem compromisso. Cancele diretamente no painel.'
+                : language === 'es'
+                ? 'Prueba de 14 días sin permanencia. Cancele en cualquier momento.'
+                : 'Full 14-day free access. No credit card required upfront. Cancel anytime.'}
             </p>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="py-20 sm:py-28 px-4">
+      {/* FAQ SECTION */}
+      <section id="faq" className="py-20 sm:py-28 px-4 bg-stone-100/50 dark:bg-stone-900/30 border-t border-stone-200 dark:border-stone-800">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
-              Frequently Asked Questions
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white">
+              {content.faqTitle}
             </h2>
-            <p className="mt-4 text-lg text-stone-500">
-              Clear answers to technical, operational, and commercial questions.
+            <p className="mt-4 text-base sm:text-lg text-stone-600 dark:text-stone-400">
+              {content.faqSubtitle}
             </p>
           </div>
 
           <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="border border-stone-100 rounded-2xl overflow-hidden">
+              <div key={i} className="border border-stone-200 dark:border-stone-800 rounded-2xl bg-white dark:bg-stone-900 overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-stone-900 hover:bg-stone-50 transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-stone-900 dark:text-white hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors cursor-pointer text-sm sm:text-base"
                 >
-                  {faq.q}
+                  <span>{faq.q}</span>
                   <ChevronDown
                     size={18}
                     className={`text-stone-400 transition-transform duration-200 shrink-0 ml-2 ${
@@ -586,7 +801,9 @@ export default function Landing() {
                       transition={{ duration: 0.2 }}
                       className="overflow-hidden"
                     >
-                      <p className="px-5 pb-5 text-sm text-stone-500 leading-relaxed">{faq.a}</p>
+                      <p className="px-5 pb-5 text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed border-t border-stone-100 dark:border-stone-800/50 pt-3">
+                        {faq.a}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -597,77 +814,79 @@ export default function Landing() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-20 sm:py-28 px-4 bg-stone-900 text-white">
+      <section className="py-20 sm:py-28 px-4 bg-stone-900 dark:bg-stone-950 text-white border-t border-stone-800">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Your Farm Deserves Management Built for Modern Agriculture
+            {content.finalTitle}
           </h2>
-          <p className="mt-4 text-lg text-stone-400">
-            Join 850+ forward-thinking producers who traded paper notebooks for data-driven precision.
-            Test the system free for 14 days.
+          <p className="mt-4 text-base sm:text-lg text-stone-400 leading-relaxed">
+            {content.finalDesc}
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button 
-              onClick={() => navigate('/login')}
-              className="px-8 py-4 text-base font-bold text-stone-900 bg-white hover:bg-stone-100 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
+            <button
+              onClick={() => navigate(user ? '/dashboard' : '/login')}
+              className="px-8 py-4 text-sm sm:text-base font-bold text-stone-900 bg-white hover:bg-stone-100 rounded-2xl shadow-lg transition-all active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer"
             >
-              Start Your Free Trial
-              <ArrowRight size={20} />
+              <span>{user ? content.btnLaunch : content.finalBtnPrimary}</span>
+              <ArrowRight size={18} />
             </button>
-            <button 
+            <button
               onClick={() => navigate('/login')}
-              className="px-8 py-4 text-base font-semibold text-white border-2 border-stone-600 hover:border-stone-400 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
+              className="px-8 py-4 text-sm sm:text-base font-semibold text-white border border-stone-700 hover:border-stone-500 rounded-2xl transition-colors w-full sm:w-auto justify-center flex items-center gap-2 cursor-pointer"
             >
-              Access Demo Workspace
+              <span>{content.finalBtnDemo}</span>
             </button>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-stone-500">
-            <span className="flex items-center gap-1.5"><Shield size={14} /> No Long-Term Commitment</span>
-            <span className="flex items-center gap-1.5"><ScrollText size={14} /> Instant Access</span>
-            <span className="flex items-center gap-1.5"><Clock size={14} /> Cancel Anytime in App</span>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-stone-500">
+            <span className="flex items-center gap-1.5"><Shield size={14} /> {content.proofNoContract}</span>
+            <span className="flex items-center gap-1.5"><ScrollText size={14} /> {content.proofOffline}</span>
+            <span className="flex items-center gap-1.5"><Clock size={14} /> {content.proofSetup}</span>
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-12 px-4 bg-stone-950 text-stone-400">
+      <footer className="py-12 px-4 bg-stone-950 text-stone-400 border-t border-stone-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 text-white mb-4">
-                <Sprout size={22} />
+                <Sprout size={22} className="text-primary" />
                 <span className="text-lg font-bold tracking-tight">
-                  AGRO<span className="text-stone-300">TECH</span>
+                  AGRO<span className="text-primary">TECH</span>
                 </span>
               </div>
-              <p className="text-sm text-stone-500 leading-relaxed">
-                Precision farm management, sanitary monitoring, and inventory tracking for commercial agricultural operators.
+              <p className="text-xs text-stone-500 leading-relaxed">
+                {language === 'pt'
+                  ? 'Gestão de fazendas, pecuária de precisão e controle sanitário offline-first para o agronegócio moderno.'
+                  : language === 'es'
+                  ? 'Gestión integral agropecuaria y trazabilidad sanitaria offline para el campo moderno.'
+                  : 'Precision farm management, sanitary monitoring, and inventory tracking for commercial agricultural operators.'}
               </p>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm">
-                <li><button onClick={() => scrollTo('benefits')} className="hover:text-white transition-colors cursor-pointer">Features</button></li>
-                <li><button onClick={() => scrollTo('pricing')} className="hover:text-white transition-colors cursor-pointer">Pricing</button></li>
-                <li><button onClick={() => scrollTo('how-it-works')} className="hover:text-white transition-colors cursor-pointer">How It Works</button></li>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">{content.navFeatures}</h4>
+              <ul className="space-y-2 text-xs">
+                <li><button onClick={() => scrollTo('benefits')} className="hover:text-white transition-colors cursor-pointer">{content.navFeatures}</button></li>
+                <li><button onClick={() => scrollTo('pricing')} className="hover:text-white transition-colors cursor-pointer">{content.navPricing}</button></li>
+                <li><button onClick={() => scrollTo('how-it-works')} className="hover:text-white transition-colors cursor-pointer">{content.navHow}</button></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><span className="hover:text-white transition-colors cursor-pointer">About Us</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Agronomy Blog</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Contact & Support</span></li>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">PWA & Offline</h4>
+              <ul className="space-y-2 text-xs">
+                <li><PWAInstallButton variant="compact" /></li>
+                <li><span className="text-stone-500">Service Worker Active</span></li>
+                <li><span className="text-stone-500">Offline-Ready Sync</span></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">Legal & Privacy</h4>
-              <ul className="space-y-2 text-sm">
-                <li><span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span></li>
-                <li><span className="hover:text-white transition-colors cursor-pointer">Data Security</span></li>
+              <h4 className="text-xs font-bold text-stone-300 uppercase tracking-widest mb-4">AgroTech Platform</h4>
+              <ul className="space-y-2 text-xs">
+                <li><button onClick={() => navigate('/login')} className="hover:text-white transition-colors cursor-pointer">{content.btnSignIn}</button></li>
+                <li><button onClick={() => navigate('/dashboard')} className="hover:text-white transition-colors cursor-pointer">{content.btnLaunch}</button></li>
               </ul>
             </div>
           </div>
@@ -677,5 +896,5 @@ export default function Landing() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
